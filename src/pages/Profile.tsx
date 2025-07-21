@@ -1,114 +1,153 @@
-import { User, Settings, Trophy, Target, Zap, Edit3, Shield, Bell } from "lucide-react";
+import { User, Edit, Settings, Trophy, Target, Calendar, Share, Award, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const Profile = () => {
-  const userStats = [
-    { label: "TierScore", value: "2,847", icon: Trophy, color: "text-tier-gold" },
-    { label: "Global Rank", value: "#127", icon: Target, color: "text-accent" },
-    { label: "Workouts", value: "156", icon: Zap, color: "text-primary" },
+  const [bio, setBio] = useState("Dedicated athlete pushing limits every day. Always striving for greatness and inspiring others to reach their peak performance.");
+  const [isEditingBio, setIsEditingBio] = useState(false);
+
+  const earnedBadges = [
+    { name: "Iron Beast", tier: "Silver", icon: "🛡️" },
+    { name: "Tier Crusher", tier: "Bronze", icon: "🏆" },
   ];
 
-  const settingsOptions = [
-    { title: "Notifications", subtitle: "Push alerts & reminders", icon: Bell },
-    { title: "Privacy", subtitle: "Data & sharing settings", icon: Shield },
-    { title: "Account", subtitle: "Personal information", icon: User },
-    { title: "App Settings", subtitle: "Preferences & display", icon: Settings },
+  const topAchievements = [
+    { exercise: "Bench Press", weight: 315, unit: "lbs" },
+    { exercise: "Deadlift", weight: 495, unit: "lbs" },
+    { exercise: "Squat", weight: 405, unit: "lbs" },
   ];
 
   return (
     <div className="min-h-screen bg-background p-6">
-      {/* Profile Header */}
+      {/* Header */}
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-foreground mb-2">Profile</h1>
+        <p className="text-muted-foreground">Elite athlete profile and achievements</p>
+      </div>
+
+      {/* Profile Card */}
       <div className="tier-card rounded-xl p-6 mb-6">
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center tier-glow">
-            <User className="w-8 h-8 text-primary-foreground" />
+          <div className="w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center tier-glow">
+            <User className="w-10 h-10 text-primary-foreground" />
           </div>
+          
           <div className="flex-1">
-            <h2 className="text-xl font-bold text-foreground">Alex Martinez</h2>
-            <p className="text-muted-foreground">@alextheapex</p>
+            <h2 className="text-xl font-bold text-foreground">Alex Thompson</h2>
+            <p className="text-muted-foreground">@alex_athlete</p>
             <div className="flex items-center gap-2 mt-1">
-              <div className="w-2 h-2 bg-accent rounded-full energy-pulse"></div>
-              <span className="text-sm text-accent">Active now</span>
+              <Trophy className="w-4 h-4 text-tier-gold" />
+              <span className="text-sm text-tier-gold">Apex Tier</span>
             </div>
           </div>
+          
           <Button variant="ghost" size="sm">
-            <Edit3 className="w-4 h-4" />
+            <Edit className="w-4 h-4" />
           </Button>
         </div>
-
-        {/* Bio */}
-        <p className="text-sm text-muted-foreground mb-4">
-          Fitness enthusiast | Apex tier athlete | Pushing limits daily 💪
-        </p>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-4">
-          {userStats.map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="flex justify-center mb-2">
-                <stat.icon className={`w-5 h-5 ${stat.color}`} />
+        
+        {/* Editable Bio */}
+        <div className="mb-4">
+          {isEditingBio ? (
+            <div className="space-y-2">
+              <textarea
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                className="w-full p-2 bg-muted rounded-lg text-sm text-foreground resize-none"
+                rows={3}
+              />
+              <div className="flex gap-2">
+                <Button size="sm" onClick={() => setIsEditingBio(false)}>
+                  Save
+                </Button>
+                <Button size="sm" variant="ghost" onClick={() => setIsEditingBio(false)}>
+                  Cancel
+                </Button>
               </div>
-              <div className={`text-lg font-bold ${stat.color}`}>{stat.value}</div>
-              <div className="text-xs text-muted-foreground">{stat.label}</div>
+            </div>
+          ) : (
+            <div 
+              className="text-sm text-muted-foreground cursor-pointer hover:text-foreground"
+              onClick={() => setIsEditingBio(true)}
+            >
+              {bio}
+            </div>
+          )}
+        </div>
+        
+        <div className="grid grid-cols-3 gap-4">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-accent">2847</div>
+            <div className="text-xs text-muted-foreground">TierScore</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-tier-gold">#12</div>
+            <div className="text-xs text-muted-foreground">National</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-primary">#1,847</div>
+            <div className="text-xs text-muted-foreground">Global</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Earned Badges */}
+      <div className="tier-card rounded-xl p-4 mb-6">
+        <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+          <Award className="w-4 h-4 text-tier-gold" />
+          Earned Badges ({earnedBadges.length})
+        </h3>
+        
+        <div className="grid grid-cols-2 gap-3">
+          {earnedBadges.map((badge, index) => (
+            <div key={index} className="tier-card rounded-lg p-3 text-center tier-glow">
+              <div className="text-2xl mb-1">{badge.icon}</div>
+              <div className="text-sm font-bold text-foreground">{badge.name}</div>
+              <div className="text-xs text-tier-gold">{badge.tier}</div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Personal Records */}
+      {/* Top Achievements */}
       <div className="tier-card rounded-xl p-4 mb-6">
-        <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-          <Trophy className="w-4 h-4 text-tier-gold" />
-          Personal Records
+        <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+          <Video className="w-4 h-4 text-accent" />
+          Top Achievement Clips
         </h3>
         
         <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Bench Press</span>
-            <span className="font-semibold text-foreground">185 lbs</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Deadlift</span>
-            <span className="font-semibold text-foreground">315 lbs</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Squat</span>
-            <span className="font-semibold text-foreground">275 lbs</span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">5K Time</span>
-            <span className="font-semibold text-foreground">22:34</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Settings */}
-      <div className="tier-card rounded-xl p-4 mb-6">
-        <h3 className="font-semibold text-foreground mb-4">Settings</h3>
-        
-        <div className="space-y-1">
-          {settingsOptions.map((option, index) => (
-            <button
-              key={index}
-              className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors text-left"
-            >
-              <option.icon className="w-5 h-5 text-muted-foreground" />
-              <div className="flex-1">
-                <div className="font-medium text-foreground">{option.title}</div>
-                <div className="text-xs text-muted-foreground">{option.subtitle}</div>
+          {topAchievements.map((achievement, index) => (
+            <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
+                  <Trophy className="w-4 h-4 text-primary-foreground" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-foreground">{achievement.exercise}</div>
+                  <div className="text-xs text-muted-foreground">Personal Record</div>
+                </div>
               </div>
-            </button>
+              <div className="text-right">
+                <div className="text-lg font-bold text-accent">{achievement.weight}</div>
+                <div className="text-xs text-muted-foreground">{achievement.unit}</div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Tier Badge */}
-      <div className="tier-card rounded-xl p-4 text-center">
-        <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-3 tier-glow">
-          <Trophy className="w-6 h-6 text-primary-foreground" />
-        </div>
-        <h4 className="font-bold text-accent mb-1">APEX TIER</h4>
-        <p className="text-xs text-muted-foreground">Top 2% of all athletes</p>
+      {/* Action Buttons */}
+      <div className="space-y-3">
+        <Button variant="tier" className="w-full">
+          <Share className="w-4 h-4 mr-2" />
+          Share Profile
+        </Button>
+        
+        <Button variant="outline" className="w-full">
+          <Settings className="w-4 h-4 mr-2" />
+          Account Settings
+        </Button>
       </div>
     </div>
   );

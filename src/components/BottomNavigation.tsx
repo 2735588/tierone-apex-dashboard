@@ -1,4 +1,4 @@
-import { Home, Dumbbell, BarChart3, User } from "lucide-react";
+import { Home, BarChart3, User, Award, Trophy } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 
 export const BottomNavigation = () => {
@@ -6,7 +6,8 @@ export const BottomNavigation = () => {
   
   const navItems = [
     { path: "/", icon: Home, label: "Home" },
-    { path: "/workouts", icon: Dumbbell, label: "Workouts" },
+    { path: "/badges", icon: Award, label: "Badges" },
+    { path: "/achievements", icon: Trophy, label: "Achievements" },
     { path: "/progress", icon: BarChart3, label: "Progress" },
     { path: "/profile", icon: User, label: "Profile" },
   ];

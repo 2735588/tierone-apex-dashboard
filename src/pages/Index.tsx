@@ -8,12 +8,12 @@ import bodyImage from "@/assets/body-silhouette.png";
 
 const Index = () => {
   const muscleGroups = [
-    { name: "Chest", percentage: 87, position: { top: "25%", left: "35%" }, isActive: true },
-    { name: "Shoulders", percentage: 92, position: { top: "18%", left: "15%" } },
-    { name: "Arms", percentage: 78, position: { top: "35%", right: "20%" } },
-    { name: "Core", percentage: 65, position: { top: "45%", left: "30%" } },
-    { name: "Back", percentage: 84, position: { top: "30%", right: "35%" } },
-    { name: "Legs", percentage: 71, position: { bottom: "25%", left: "40%" } },
+    { name: "Chest", score: 87, position: { top: "25%", left: "35%" }, isActive: true },
+    { name: "Shoulders", score: 92, position: { top: "18%", left: "15%" } },
+    { name: "Arms", score: 78, position: { top: "35%", right: "20%" } },
+    { name: "Core", score: 65, position: { top: "45%", left: "30%" } },
+    { name: "Back", score: 84, position: { top: "30%", right: "35%" } },
+    { name: "Legs", score: 71, position: { bottom: "25%", left: "40%" } },
   ];
 
   return (
@@ -54,48 +54,39 @@ const Index = () => {
 
       {/* Main content area */}
       <div className="px-6 flex-1">
-        {/* Top stats row */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        {/* TierScore - Main Focus */}
+        <div className="flex justify-center mb-6">
+          <TierBadge score={2847} rank="APEX TIER" percentile={2} />
+        </div>
+
+        {/* National & Global Rank Cards */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
           <div className="tier-card rounded-xl p-4 text-center">
-            <Award className="w-6 h-6 text-tier-gold mx-auto mb-2" />
-            <div className="text-lg font-bold text-foreground">127</div>
-            <div className="text-xs text-muted-foreground">Total Workouts</div>
+            <div className="text-2xl font-bold text-tier-gold">#12</div>
+            <div className="text-sm text-muted-foreground">National Rank</div>
           </div>
           
           <div className="tier-card rounded-xl p-4 text-center">
-            <Target className="w-6 h-6 text-accent mx-auto mb-2" />
-            <div className="text-lg font-bold text-foreground">23</div>
-            <div className="text-xs text-muted-foreground">Days Streak</div>
-          </div>
-          
-          <div className="tier-card rounded-xl p-4 text-center">
-            <Flame className="w-6 h-6 text-energy mx-auto mb-2 energy-pulse" />
-            <div className="text-lg font-bold text-foreground">94%</div>
-            <div className="text-xs text-muted-foreground">Weekly Goal</div>
+            <div className="text-2xl font-bold text-accent">#1,847</div>
+            <div className="text-sm text-muted-foreground">Global Rank</div>
           </div>
         </div>
 
-        {/* Central body visualization with TierScore */}
+        {/* Body Scan with Muscle Group Scores */}
         <div className="relative flex flex-col items-center mb-8">
-          {/* TierScore Badge - positioned above body */}
-          <div className="mb-6">
-            <TierBadge score={2847} rank="APEX TIER" percentile={2} />
-          </div>
-          
-          {/* Body silhouette with muscle groups */}
           <div className="relative">
             <img 
               src={bodyImage} 
               alt="Body tracking" 
-              className="w-48 h-60 object-contain opacity-80"
+              className="w-56 h-72 object-contain opacity-90"
             />
             
-            {/* Muscle group indicators positioned around the body */}
+            {/* Muscle group score chips positioned around the body */}
             {muscleGroups.map((group, index) => (
               <MuscleGroup
                 key={index}
                 name={group.name}
-                percentage={group.percentage}
+                score={group.score}
                 position={group.position}
                 isActive={group.isActive}
               />
