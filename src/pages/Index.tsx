@@ -133,13 +133,8 @@ const Index = () => {
       </div>
 
       {/* Floating leaderboard - positioned in top right */}
-      <div className="absolute top-24 right-4 w-72">
+      <div className="absolute top-24 right-4 w-72 max-w-[calc(100vw-2rem)]">
         <LeaderboardTab />
-      </div>
-
-      {/* Bottom navigation indicator */}
-      <div className="flex justify-center pb-6">
-        <div className="w-32 h-1 bg-muted rounded-full"></div>
       </div>
     </div>
   );
