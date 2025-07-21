@@ -8,35 +8,59 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* TierOne Dark Gaming Theme */
+    --background: 220 15% 8%;
+    --foreground: 120 5% 95%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 15% 10%;
+    --card-foreground: 120 5% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 15% 12%;
+    --popover-foreground: 120 5% 95%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary Green - Performance focused */
+    --primary: 142 76% 45%;
+    --primary-foreground: 220 15% 8%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Dark panels */
+    --secondary: 220 15% 15%;
+    --secondary-foreground: 120 5% 85%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted - Subtle elements */
+    --muted: 220 15% 18%;
+    --muted-foreground: 120 5% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Bright green highlights */
+    --accent: 142 90% 55%;
+    --accent-foreground: 220 15% 8%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Destructive - Warning red */
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 120 5% 95%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Borders and inputs */
+    --border: 220 15% 20%;
+    --input: 220 15% 15%;
+    --ring: 142 76% 45%;
 
-    --radius: 0.5rem;
+    /* Gaming-inspired colors */
+    --tier-gold: 45 100% 60%;
+    --tier-silver: 220 10% 75%;
+    --tier-bronze: 25 85% 55%;
+    --performance-glow: 142 90% 65%;
+    --energy: 142 100% 50%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(142 76% 45%), hsl(142 90% 55%));
+    --gradient-glow: linear-gradient(135deg, hsl(142 90% 55% / 0.2), hsl(142 76% 45% / 0.1));
+    --gradient-performance: linear-gradient(90deg, hsl(142 76% 45%), hsl(142 90% 55%), hsl(45 100% 60%));
+    
+    /* Shadows */
+    --shadow-glow: 0 0 20px hsl(142 90% 55% / 0.3);
+    --shadow-tier: 0 8px 32px hsl(142 76% 45% / 0.4);
+    --shadow-card: 0 4px 16px hsl(220 15% 5% / 0.4);
+
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +124,72 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
+  }
+}
+
+@layer components {
+  /* TierOne Gaming Components */
+  .tier-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .tier-card {
+    background: hsl(var(--card));
+    box-shadow: var(--shadow-card);
+    border: 1px solid hsl(var(--border));
+  }
+  
+  .performance-bar {
+    background: var(--gradient-performance);
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+  
+  .tier-badge {
+    background: var(--gradient-primary);
+    box-shadow: var(--shadow-tier);
+    animation: tier-pulse 3s ease-in-out infinite;
+  }
+
+  .energy-pulse {
+    animation: energy-pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.2); }
+  }
+  
+  @keyframes tier-pulse {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.02); filter: brightness(1.1); }
+  }
+
+  @keyframes energy-pulse {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+
+  @keyframes scan-ripple {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
+
+  .scan-button {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scan-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: hsl(var(--accent) / 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: scan-ripple 2s infinite;
   }
 }

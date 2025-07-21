@@ -61,7 +61,25 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// TierOne Gaming Colors
+				tier: {
+					gold: 'hsl(var(--tier-gold))',
+					silver: 'hsl(var(--tier-silver))',
+					bronze: 'hsl(var(--tier-bronze))',
+					glow: 'hsl(var(--performance-glow))',
+				},
+				energy: 'hsl(var(--energy))',
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-glow': 'var(--gradient-glow)',
+				'gradient-performance': 'var(--gradient-performance)',
+			},
+			boxShadow: {
+				'glow': 'var(--shadow-glow)',
+				'tier': 'var(--shadow-tier)',
+				'card-custom': 'var(--shadow-card)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

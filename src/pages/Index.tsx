@@ -1,11 +1,145 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { TierBadge } from "@/components/TierBadge";
+import { MuscleGroup } from "@/components/MuscleGroup";
+import { ScanButton } from "@/components/ScanButton";
+import { LeaderboardTab } from "@/components/LeaderboardTab";
+import { Bell, Settings, Flame, Award, Target } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import bodyImage from "@/assets/body-silhouette.png";
 
 const Index = () => {
+  const muscleGroups = [
+    { name: "Chest", percentage: 87, position: { top: "25%", left: "35%" }, isActive: true },
+    { name: "Shoulders", percentage: 92, position: { top: "18%", left: "15%" } },
+    { name: "Arms", percentage: 78, position: { top: "35%", right: "20%" } },
+    { name: "Core", percentage: 65, position: { top: "45%", left: "30%" } },
+    { name: "Back", percentage: 84, position: { top: "30%", right: "35%" } },
+    { name: "Legs", percentage: 71, position: { bottom: "25%", left: "40%" } },
+  ];
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-background text-foreground overflow-hidden">
+      {/* Status bar simulation */}
+      <div className="flex justify-between items-center px-6 py-2 text-xs text-muted-foreground">
+        <span>9:41</span>
+        <span className="flex items-center gap-1">
+          <div className="w-4 h-2 border border-current rounded-sm">
+            <div className="w-3/4 h-full bg-current rounded-sm"></div>
+          </div>
+        </span>
+      </div>
+
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 py-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center tier-glow">
+            <Flame className="w-5 h-5 text-primary-foreground" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold text-foreground">TierOne</h1>
+            <p className="text-sm text-muted-foreground">Welcome back, Alex</p>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="sm" className="relative">
+            <Bell className="w-5 h-5" />
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full energy-pulse"></div>
+          </Button>
+          
+          <Button variant="ghost" size="sm">
+            <Settings className="w-5 h-5" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Main content area */}
+      <div className="px-6 flex-1">
+        {/* Top stats row */}
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          <div className="tier-card rounded-xl p-4 text-center">
+            <Award className="w-6 h-6 text-tier-gold mx-auto mb-2" />
+            <div className="text-lg font-bold text-foreground">127</div>
+            <div className="text-xs text-muted-foreground">Total Workouts</div>
+          </div>
+          
+          <div className="tier-card rounded-xl p-4 text-center">
+            <Target className="w-6 h-6 text-accent mx-auto mb-2" />
+            <div className="text-lg font-bold text-foreground">23</div>
+            <div className="text-xs text-muted-foreground">Days Streak</div>
+          </div>
+          
+          <div className="tier-card rounded-xl p-4 text-center">
+            <Flame className="w-6 h-6 text-energy mx-auto mb-2 energy-pulse" />
+            <div className="text-lg font-bold text-foreground">94%</div>
+            <div className="text-xs text-muted-foreground">Weekly Goal</div>
+          </div>
+        </div>
+
+        {/* Central body visualization with TierScore */}
+        <div className="relative flex flex-col items-center mb-8">
+          {/* TierScore Badge - positioned above body */}
+          <div className="mb-6">
+            <TierBadge score={2847} rank="APEX TIER" percentile={2} />
+          </div>
+          
+          {/* Body silhouette with muscle groups */}
+          <div className="relative">
+            <img 
+              src={bodyImage} 
+              alt="Body tracking" 
+              className="w-48 h-60 object-contain opacity-80"
+            />
+            
+            {/* Muscle group indicators positioned around the body */}
+            {muscleGroups.map((group, index) => (
+              <MuscleGroup
+                key={index}
+                name={group.name}
+                percentage={group.percentage}
+                position={group.position}
+                isActive={group.isActive}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Scan button centered at bottom */}
+        <div className="flex justify-center mb-6">
+          <ScanButton />
+        </div>
+
+        {/* Performance insights */}
+        <div className="tier-card rounded-xl p-4 mb-6">
+          <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+            <Target className="w-4 h-4 text-accent" />
+            Today's Performance
+          </h3>
+          
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Strength Gain</span>
+              <span className="text-sm font-semibold text-tier-gold">+3.2%</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Muscle Activation</span>
+              <span className="text-sm font-semibold text-accent">89%</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Recovery Score</span>
+              <span className="text-sm font-semibold text-primary">92%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating leaderboard - positioned in top right */}
+      <div className="absolute top-24 right-4 w-72">
+        <LeaderboardTab />
+      </div>
+
+      {/* Bottom navigation indicator */}
+      <div className="flex justify-center pb-6">
+        <div className="w-32 h-1 bg-muted rounded-full"></div>
       </div>
     </div>
   );
