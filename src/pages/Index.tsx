@@ -1,8 +1,7 @@
 import { TierBadge } from "@/components/TierBadge";
 import { MuscleGroup } from "@/components/MuscleGroup";
 import { ScanButton } from "@/components/ScanButton";
-import { LeaderboardTab } from "@/components/LeaderboardTab";
-import { Bell, Settings, Flame, Award, Target } from "lucide-react";
+import { Bell, Settings, Flame, Timer, Activity, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import bodyImage from "@/assets/body-silhouette.png";
 
@@ -54,21 +53,34 @@ const Index = () => {
 
       {/* Main content area */}
       <div className="px-6 flex-1">
-        {/* TierScore - Main Focus */}
-        <div className="flex justify-center mb-6">
+        {/* TierScore - Main Focus (Large & Centered) */}
+        <div className="flex justify-center mb-8">
           <TierBadge score={2847} rank="APEX TIER" percentile={2} />
         </div>
 
         {/* National & Global Rank Cards */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div className="tier-card rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-tier-gold">#12</div>
+            <div className="text-3xl font-bold text-tier-gold">#12</div>
             <div className="text-sm text-muted-foreground">National Rank</div>
           </div>
           
           <div className="tier-card rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-accent">#1,847</div>
+            <div className="text-3xl font-bold text-accent">#1,847</div>
             <div className="text-sm text-muted-foreground">Global Rank</div>
+          </div>
+        </div>
+
+        {/* Scan Countdown & Status */}
+        <div className="tier-card rounded-xl p-4 mb-6 text-center">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Timer className="w-5 h-5 text-accent" />
+            <span className="text-lg font-bold text-foreground">Next scan available in 3 days</span>
+          </div>
+          <div className="text-sm text-muted-foreground">Free tier: 1 scan per week</div>
+          <div className="flex items-center justify-center gap-1 mt-2">
+            <Flame className="w-4 h-4 text-tier-gold" />
+            <span className="text-sm text-tier-gold font-medium">🔥 Streak Day 7</span>
           </div>
         </div>
 
@@ -99,11 +111,27 @@ const Index = () => {
           <ScanButton />
         </div>
 
-        {/* Performance insights */}
+        {/* Top 3 Muscle Scores - Quick Access */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <Button variant="ghost" className="tier-card h-16 flex-col gap-1 text-center">
+            <div className="text-lg font-bold text-accent">87</div>
+            <div className="text-xs text-muted-foreground">Chest</div>
+          </Button>
+          <Button variant="ghost" className="tier-card h-16 flex-col gap-1 text-center">
+            <div className="text-lg font-bold text-accent">78</div>
+            <div className="text-xs text-muted-foreground">Arms</div>
+          </Button>
+          <Button variant="ghost" className="tier-card h-16 flex-col gap-1 text-center">
+            <div className="text-lg font-bold text-accent">71</div>
+            <div className="text-xs text-muted-foreground">Legs</div>
+          </Button>
+        </div>
+
+        {/* Performance Summary */}
         <div className="tier-card rounded-xl p-4 mb-6">
           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-            <Target className="w-4 h-4 text-accent" />
-            Today's Performance
+            <Activity className="w-4 h-4 text-accent" />
+            Performance Summary
           </h3>
           
           <div className="space-y-3">
@@ -121,11 +149,14 @@ const Index = () => {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Floating leaderboard - positioned in top right */}
-      <div className="absolute top-24 right-4 w-72 max-w-[calc(100vw-2rem)]">
-        <LeaderboardTab />
+        {/* Start New Scan Button */}
+        <div className="flex justify-center">
+          <Button variant="tier" size="lg" className="w-full h-14 text-lg">
+            <Zap className="w-6 h-6 mr-2" />
+            Start New Scan
+          </Button>
+        </div>
       </div>
     </div>
   );

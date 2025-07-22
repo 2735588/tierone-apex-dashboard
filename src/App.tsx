@@ -5,9 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BottomNavigation } from "@/components/BottomNavigation";
 import Index from "./pages/Index";
-import Badges from "./pages/Badges";
+import ProgressBadges from "./pages/ProgressBadges";
+import Leaderboard from "./pages/Leaderboard";
 import Achievements from "./pages/Achievements";
-import Progress from "./pages/Progress";
+import AIScan from "./pages/AIScan";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
@@ -22,9 +23,10 @@ const App = () => (
         <div className="min-h-screen bg-background pb-20">
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/badges" element={<Badges />} />
+            <Route path="/progress-badges" element={<ProgressBadges />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/achievements" element={<Achievements />} />
-            <Route path="/progress" element={<Progress />} />
+            <Route path="/ai-scan" element={<AIScan />} />
             <Route path="/profile" element={<Profile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

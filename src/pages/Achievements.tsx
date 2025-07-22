@@ -1,7 +1,10 @@
-import { Play, Calendar, Weight, Trophy, Plus, Video } from "lucide-react";
+import { Play, Calendar, Weight, Trophy, Plus, Video, Medal, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const Achievements = () => {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
   const achievements = [
     {
       id: 1,
@@ -11,6 +14,8 @@ const Achievements = () => {
       date: "2024-01-15",
       videoUrl: "#",
       isPersonalRecord: true,
+      category: "Push",
+      medal: "gold",
     },
     {
       id: 2,
@@ -20,6 +25,8 @@ const Achievements = () => {
       date: "2024-01-12",
       videoUrl: "#",
       isPersonalRecord: true,
+      category: "Pull",
+      medal: "gold",
     },
     {
       id: 3,
@@ -29,6 +36,8 @@ const Achievements = () => {
       date: "2024-01-10",
       videoUrl: "#",
       isPersonalRecord: true,
+      category: "Legs",
+      medal: "gold",
     },
     {
       id: 4,
@@ -38,8 +47,26 @@ const Achievements = () => {
       date: "2024-01-08",
       videoUrl: "#",
       isPersonalRecord: false,
+      category: "Calisthenics",
+      medal: "silver",
     },
   ];
+
+  const categories = ["All", "Push", "Pull", "Legs", "Calisthenics"];
+  const filteredAchievements = selectedCategory === "All" 
+    ? achievements 
+    : achievements.filter(achievement => achievement.category === selectedCategory);
+
+  const getMedalIcon = (medal: string) => {
+    switch (medal) {
+      case "gold":
+        return <Medal className="w-4 h-4 text-tier-gold" />;
+      case "silver":
+        return <Medal className="w-4 h-4 text-gray-300" />;
+      default:
+        return <Medal className="w-4 h-4 text-orange-400" />;
+    }
+  };
 
   const totalWeight = achievements.reduce((sum, achievement) => sum + achievement.weight, 0);
   const personalRecords = achievements.filter(a => a.isPersonalRecord).length;
@@ -73,6 +100,23 @@ const Achievements = () => {
         </div>
       </div>
 
+      {/* Category Filter */}
+      <div className="flex gap-2 mb-6 overflow-x-auto">
+        {categories.map((category) => (
+          <button
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+            className={`px-3 py-1 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+              selectedCategory === category
+                ? "bg-accent text-accent-foreground"
+                : "bg-muted text-muted-foreground hover:bg-muted/80"
+            }`}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
       {/* Record New Achievement Button */}
       <Button variant="tier" className="w-full mb-6 h-12">
         <Plus className="w-5 h-5 mr-2" />
@@ -83,7 +127,7 @@ const Achievements = () => {
       <div className="space-y-4">
         <h3 className="font-semibold text-foreground">Your Top Lifts</h3>
         
-        {achievements.map((achievement) => (
+        {filteredAchievements.map((achievement) => (
           <div key={achievement.id} className="tier-card rounded-xl p-4">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
@@ -94,10 +138,12 @@ const Achievements = () => {
                 <div>
                   <h4 className="font-bold text-foreground flex items-center gap-2">
                     {achievement.exercise}
+                    {getMedalIcon(achievement.medal)}
                     {achievement.isPersonalRecord && (
                       <Trophy className="w-4 h-4 text-tier-gold" />
                     )}
                   </h4>
+                  <div className="text-xs text-accent">{achievement.category}</div>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Calendar className="w-4 h-4" />
                     {new Date(achievement.date).toLocaleDateString()}
@@ -115,11 +161,24 @@ const Achievements = () => {
               </div>
             </div>
             
-            {/* Video thumbnail and play button */}
-            <div className="relative bg-muted rounded-lg h-24 flex items-center justify-center">
+            {/* Video thumbnail and play button with 3-second preview */}
+            <div className="relative bg-muted rounded-lg h-24 flex items-center justify-center group">
               <Button variant="ghost" size="sm" className="hover:bg-accent/20">
                 <Play className="w-6 h-6 text-accent mr-2" />
                 Watch Video
+              </Button>
+              <div className="absolute top-2 right-2">
+                <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Users className="w-4 h-4 text-accent" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Challenge Friend Option */}
+            <div className="mt-3 flex items-center justify-between">
+              <Button variant="ghost" size="sm" className="text-accent">
+                <Users className="w-4 h-4 mr-2" />
+                Challenge Friend
               </Button>
             </div>
             

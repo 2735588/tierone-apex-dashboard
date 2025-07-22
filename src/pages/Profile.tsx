@@ -1,10 +1,11 @@
-import { User, Edit, Settings, Trophy, Target, Calendar, Share, Award, Video } from "lucide-react";
+import { User, Edit, Settings, Trophy, Target, Calendar, Share, Award, Video, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const Profile = () => {
-  const [bio, setBio] = useState("Dedicated athlete pushing limits every day. Always striving for greatness and inspiring others to reach their peak performance.");
+  const [bio, setBio] = useState("Dedicated athlete pushing limits every day. 💪 Always striving for greatness and inspiring others to reach their peak performance. 🔥");
   const [isEditingBio, setIsEditingBio] = useState(false);
+  const streakDays = 47;
 
   const earnedBadges = [
     { name: "Iron Beast", tier: "Silver", icon: "🛡️" },
@@ -39,6 +40,10 @@ const Profile = () => {
               <Trophy className="w-4 h-4 text-tier-gold" />
               <span className="text-sm text-tier-gold">Apex Tier</span>
             </div>
+            <div className="flex items-center gap-2 mt-1">
+              <Flame className="w-4 h-4 text-orange-400" />
+              <span className="text-sm text-orange-400">{streakDays} day streak</span>
+            </div>
           </div>
           
           <Button variant="ghost" size="sm">
@@ -53,9 +58,14 @@ const Profile = () => {
               <textarea
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
+                maxLength={150}
+                placeholder="Add emojis to make your bio shine! ✨"
                 className="w-full p-2 bg-muted rounded-lg text-sm text-foreground resize-none"
                 rows={3}
               />
+              <div className="text-xs text-muted-foreground text-right">
+                {bio.length}/150 characters
+              </div>
               <div className="flex gap-2">
                 <Button size="sm" onClick={() => setIsEditingBio(false)}>
                   Save
@@ -109,11 +119,11 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Top Achievements */}
+      {/* Pinned Records */}
       <div className="tier-card rounded-xl p-4 mb-6">
         <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
           <Video className="w-4 h-4 text-accent" />
-          Top Achievement Clips
+          Pinned Records (3/3)
         </h3>
         
         <div className="space-y-3">
@@ -139,8 +149,8 @@ const Profile = () => {
 
       {/* Action Buttons */}
       <div className="space-y-3">
-        <Button variant="tier" className="w-full">
-          <Share className="w-4 h-4 mr-2" />
+        <Button variant="tier" className="w-full h-12 text-lg">
+          <Share className="w-5 h-5 mr-2" />
           Share Profile
         </Button>
         
