@@ -152,7 +152,7 @@ All colors MUST be HSL.
   }
 
   .energy-pulse {
-    animation: energy-pulse 1.5s ease-in-out infinite;
+    animation: energy-pulse 3s ease-in-out infinite;
   }
 
   @keyframes pulse-glow {
