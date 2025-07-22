@@ -1,381 +1,232 @@
-import { Trophy, Star, Flame, Target, Award, Crown, Zap, Shield, TrendingUp, Calendar, Activity } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Flame, Trophy, Target, Clock, Diamond, Crown, Star, Zap, TrendingUp, Award } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 const ProgressBadges = () => {
-  const [activeTab, setActiveTab] = useState<'progress' | 'badges'>('progress');
+  const [currentStreak, setCurrentStreak] = useState(36);
 
-  const muscleProgressData = [
-    { 
-      muscle: "Chest", 
-      current: 87, 
-      previous: 82, 
-      change: "+5", 
-      trend: "up",
-      weeklyData: [78, 80, 82, 84, 85, 87, 87] 
-    },
-    { 
-      muscle: "Shoulders", 
-      current: 92, 
-      previous: 89, 
-      change: "+3", 
-      trend: "up",
-      weeklyData: [85, 87, 89, 90, 91, 92, 92] 
-    },
-    { 
-      muscle: "Arms", 
-      current: 78, 
-      previous: 70, 
-      change: "+8", 
-      trend: "up",
-      weeklyData: [65, 67, 70, 73, 75, 77, 78] 
-    },
-    { 
-      muscle: "Core", 
-      current: 65, 
-      previous: 63, 
-      change: "+2", 
-      trend: "up",
-      weeklyData: [58, 60, 61, 63, 64, 65, 65] 
-    },
-    { 
-      muscle: "Back", 
-      current: 84, 
-      previous: 78, 
-      change: "+6", 
-      trend: "up",
-      weeklyData: [72, 74, 76, 78, 80, 82, 84] 
-    },
-    { 
-      muscle: "Legs", 
-      current: 71, 
-      previous: 67, 
-      change: "+4", 
-      trend: "up",
-      weeklyData: [63, 65, 67, 68, 69, 70, 71] 
-    },
+  const muscleGroups = [
+    { name: "Chest", score: 87, tier: "Gold", progress: 85 },
+    { name: "Shoulders", score: 92, tier: "Gold", progress: 95 },
+    { name: "Arms", score: 78, tier: "Silver", progress: 60 },
+    { name: "Back", score: 84, tier: "Gold", progress: 80 },
+    { name: "Core", score: 65, tier: "Silver", progress: 30 },
+    { name: "Legs", score: 71, tier: "Silver", progress: 45 },
   ];
 
   const badges = [
     {
       id: 1,
-      name: "Consistency King",
-      tier: "Diamond",
-      category: "Consistency",
-      description: "Complete 30 consecutive training days",
-      progress: 27,
-      total: 30,
-      earned: false,
-      icon: Flame,
-      color: "text-blue-400",
-      bgColor: "from-blue-400/20 to-blue-600/20",
+      name: "Consistency Master",
+      description: "Complete 30 consecutive days",
+      tier: "Gold",
+      unlocked: true,
+      progress: 100,
+      icon: Clock,
+      category: "Streak"
     },
     {
       id: 2,
-      name: "Strength Demon",
+      name: "Strength Warrior",
+      description: "Achieve 85+ in any muscle group",
       tier: "Gold",
-      category: "Performance",
-      description: "Deadlift over 200kg",
-      progress: 180,
-      total: 200,
-      earned: false,
-      icon: Crown,
-      color: "text-tier-gold",
-      bgColor: "from-tier-gold/20 to-yellow-600/20",
+      unlocked: true,
+      progress: 100,
+      icon: Trophy,
+      category: "Performance"
     },
     {
       id: 3,
-      name: "Iron Beast",
-      tier: "Silver",
-      category: "Scan Milestones",
-      description: "Complete 25 scans",
-      progress: 25,
-      total: 25,
-      earned: true,
-      icon: Shield,
-      color: "text-gray-300",
-      bgColor: "from-gray-300/20 to-gray-500/20",
+      name: "Diamond Elite",
+      description: "Reach 95+ score in any muscle",
+      tier: "Diamond",
+      unlocked: false,
+      progress: 97,
+      icon: Diamond,
+      category: "Performance"
     },
     {
       id: 4,
-      name: "Progress Master",
-      tier: "Gold",
-      category: "Progress",
-      description: "Improve any muscle score by +20%",
-      progress: 15,
-      total: 20,
-      earned: false,
-      icon: TrendingUp,
-      color: "text-tier-gold",
-      bgColor: "from-tier-gold/20 to-yellow-600/20",
+      name: "Scan Specialist",
+      description: "Complete 25 scans",
+      tier: "Silver",
+      unlocked: true,
+      progress: 100,
+      icon: Zap,
+      category: "Activity"
     },
     {
       id: 5,
-      name: "Elite Performer",
-      tier: "Diamond",
-      category: "Leaderboard Status",
+      name: "Leaderboard Legend",
       description: "Reach Top 500 Global",
-      progress: 1847,
-      total: 500,
-      earned: false,
-      icon: Star,
-      color: "text-blue-400",
-      bgColor: "from-blue-400/20 to-blue-600/20",
-    },
+      tier: "Gold",
+      unlocked: false,
+      progress: 65,
+      icon: Crown,
+      category: "Ranking"
+    }
   ];
 
-  const getTierBadge = (tier: string, earned: boolean) => {
-    const baseClasses = "px-2 py-1 rounded-full text-xs font-bold";
-    if (!earned) return `${baseClasses} bg-muted text-muted-foreground`;
-    
+  const getBadgeColor = (tier: string, unlocked: boolean) => {
+    if (!unlocked) return "text-muted-foreground";
     switch (tier) {
-      case "Diamond":
-        return `${baseClasses} bg-blue-400/20 text-blue-400 border border-blue-400/30`;
-      case "Gold":
-        return `${baseClasses} bg-tier-gold/20 text-tier-gold border border-tier-gold/30`;
-      case "Silver":
-        return `${baseClasses} bg-gray-300/20 text-gray-300 border border-gray-300/30`;
-      case "Bronze":
-        return `${baseClasses} bg-orange-400/20 text-orange-400 border border-orange-400/30`;
-      default:
-        return `${baseClasses} bg-muted text-muted-foreground`;
+      case "Diamond": return "text-cyan-400";
+      case "Gold": return "text-yellow-400";
+      case "Silver": return "text-gray-300";
+      default: return "text-orange-400";
     }
   };
 
-  const getProgressPercentage = (progress: number, total: number) => {
-    return Math.min((progress / total) * 100, 100);
+  const getStreakFlameColor = (streak: number) => {
+    if (streak >= 100) return "text-cyan-400 tier-glow";
+    if (streak >= 50) return "text-red-400";
+    if (streak >= 30) return "text-orange-400";
+    if (streak >= 7) return "text-yellow-400";
+    return "text-blue-400";
   };
 
-  const badgeCategories = ["All", "Consistency", "Performance", "Progress", "Scan Milestones", "Leaderboard Status"];
-  const [selectedCategory, setSelectedCategory] = useState("All");
-
-  const filteredBadges = selectedCategory === "All" 
-    ? badges 
-    : badges.filter(badge => badge.category === selectedCategory);
+  const getTierBadge = (score: number) => {
+    if (score >= 95) return { tier: "Diamond", color: "text-cyan-400", bgColor: "bg-cyan-400/10" };
+    if (score >= 85) return { tier: "Gold", color: "text-yellow-400", bgColor: "bg-yellow-400/10" };
+    if (score >= 70) return { tier: "Silver", color: "text-gray-300", bgColor: "bg-gray-300/10" };
+    return { tier: "Bronze", color: "text-orange-400", bgColor: "bg-orange-400/10" };
+  };
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-background text-foreground p-6 pb-24">
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-foreground mb-2">Progress & Badges</h1>
-        <p className="text-muted-foreground">Track your journey and unlock achievements</p>
+        <p className="text-muted-foreground">Track your journey to elite performance</p>
       </div>
 
-      {/* Tab Toggle */}
-      <div className="flex gap-2 mb-6">
-        <Button
-          variant={activeTab === 'progress' ? 'tier' : 'ghost'}
-          className="flex-1"
-          onClick={() => setActiveTab('progress')}
-        >
-          <TrendingUp className="w-4 h-4 mr-2" />
-          Progress
-        </Button>
-        <Button
-          variant={activeTab === 'badges' ? 'tier' : 'ghost'}
-          className="flex-1"
-          onClick={() => setActiveTab('badges')}
-        >
-          <Award className="w-4 h-4 mr-2" />
-          Badges
-        </Button>
-      </div>
+      <Tabs defaultValue="streaks" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsTrigger value="streaks" className="flex items-center gap-2">
+            <Flame className="w-4 h-4" />
+            Streaks & Consistency
+          </TabsTrigger>
+          <TabsTrigger value="badges" className="flex items-center gap-2">
+            <Trophy className="w-4 h-4" />
+            TierOne Badges
+          </TabsTrigger>
+        </TabsList>
 
-      {activeTab === 'progress' ? (
-        <>
-          {/* Time Period Selector */}
-          <div className="flex gap-2 mb-6">
-            {["7D", "1M", "3M", "6M", "1Y"].map((period) => (
-              <button
-                key={period}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  period === "1M"
-                    ? "bg-accent text-accent-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
-                }`}
-              >
-                {period}
-              </button>
-            ))}
-          </div>
+        <TabsContent value="streaks" className="space-y-6">
+          {/* Current Streak */}
+          <Card className="tier-card">
+            <CardHeader className="text-center">
+              <div className="flex justify-center mb-4">
+                <Flame className={`w-16 h-16 ${getStreakFlameColor(currentStreak)} energy-pulse`} />
+              </div>
+              <CardTitle className="text-3xl font-bold text-accent">
+                {currentStreak} Days
+              </CardTitle>
+              <CardDescription className="text-lg">
+                Current Streak {currentStreak >= 100 && "🔥 LEGENDARY"}
+              </CardDescription>
+            </CardHeader>
+          </Card>
 
-          {/* Overall Progress Stats */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="tier-card rounded-xl p-4 text-center">
-              <TrendingUp className="w-6 h-6 text-tier-gold mx-auto mb-2" />
-              <div className="text-lg font-bold text-foreground">+4.7</div>
-              <div className="text-xs text-muted-foreground">Avg Score Increase</div>
-            </div>
-            
-            <div className="tier-card rounded-xl p-4 text-center">
-              <Target className="w-6 h-6 text-accent mx-auto mb-2" />
-              <div className="text-lg font-bold text-foreground">6/6</div>
-              <div className="text-xs text-muted-foreground">Groups Improving</div>
-            </div>
-          </div>
-
-          {/* Body Map Interactive - Premium Feature */}
-          <div className="tier-card rounded-xl p-4 mb-6 relative">
-            <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-              <Activity className="w-4 h-4 text-accent" />
-              Interactive Body Map
+          {/* Muscle Group Tiers */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <Target className="w-5 h-5 text-accent" />
+              Muscle Group Tiers
             </h3>
-            
-            <div className="h-48 bg-muted/50 rounded-lg flex items-center justify-center relative overflow-hidden">
-              <div className="text-center">
-                <Crown className="w-12 h-12 text-tier-gold mx-auto mb-2" />
-                <p className="text-foreground font-medium">Premium Feature</p>
-                <p className="text-xs text-muted-foreground mt-1">Tap muscle groups for detailed analytics</p>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-tier-gold/10 to-accent/10 opacity-50" />
+            <div className="grid grid-cols-2 gap-3">
+              {muscleGroups.map((muscle) => {
+                const tierInfo = getTierBadge(muscle.score);
+                return (
+                  <Card key={muscle.name} className={`tier-card ${muscle.score >= 95 ? 'tier-glow' : ''}`}>
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium text-foreground">{muscle.name}</span>
+                        <Badge className={`${tierInfo.bgColor} ${tierInfo.color} border-0`}>
+                          {tierInfo.tier}
+                        </Badge>
+                      </div>
+                      <div className="text-2xl font-bold text-accent mb-1">{muscle.score}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {muscle.progress}% to next tier
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
+        </TabsContent>
 
-          {/* Muscle Group Progress */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Individual Muscle Groups</h3>
-            
-            {muscleProgressData.map((item, index) => (
-              <div key={index} className="tier-card rounded-xl p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <h4 className="font-semibold text-foreground">{item.muscle}</h4>
-                    <div className="text-sm text-tier-gold">{item.change} this month</div>
-                  </div>
-                  
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-accent">{item.current}</div>
-                    <div className="text-xs text-muted-foreground">Current Score</div>
-                  </div>
-                </div>
-                
-                {/* Mini trend line */}
-                <div className="flex items-end gap-1 mb-2 h-8">
-                  {item.weeklyData.map((value, i) => (
-                    <div
-                      key={i}
-                      className="bg-accent/60 rounded-sm flex-1"
-                      style={{ height: `${(value / 100) * 100}%` }}
-                    />
-                  ))}
-                </div>
-                
-                {/* Progress bar */}
-                <div className="w-full bg-muted rounded-full h-2">
-                  <div 
-                    className="performance-bar h-full rounded-full" 
-                    style={{ width: `${item.current}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
-      ) : (
-        <>
-          {/* Badge Category Filter */}
-          <div className="flex gap-2 mb-6 overflow-x-auto">
-            {badgeCategories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-3 py-1 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                  selectedCategory === category
-                    ? "bg-accent text-accent-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-
-          {/* Stats Overview */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="tier-card rounded-xl p-4 text-center">
-              <Award className="w-6 h-6 text-tier-gold mx-auto mb-2" />
-              <div className="text-lg font-bold text-foreground">
-                {badges.filter(b => b.earned).length}
-              </div>
-              <div className="text-xs text-muted-foreground">Badges Earned</div>
-            </div>
-            
-            <div className="tier-card rounded-xl p-4 text-center">
-              <Target className="w-6 h-6 text-accent mx-auto mb-2" />
-              <div className="text-lg font-bold text-foreground">
-                {Math.round((badges.filter(b => b.earned).length / badges.length) * 100)}%
-              </div>
-              <div className="text-xs text-muted-foreground">Completion</div>
-            </div>
-          </div>
-
-          {/* Badge Grid */}
-          <div className="space-y-4">
-            {filteredBadges.map((badge) => {
+        <TabsContent value="badges" className="space-y-6">
+          <div className="grid gap-4">
+            {badges.map((badge) => {
               const IconComponent = badge.icon;
-              const progressPercent = getProgressPercentage(badge.progress, badge.total);
-              
               return (
-                <div 
-                  key={badge.id}
-                  className={`
-                    tier-card rounded-xl p-4 transition-all duration-300 hover:scale-[1.02]
-                    ${badge.earned ? 'tier-glow' : 'opacity-75'}
-                  `}
+                <Card 
+                  key={badge.id} 
+                  className={`tier-card transition-all duration-200 ${
+                    badge.unlocked && badge.tier === "Diamond" ? 'tier-glow' : ''
+                  } ${badge.unlocked ? 'hover:scale-105' : 'opacity-75'}`}
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className={`
-                        w-12 h-12 rounded-xl flex items-center justify-center
-                        bg-gradient-to-br ${badge.bgColor}
-                        ${badge.earned ? 'tier-glow' : ''}
-                      `}>
-                        <IconComponent className={`w-6 h-6 ${badge.color}`} />
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-4">
+                      <div className={`w-12 h-12 rounded-full bg-background border-2 flex items-center justify-center ${
+                        badge.unlocked ? 'border-accent' : 'border-muted'
+                      }`}>
+                        <IconComponent 
+                          className={`w-6 h-6 ${getBadgeColor(badge.tier, badge.unlocked)}`} 
+                        />
                       </div>
                       
-                      <div>
-                        <h3 className="font-bold text-foreground">{badge.name}</h3>
-                        <p className="text-sm text-muted-foreground">{badge.description}</p>
-                        <div className="text-xs text-accent mt-1">{badge.category}</div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-semibold text-foreground">{badge.name}</h4>
+                          <Badge 
+                            className={`${badge.unlocked ? getBadgeColor(badge.tier, true) : 'text-muted-foreground'} bg-transparent border-0`}
+                          >
+                            {badge.tier}
+                          </Badge>
+                          {badge.unlocked && badge.tier === "Diamond" && (
+                            <Diamond className="w-4 h-4 text-cyan-400 tier-glow" />
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-2">{badge.description}</p>
+                        
+                        {!badge.unlocked && (
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div 
+                              className="bg-accent h-2 rounded-full transition-all duration-300"
+                              style={{ width: `${badge.progress}%` }}
+                            />
+                          </div>
+                        )}
+                        
+                        {badge.unlocked && (
+                          <div className="flex items-center gap-1 text-green-400">
+                            <Award className="w-4 h-4" />
+                            <span className="text-xs font-medium">UNLOCKED</span>
+                          </div>
+                        )}
                       </div>
                     </div>
-                    
-                    <div className={getTierBadge(badge.tier, badge.earned)}>
-                      {badge.tier}
-                    </div>
-                  </div>
-                  
-                  {/* Progress Bar */}
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Progress</span>
-                      <span className={badge.earned ? "text-accent" : "text-foreground"}>
-                        {badge.earned ? "COMPLETED" : `${badge.progress}/${badge.total}`}
-                      </span>
-                    </div>
-                    
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <div 
-                        className={`
-                          h-full rounded-full transition-all duration-500
-                          ${badge.earned ? 'performance-bar' : 'bg-accent/60'}
-                        `}
-                        style={{ width: `${progressPercent}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               );
             })}
           </div>
-        </>
-      )}
 
-      {/* Last Updated */}
-      <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-        <Calendar className="w-4 h-4" />
-        Last updated: Today, 2:30 PM
-      </div>
+          <div className="text-center pt-4">
+            <Button variant="outline" className="flex items-center gap-2">
+              <Diamond className="w-4 h-4" />
+              Unlock Premium Badges
+            </Button>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

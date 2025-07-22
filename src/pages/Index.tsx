@@ -7,12 +7,12 @@ import bodyImage from "@/assets/body-silhouette.png";
 
 const Index = () => {
   const muscleGroups = [
-    { name: "Chest", score: 87, position: { top: "20%", left: "40%" }, isActive: true, change: "+3" },
-    { name: "Shoulders", score: 92, position: { top: "12%", left: "25%" }, change: "+5" },
-    { name: "Arms", score: 78, position: { top: "28%", right: "15%" }, change: "-1" },
-    { name: "Back", score: 84, position: { top: "22%", right: "25%" }, change: "+2" },
-    { name: "Core", score: 65, position: { top: "42%", left: "38%" }, change: "+7" },
-    { name: "Legs", score: 71, position: { bottom: "15%", left: "35%" }, change: "+4" },
+    { name: "Chest", score: 87, position: { top: "18%", left: "38%" }, isActive: true },
+    { name: "Shoulders", score: 92, position: { top: "10%", left: "28%" } },
+    { name: "Arms", score: 78, position: { top: "26%", right: "18%" } },
+    { name: "Back", score: 84, position: { top: "20%", right: "28%" } },
+    { name: "Core", score: 65, position: { top: "40%", left: "36%" } },
+    { name: "Legs", score: 71, position: { bottom: "18%", left: "33%" } },
   ];
 
   const getBadgeTier = (score: number) => {
@@ -61,25 +61,25 @@ const Index = () => {
       {/* Main content area */}
       <div className="px-6 flex-1">
         {/* Global & National Rank Orbs */}
-        <div className="flex justify-center gap-6 mb-6">
+        <div className="flex justify-center gap-8 mb-6">
           <div className="relative flex flex-col items-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-accent to-accent/50 rounded-full flex items-center justify-center tier-glow energy-pulse">
+            <div className="w-24 h-24 bg-gradient-to-br from-accent via-accent to-accent/70 rounded-full flex items-center justify-center tier-glow energy-pulse shadow-lg">
               <div className="text-center">
-                <div className="text-lg font-bold text-white">#12</div>
+                <div className="text-xs text-white/80 font-medium">GLOBAL</div>
+                <div className="text-lg font-bold text-white">#1,847</div>
               </div>
             </div>
-            <div className="text-xs text-muted-foreground mt-1">National</div>
-            <div className="text-xs text-accent">Top 3%</div>
+            <div className="text-xs text-accent font-medium mt-2">Top 4% Worldwide</div>
           </div>
           
           <div className="relative flex flex-col items-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/50 rounded-full flex items-center justify-center tier-glow">
+            <div className="w-20 h-20 bg-gradient-to-br from-primary via-primary to-primary/70 rounded-full flex items-center justify-center tier-glow shadow-md">
               <div className="text-center">
-                <div className="text-sm font-bold text-white">#1,847</div>
+                <div className="text-xs text-white/80 font-medium">NZ</div>
+                <div className="text-base font-bold text-white">#12</div>
               </div>
             </div>
-            <div className="text-xs text-muted-foreground mt-1">Global</div>
-            <div className="text-xs text-primary">Top 8%</div>
+            <div className="text-xs text-primary font-medium mt-2">Top 8% NZ</div>
           </div>
         </div>
 
@@ -105,89 +105,75 @@ const Index = () => {
             />
             
             {/* All 6 muscle group score chips positioned around the body */}
-            {muscleGroups.map((group, index) => {
-              const badge = getBadgeTier(group.score);
-              return (
-                <div
-                  key={index}
-                  className={`absolute bg-background/90 backdrop-blur border border-border rounded-lg px-2 py-1 text-xs font-medium ${group.isActive ? 'tier-glow border-accent' : ''} hover:scale-105 transition-transform cursor-pointer`}
-                  style={group.position}
-                >
-                  <div className="flex items-center gap-1">
-                    <span className={badge.color}>{badge.icon}</span>
-                    <span className="text-foreground">{group.name}</span>
-                    <span className="text-accent font-bold">{group.score}</span>
-                    <span className={`text-xs ${group.change.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
-                      {group.change}
-                    </span>
-                  </div>
+            {muscleGroups.map((group, index) => (
+              <button
+                key={index}
+                className={`absolute bg-background/95 backdrop-blur border border-border rounded-xl px-3 py-2 text-xs font-medium ${group.isActive ? 'tier-glow border-accent' : ''} hover:scale-110 transition-all duration-200 cursor-pointer shadow-lg`}
+                style={group.position}
+                onClick={() => {/* Navigate to muscle detail */}}
+              >
+                <div className="flex flex-col items-center gap-1">
+                  <span className="text-foreground font-semibold">{group.name}</span>
+                  <span className="text-accent font-bold text-sm">{group.score}</span>
                 </div>
-              );
-            })}
+              </button>
+            ))}
           </div>
         </div>
 
         {/* Central Scan Button */}
-        <div className="flex justify-center mb-4">
-          <Button className="bg-gradient-primary hover:bg-gradient-primary/90 text-primary-foreground px-8 py-3 rounded-full font-bold tier-glow energy-pulse">
-            <Zap className="w-5 h-5 mr-2" />
-            SCAN NOW
+        <div className="flex justify-center mb-6">
+          <Button className="bg-gradient-primary hover:bg-gradient-primary/90 text-primary-foreground px-10 py-4 rounded-full font-bold tier-glow energy-pulse text-lg shadow-xl transform hover:scale-105 transition-all duration-200">
+            <Zap className="w-6 h-6 mr-3" />
+            START SCAN
           </Button>
         </div>
 
-        {/* Daily Metrics with Icons */}
+        {/* Performance Metrics */}
         <div className="tier-card rounded-xl p-4 mb-4">
-          <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-            <Activity className="w-4 h-4 text-accent" />
-            Daily Metrics
+          <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+            <Activity className="w-5 h-5 text-accent" />
+            Performance Metrics
           </h3>
           
-          <div className="space-y-3">
+          <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 bg-green-400 rounded-full energy-pulse"></div>
                 <span className="text-sm text-muted-foreground">Strength Gain</span>
               </div>
-              <span className="text-sm font-semibold text-green-400">+3.2%</span>
+              <span className="text-base font-bold text-green-400">+3.2%</span>
             </div>
             <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
                 <span className="text-sm text-muted-foreground">Muscle Activation</span>
               </div>
-              <span className="text-sm font-semibold text-yellow-400">89%</span>
+              <span className="text-base font-bold text-yellow-400">89%</span>
             </div>
             <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
+              <div className="flex items-center gap-3">
+                <div className="w-3 h-3 bg-primary rounded-full tier-glow"></div>
                 <span className="text-sm text-muted-foreground">Recovery Score</span>
               </div>
-              <span className="text-sm font-semibold text-primary">92%</span>
+              <span className="text-base font-bold text-primary">92%</span>
             </div>
           </div>
         </div>
 
-        {/* All 6 Muscle Groups Grid */}
-        <div className="grid grid-cols-3 gap-2 mb-4">
-          {muscleGroups.map((group) => {
-            const badge = getBadgeTier(group.score);
-            return (
-              <Button 
-                key={group.name}
-                variant="ghost" 
-                className="tier-card h-16 flex-col gap-1 text-center hover:tier-glow transition-all"
-              >
-                <div className="flex items-center gap-1">
-                  <span className={`text-xs ${badge.color}`}>{badge.icon}</span>
-                  <span className="text-lg font-bold text-accent">{group.score}</span>
-                </div>
-                <div className="text-xs text-muted-foreground">{group.name}</div>
-                <div className={`text-xs ${group.change.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
-                  {group.change}
-                </div>
-              </Button>
-            );
-          })}
+        {/* Quick Access Muscle Groups */}
+        <div className="grid grid-cols-3 gap-3 mb-4">
+          {muscleGroups.slice(0, 3).map((group) => (
+            <Button 
+              key={group.name}
+              variant="ghost" 
+              className="tier-card h-18 flex-col gap-2 text-center hover:tier-glow transition-all duration-200 hover:scale-105"
+              onClick={() => {/* Navigate to detailed view */}}
+            >
+              <span className="text-lg font-bold text-accent">{group.score}</span>
+              <div className="text-xs text-muted-foreground font-medium">{group.name}</div>
+            </Button>
+          ))}
         </div>
       </div>
     </div>

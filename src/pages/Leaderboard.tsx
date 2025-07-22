@@ -1,147 +1,200 @@
-import { Crown, Trophy, Flag, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Crown, Trophy, Medal, Users, Globe, Flag, Filter, Eye } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Leaderboard = () => {
-  const [activeTab, setActiveTab] = useState<'global' | 'national'>('global');
+  const [selectedFilter, setSelectedFilter] = useState("all");
+  const [muscleFilter, setMuscleFilter] = useState("overall");
+  const [verifiedOnly, setVerifiedOnly] = useState(false);
 
-  const globalLeaderboard = [
-    { rank: 1, name: "Marcus Steel", country: "🇺🇸", score: 3247, badge: "Diamond" },
-    { rank: 2, name: "Viktor Petrov", country: "🇷🇺", score: 3195, badge: "Diamond" },
-    { rank: 3, name: "Chen Wei", country: "🇨🇳", score: 3142, badge: "Diamond" },
-    { rank: 4, name: "Alex Thompson", country: "🇺🇸", score: 3089, badge: "Gold" },
-    { rank: 5, name: "Luis Rodriguez", country: "🇪🇸", score: 3034, badge: "Gold" },
-    { rank: 6, name: "James Wilson", country: "🇬🇧", score: 2998, badge: "Gold" },
-    { rank: 7, name: "Nikolai Volkov", country: "🇷🇺", score: 2956, badge: "Gold" },
-    { rank: 8, name: "Ahmed Hassan", country: "🇪🇬", score: 2923, badge: "Gold" },
-    { rank: 9, name: "David Kim", country: "🇰🇷", score: 2891, badge: "Gold" },
-    { rank: 10, name: "Rafael Silva", country: "🇧🇷", score: 2847, badge: "Gold" },
+  const globalLeaders = [
+    { rank: 1, name: "Alex_Beast", score: 967, country: "🇺🇸", verified: true, tier: "Diamond" },
+    { rank: 2, name: "Nordic_Thor", score: 954, country: "🇳🇴", verified: true, tier: "Diamond" },
+    { rank: 3, name: "Aussie_Tank", score: 942, country: "🇦🇺", verified: true, tier: "Diamond" },
+    { rank: 4, name: "UK_Warrior", score: 931, country: "🇬🇧", verified: true, tier: "Gold" },
+    { rank: 5, name: "Tokyo_Titan", score: 928, country: "🇯🇵", verified: false, tier: "Gold" },
+    { rank: 6, name: "Berlin_Beast", score: 919, country: "🇩🇪", verified: true, tier: "Gold" },
+    { rank: 7, name: "Brazil_Bull", score: 908, country: "🇧🇷", verified: true, tier: "Gold" },
+    { rank: 8, name: "Maple_Muscle", score: 895, country: "🇨🇦", verified: false, tier: "Gold" },
   ];
 
-  const nationalLeaderboard = [
-    { rank: 1, name: "Marcus Steel", state: "CA", score: 3247, badge: "Diamond" },
-    { rank: 2, name: "Alex Thompson", state: "TX", score: 3089, badge: "Gold" },
-    { rank: 3, name: "James Wilson", state: "NY", score: 2998, badge: "Gold" },
-    { rank: 4, name: "Michael Brown", state: "FL", score: 2876, badge: "Gold" },
-    { rank: 5, name: "You", state: "CA", score: 2847, badge: "Gold", isUser: true },
-    { rank: 6, name: "Ryan Davis", state: "WA", score: 2823, badge: "Silver" },
-    { rank: 7, name: "Kevin Miller", state: "CO", score: 2798, badge: "Silver" },
-    { rank: 8, name: "Tony Garcia", state: "AZ", score: 2745, badge: "Silver" },
-    { rank: 9, name: "Chris Lee", state: "OR", score: 2712, badge: "Silver" },
-    { rank: 10, name: "Matt Johnson", state: "NV", score: 2689, badge: "Silver" },
+  const nationalLeaders = [
+    { rank: 1, name: "Kiwi_King", score: 847, country: "🇳🇿", verified: true, tier: "Gold" },
+    { rank: 2, name: "Auckland_Alpha", score: 832, country: "🇳🇿", verified: true, tier: "Gold" },
+    { rank: 3, name: "Wellington_Wolf", score: 821, country: "🇳🇿", verified: false, tier: "Gold" },
+    { rank: 4, name: "Christchurch_Chief", score: 809, country: "🇳🇿", verified: true, tier: "Silver" },
+    { rank: 5, name: "Hamilton_Hero", score: 798, country: "🇳🇿", verified: true, tier: "Silver" },
   ];
 
-  const getBadgeColor = (badge: string) => {
-    switch (badge) {
-      case "Diamond": return "text-blue-400";
-      case "Gold": return "text-tier-gold";
+  const getTierColor = (tier: string) => {
+    switch (tier) {
+      case "Diamond": return "text-cyan-400";
+      case "Gold": return "text-yellow-400";
       case "Silver": return "text-gray-300";
       default: return "text-orange-400";
     }
   };
 
-  const getRankIcon = (rank: number) => {
-    if (rank === 1) return <Crown className="w-5 h-5 text-tier-gold" />;
-    if (rank <= 3) return <Trophy className="w-4 h-4 text-tier-gold" />;
-    return <span className="w-5 h-5 flex items-center justify-center text-sm font-bold text-muted-foreground">#{rank}</span>;
+  const getTopThreeGlow = (rank: number) => {
+    if (rank === 1) return "tier-glow border-yellow-400/50 shadow-yellow-400/20";
+    if (rank === 2) return "tier-glow border-gray-300/50 shadow-gray-300/20";
+    if (rank === 3) return "tier-glow border-orange-400/50 shadow-orange-400/20";
+    return "";
   };
 
-  const currentData = activeTab === 'global' ? globalLeaderboard : nationalLeaderboard;
+  const getFilteredLeaders = (leaders: any[]) => {
+    return leaders.filter(user => !verifiedOnly || user.verified);
+  };
 
-  return (
-    <div className="min-h-screen bg-background p-6">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground mb-2">Leaderboard</h1>
-        <p className="text-muted-foreground">Compete with the world's elite athletes</p>
-      </div>
-
-      {/* TierOne Crown Badge */}
-      <div className="tier-card rounded-xl p-4 mb-6 text-center tier-glow">
-        <Crown className="w-8 h-8 text-tier-gold mx-auto mb-2" />
-        <h3 className="font-bold text-foreground">TierOne Elite Rankings</h3>
-        <p className="text-sm text-muted-foreground">Top 10 physique athletes worldwide</p>
-      </div>
-
-      {/* Tab Toggle */}
-      <div className="flex gap-2 mb-6">
-        <Button
-          variant={activeTab === 'global' ? 'tier' : 'ghost'}
-          className="flex-1"
-          onClick={() => setActiveTab('global')}
-        >
-          <Flag className="w-4 h-4 mr-2" />
-          Global
-        </Button>
-        <Button
-          variant={activeTab === 'national' ? 'tier' : 'ghost'}
-          className="flex-1"
-          onClick={() => setActiveTab('national')}
-        >
-          <MapPin className="w-4 h-4 mr-2" />
-          National (US)
-        </Button>
-      </div>
-
-      {/* User Rank Display (National only) */}
-      {activeTab === 'national' && (
-        <div className="tier-card rounded-xl p-4 mb-6 text-center">
-          <div className="text-2xl font-bold text-accent">#12</div>
-          <div className="text-sm text-muted-foreground">Your National Rank</div>
-          <div className="text-xs text-tier-gold mt-1">Top 0.01% of athletes</div>
-        </div>
-      )}
-
-      {/* Leaderboard List */}
-      <div className="space-y-3">
-        {currentData.map((athlete) => (
-          <div
-            key={athlete.rank}
-            className={`
-              tier-card rounded-xl p-4 transition-all duration-200 hover:scale-[1.02]
-              ${athlete.isUser ? 'tier-glow border border-accent/30' : ''}
-            `}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center justify-center w-8">
-                  {getRankIcon(athlete.rank)}
-                </div>
-                
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h4 className={`font-bold ${athlete.isUser ? 'text-accent' : 'text-foreground'}`}>
-                      {athlete.name}
-                    </h4>
-                    {athlete.rank <= 10 && (
-                      <div className="w-2 h-2 bg-tier-gold rounded-full energy-pulse" />
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <span>{activeTab === 'global' ? athlete.country : `${(athlete as any).state}`}</span>
-                    <span className={`text-xs font-medium ${getBadgeColor(athlete.badge)}`}>
-                      {athlete.badge}
-                    </span>
-                  </div>
-                </div>
+  const LeaderboardCard = ({ user, isGlobal = false }: { user: any, isGlobal?: boolean }) => (
+    <Card className={`tier-card mb-3 transition-all duration-200 hover:scale-105 cursor-pointer ${getTopThreeGlow(user.rank)}`}>
+      <CardContent className="p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
+              user.rank <= 3 ? 'bg-gradient-primary text-primary-foreground tier-glow' : 'bg-muted text-muted-foreground'
+            }`}>
+              {user.rank <= 3 ? (
+                user.rank === 1 ? <Crown className="w-5 h-5" /> :
+                user.rank === 2 ? <Trophy className="w-5 h-5" /> :
+                <Medal className="w-5 h-5" />
+              ) : (
+                user.rank
+              )}
+            </div>
+            
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-foreground">{user.name}</span>
+                <span className="text-xl">{user.country}</span>
+                {user.verified && (
+                  <Badge variant="outline" className="text-xs bg-green-400/10 text-green-400 border-green-400/30">
+                    ✓ Verified
+                  </Badge>
+                )}
               </div>
-              
-              <div className="text-right">
-                <div className="text-xl font-bold text-accent">{athlete.score.toLocaleString()}</div>
-                <div className="text-xs text-muted-foreground">TierScore</div>
+              <div className={`text-sm font-medium ${getTierColor(user.tier)}`}>
+                {user.tier} Tier
               </div>
             </div>
           </div>
-        ))}
+          
+          <div className="text-right">
+            <div className="text-xl font-bold text-accent">{user.score}</div>
+            <div className="text-xs text-muted-foreground">TierScore</div>
+            <Button variant="ghost" size="sm" className="mt-1 text-xs h-6">
+              <Eye className="w-3 h-3 mr-1" />
+              View
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  return (
+    <div className="min-h-screen bg-background text-foreground p-6 pb-24">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <Crown className="w-8 h-8 text-accent tier-glow energy-pulse" />
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">Leaderboard</h1>
+          <p className="text-muted-foreground">Compete with the world's elite</p>
+        </div>
       </div>
 
-      {/* See How You Compare CTA */}
-      <div className="mt-6">
-        <Button variant="outline" className="w-full">
-          <Trophy className="w-4 h-4 mr-2" />
-          See How You Compare
+      {/* Filters */}
+      <div className="flex gap-3 mb-6">
+        <Select value={muscleFilter} onValueChange={setMuscleFilter}>
+          <SelectTrigger className="w-32">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="overall">Overall</SelectItem>
+            <SelectItem value="chest">Chest</SelectItem>
+            <SelectItem value="arms">Arms</SelectItem>
+            <SelectItem value="shoulders">Shoulders</SelectItem>
+            <SelectItem value="back">Back</SelectItem>
+            <SelectItem value="core">Core</SelectItem>
+            <SelectItem value="legs">Legs</SelectItem>
+          </SelectContent>
+        </Select>
+        
+        <Button 
+          variant={verifiedOnly ? "default" : "outline"} 
+          size="sm"
+          onClick={() => setVerifiedOnly(!verifiedOnly)}
+          className="flex items-center gap-2"
+        >
+          <Filter className="w-4 h-4" />
+          Verified Only
         </Button>
       </div>
+
+      <Tabs defaultValue="global" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsTrigger value="global" className="flex items-center gap-2">
+            <Globe className="w-4 h-4" />
+            Global
+          </TabsTrigger>
+          <TabsTrigger value="national" className="flex items-center gap-2">
+            <Flag className="w-4 h-4" />
+            National (NZ)
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="global">
+          {/* Your Position */}
+          <Card className="tier-card mb-6 border-accent/30 bg-accent/5">
+            <CardContent className="p-4">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-accent mb-1">#1,847</div>
+                <div className="text-sm text-muted-foreground">Your Global Rank</div>
+                <div className="text-accent font-medium">Top 4% Worldwide</div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Global Leaders */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-yellow-400 tier-glow" />
+              Top Global Athletes
+            </h3>
+            {getFilteredLeaders(globalLeaders).map((user) => (
+              <LeaderboardCard key={user.rank} user={user} isGlobal={true} />
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="national">
+          {/* Your National Position */}
+          <Card className="tier-card mb-6 border-primary/30 bg-primary/5">
+            <CardContent className="p-4">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-primary mb-1">#12</div>
+                <div className="text-sm text-muted-foreground">Your National Rank (NZ)</div>
+                <div className="text-primary font-medium">Top 8% New Zealand</div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* National Leaders */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <Crown className="w-5 h-5 text-primary tier-glow" />
+              Top New Zealand Athletes
+            </h3>
+            {getFilteredLeaders(nationalLeaders).map((user) => (
+              <LeaderboardCard key={user.rank} user={user} />
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
