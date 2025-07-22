@@ -15,7 +15,6 @@ const Achievements = () => {
       unit: "lbs",
       date: "2024-01-15",
       category: "Push",
-      medal: "Gold",
       verified: true,
       videoThumbnail: "/api/placeholder/200/150",
       isPinned: true
@@ -27,7 +26,6 @@ const Achievements = () => {
       unit: "lbs", 
       date: "2024-01-10",
       category: "Pull",
-      medal: "Diamond",
       verified: true,
       videoThumbnail: "/api/placeholder/200/150",
       isPinned: true
@@ -39,7 +37,6 @@ const Achievements = () => {
       unit: "lbs",
       date: "2024-01-08",
       category: "Legs",
-      medal: "Gold",
       verified: true,
       videoThumbnail: "/api/placeholder/200/150",
       isPinned: true
@@ -51,7 +48,6 @@ const Achievements = () => {
       unit: "reps",
       date: "2024-01-05",
       category: "Calisthenics",
-      medal: "Silver",
       verified: false,
       videoThumbnail: "/api/placeholder/200/150",
       isPinned: false
@@ -63,7 +59,6 @@ const Achievements = () => {
       unit: "lbs",
       date: "2024-01-03",
       category: "Push",
-      medal: "Silver",
       verified: true,
       videoThumbnail: "/api/placeholder/200/150",
       isPinned: false
@@ -74,23 +69,6 @@ const Achievements = () => {
     { name: "all", label: "All Lifts", icon: Dumbbell }
   ];
 
-  const getMedalColor = (medal: string) => {
-    switch (medal) {
-      case "Diamond": return "text-cyan-400";
-      case "Gold": return "text-yellow-400";
-      case "Silver": return "text-gray-300";
-      default: return "text-orange-400";
-    }
-  };
-
-  const getMedalIcon = (medal: string) => {
-    switch (medal) {
-      case "Diamond": return "💎";
-      case "Gold": return "🏆";
-      case "Silver": return "🥈";
-      default: return "🥉";
-    }
-  };
 
   const filteredAchievements = selectedCategory === "all" 
     ? achievements 
@@ -172,11 +150,13 @@ const Achievements = () => {
 
                     {/* Achievement Details */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1 mb-1">
+                      <div className="flex items-center gap-2 mb-1">
                         <h3 className="font-semibold text-foreground text-sm truncate">{achievement.exercise}</h3>
-                        <span className={`text-sm ${getMedalColor(achievement.medal)} tier-glow`}>
-                          {getMedalIcon(achievement.medal)}
-                        </span>
+                        {achievement.verified && (
+                          <Badge className="text-xs bg-green-400/20 text-green-400 border-green-400/30">
+                            Verified
+                          </Badge>
+                        )}
                         <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
                       </div>
                       
@@ -242,11 +222,13 @@ const Achievements = () => {
 
                   {/* Achievement Details */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1 mb-1">
+                    <div className="flex items-center gap-2 mb-1">
                       <h3 className="font-semibold text-foreground text-sm truncate">{achievement.exercise}</h3>
-                      <span className={`text-sm ${getMedalColor(achievement.medal)}`}>
-                        {getMedalIcon(achievement.medal)}
-                      </span>
+                      {achievement.verified && (
+                        <Badge className="text-xs bg-green-400/20 text-green-400 border-green-400/30">
+                          Verified
+                        </Badge>
+                      )}
                       {achievement.isPinned && (
                         <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
                       )}
