@@ -71,11 +71,7 @@ const Achievements = () => {
   ];
 
   const categories = [
-    { name: "all", label: "All Lifts", icon: Dumbbell },
-    { name: "Push", label: "Push", icon: Award },
-    { name: "Pull", label: "Pull", icon: Trophy },
-    { name: "Legs", label: "Legs", icon: Medal },
-    { name: "Calisthenics", label: "Calisthenics", icon: Star }
+    { name: "all", label: "All Lifts", icon: Dumbbell }
   ];
 
   const getMedalColor = (medal: string) => {
@@ -140,36 +136,12 @@ const Achievements = () => {
       </div>
 
       {/* Achievement Stats */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
-        <Card className="tier-card text-center">
-          <CardContent className="p-3">
-            <Trophy className="w-5 h-5 text-yellow-400 mx-auto mb-1 tier-glow" />
-            <div className="text-base font-bold text-accent">12</div>
-            <div className="text-xs text-muted-foreground">Total PRs</div>
-          </CardContent>
-        </Card>
-        
-        <Card className="tier-card text-center">
-          <CardContent className="p-3">
-            <Medal className="w-5 h-5 text-cyan-400 mx-auto mb-1 tier-glow" />
-            <div className="text-base font-bold text-accent">3</div>
-            <div className="text-xs text-muted-foreground">Diamond</div>
-          </CardContent>
-        </Card>
-        
+      <div className="grid grid-cols-1 gap-3 mb-6">
         <Card className="tier-card text-center">
           <CardContent className="p-3">
             <Award className="w-5 h-5 text-green-400 mx-auto mb-1" />
             <div className="text-base font-bold text-accent">85%</div>
             <div className="text-xs text-muted-foreground">Verified</div>
-          </CardContent>
-        </Card>
-
-        <Card className="tier-card text-center">
-          <CardContent className="p-3">
-            <Users className="w-5 h-5 text-accent mx-auto mb-1" />
-            <div className="text-base font-bold text-accent">7</div>
-            <div className="text-xs text-muted-foreground">Challenges</div>
           </CardContent>
         </Card>
       </div>
