@@ -7,13 +7,20 @@ import bodyImage from "@/assets/body-silhouette.png";
 
 const Index = () => {
   const muscleGroups = [
-    { name: "Chest", score: 87, position: { top: "25%", left: "35%" }, isActive: true },
-    { name: "Shoulders", score: 92, position: { top: "18%", left: "15%" } },
-    { name: "Arms", score: 78, position: { top: "35%", right: "20%" } },
-    { name: "Core", score: 65, position: { top: "45%", left: "30%" } },
-    { name: "Back", score: 84, position: { top: "30%", right: "35%" } },
-    { name: "Legs", score: 71, position: { bottom: "25%", left: "40%" } },
+    { name: "Chest", score: 87, position: { top: "20%", left: "40%" }, isActive: true, change: "+3" },
+    { name: "Shoulders", score: 92, position: { top: "12%", left: "25%" }, change: "+5" },
+    { name: "Arms", score: 78, position: { top: "28%", right: "15%" }, change: "-1" },
+    { name: "Back", score: 84, position: { top: "22%", right: "25%" }, change: "+2" },
+    { name: "Core", score: 65, position: { top: "42%", left: "38%" }, change: "+7" },
+    { name: "Legs", score: 71, position: { bottom: "15%", left: "35%" }, change: "+4" },
   ];
+
+  const getBadgeTier = (score: number) => {
+    if (score >= 95) return { tier: "Diamond", color: "text-cyan-400", icon: "💎" };
+    if (score >= 85) return { tier: "Gold", color: "text-yellow-400", icon: "🥇" };
+    if (score >= 70) return { tier: "Silver", color: "text-gray-300", icon: "🥈" };
+    return { tier: "Bronze", color: "text-orange-400", icon: "🥉" };
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-hidden">
@@ -53,109 +60,134 @@ const Index = () => {
 
       {/* Main content area */}
       <div className="px-6 flex-1">
-        {/* TierScore - Main Focus (Large & Centered) */}
-        <div className="flex justify-center mb-8">
-          <TierBadge score={2847} rank="APEX TIER" percentile={2} />
-        </div>
-
-        {/* National & Global Rank Cards */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="tier-card rounded-xl p-4 text-center">
-            <div className="text-3xl font-bold text-tier-gold">#12</div>
-            <div className="text-sm text-muted-foreground">National Rank</div>
+        {/* Global & National Rank Orbs */}
+        <div className="flex justify-center gap-6 mb-6">
+          <div className="relative flex flex-col items-center">
+            <div className="w-20 h-20 bg-gradient-to-br from-accent to-accent/50 rounded-full flex items-center justify-center tier-glow energy-pulse">
+              <div className="text-center">
+                <div className="text-lg font-bold text-white">#12</div>
+              </div>
+            </div>
+            <div className="text-xs text-muted-foreground mt-1">National</div>
+            <div className="text-xs text-accent">Top 3%</div>
           </div>
           
-          <div className="tier-card rounded-xl p-4 text-center">
-            <div className="text-3xl font-bold text-accent">#1,847</div>
-            <div className="text-sm text-muted-foreground">Global Rank</div>
+          <div className="relative flex flex-col items-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/50 rounded-full flex items-center justify-center tier-glow">
+              <div className="text-center">
+                <div className="text-sm font-bold text-white">#1,847</div>
+              </div>
+            </div>
+            <div className="text-xs text-muted-foreground mt-1">Global</div>
+            <div className="text-xs text-primary">Top 8%</div>
           </div>
         </div>
 
-        {/* Scan Countdown & Status */}
-        <div className="tier-card rounded-xl p-4 mb-6 text-center">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Timer className="w-5 h-5 text-accent" />
-            <span className="text-lg font-bold text-foreground">Next scan available in 3 days</span>
+        {/* Scan Status & Streak */}
+        <div className="tier-card rounded-xl p-3 mb-4 text-center">
+          <div className="flex items-center justify-center gap-2 mb-1">
+            <Timer className="w-4 h-4 text-accent" />
+            <span className="text-sm font-bold text-foreground">Next scan in 3 days</span>
           </div>
-          <div className="text-sm text-muted-foreground">Free tier: 1 scan per week</div>
-          <div className="flex items-center justify-center gap-1 mt-2">
+          <div className="flex items-center justify-center gap-1">
             <Flame className="w-4 h-4 text-tier-gold" />
-            <span className="text-sm text-tier-gold font-medium">🔥 Streak Day 7</span>
+            <span className="text-xs text-tier-gold font-medium">🔥 7-day streak</span>
           </div>
         </div>
 
-        {/* Body Scan with Muscle Group Scores */}
-        <div className="relative flex flex-col items-center mb-8">
+        {/* Body Scan with All 6 Muscle Groups */}
+        <div className="relative flex flex-col items-center mb-4">
           <div className="relative">
             <img 
               src={bodyImage} 
               alt="Body tracking" 
-              className="w-56 h-72 object-contain opacity-90"
+              className="w-48 h-64 object-contain opacity-90"
             />
             
-            {/* Muscle group score chips positioned around the body */}
-            {muscleGroups.map((group, index) => (
-              <MuscleGroup
-                key={index}
-                name={group.name}
-                score={group.score}
-                position={group.position}
-                isActive={group.isActive}
-              />
-            ))}
+            {/* All 6 muscle group score chips positioned around the body */}
+            {muscleGroups.map((group, index) => {
+              const badge = getBadgeTier(group.score);
+              return (
+                <div
+                  key={index}
+                  className={`absolute bg-background/90 backdrop-blur border border-border rounded-lg px-2 py-1 text-xs font-medium ${group.isActive ? 'tier-glow border-accent' : ''} hover:scale-105 transition-transform cursor-pointer`}
+                  style={group.position}
+                >
+                  <div className="flex items-center gap-1">
+                    <span className={badge.color}>{badge.icon}</span>
+                    <span className="text-foreground">{group.name}</span>
+                    <span className="text-accent font-bold">{group.score}</span>
+                    <span className={`text-xs ${group.change.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
+                      {group.change}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Scan button centered at bottom */}
-        <div className="flex justify-center mb-6">
-          <ScanButton />
-        </div>
-
-        {/* Top 3 Muscle Scores - Quick Access */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <Button variant="ghost" className="tier-card h-16 flex-col gap-1 text-center">
-            <div className="text-lg font-bold text-accent">87</div>
-            <div className="text-xs text-muted-foreground">Chest</div>
-          </Button>
-          <Button variant="ghost" className="tier-card h-16 flex-col gap-1 text-center">
-            <div className="text-lg font-bold text-accent">78</div>
-            <div className="text-xs text-muted-foreground">Arms</div>
-          </Button>
-          <Button variant="ghost" className="tier-card h-16 flex-col gap-1 text-center">
-            <div className="text-lg font-bold text-accent">71</div>
-            <div className="text-xs text-muted-foreground">Legs</div>
+        {/* Central Scan Button */}
+        <div className="flex justify-center mb-4">
+          <Button className="bg-gradient-primary hover:bg-gradient-primary/90 text-primary-foreground px-8 py-3 rounded-full font-bold tier-glow energy-pulse">
+            <Zap className="w-5 h-5 mr-2" />
+            SCAN NOW
           </Button>
         </div>
 
-        {/* Performance Summary */}
-        <div className="tier-card rounded-xl p-4 mb-6">
+        {/* Daily Metrics with Icons */}
+        <div className="tier-card rounded-xl p-4 mb-4">
           <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
             <Activity className="w-4 h-4 text-accent" />
-            Performance Summary
+            Daily Metrics
           </h3>
           
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Strength Gain</span>
-              <span className="text-sm font-semibold text-tier-gold">+3.2%</span>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                <span className="text-sm text-muted-foreground">Strength Gain</span>
+              </div>
+              <span className="text-sm font-semibold text-green-400">+3.2%</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Muscle Activation</span>
-              <span className="text-sm font-semibold text-accent">89%</span>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                <span className="text-sm text-muted-foreground">Muscle Activation</span>
+              </div>
+              <span className="text-sm font-semibold text-yellow-400">89%</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Recovery Score</span>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <span className="text-sm text-muted-foreground">Recovery Score</span>
+              </div>
               <span className="text-sm font-semibold text-primary">92%</span>
             </div>
           </div>
         </div>
 
-        {/* Start New Scan Button */}
-        <div className="flex justify-center">
-          <Button variant="tier" size="lg" className="w-full h-14 text-lg">
-            <Zap className="w-6 h-6 mr-2" />
-            Start New Scan
-          </Button>
+        {/* All 6 Muscle Groups Grid */}
+        <div className="grid grid-cols-3 gap-2 mb-4">
+          {muscleGroups.map((group) => {
+            const badge = getBadgeTier(group.score);
+            return (
+              <Button 
+                key={group.name}
+                variant="ghost" 
+                className="tier-card h-16 flex-col gap-1 text-center hover:tier-glow transition-all"
+              >
+                <div className="flex items-center gap-1">
+                  <span className={`text-xs ${badge.color}`}>{badge.icon}</span>
+                  <span className="text-lg font-bold text-accent">{group.score}</span>
+                </div>
+                <div className="text-xs text-muted-foreground">{group.name}</div>
+                <div className={`text-xs ${group.change.startsWith('+') ? 'text-green-400' : 'text-red-400'}`}>
+                  {group.change}
+                </div>
+              </Button>
+            );
+          })}
         </div>
       </div>
     </div>
