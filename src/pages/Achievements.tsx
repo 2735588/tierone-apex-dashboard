@@ -48,7 +48,7 @@ const Achievements = () => {
       unit: "reps",
       date: "2024-01-05",
       category: "Calisthenics",
-      verified: false,
+      verified: true,
       videoThumbnail: "/api/placeholder/200/150",
       isPinned: false
     },
