@@ -9,7 +9,7 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* TierOne Dark Gaming Theme */
-    --background: 220 15% 8%;
+    --background: 0 0% 0%;
     --foreground: 120 5% 95%;
 
     --card: 220 15% 10%;
