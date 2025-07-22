@@ -103,7 +103,7 @@ const Achievements = () => {
   const pinnedAchievements = achievements.filter(a => a.isPinned);
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-6 pb-24">
+    <div className="min-h-screen bg-background text-foreground p-4 pb-24 max-w-md mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -121,7 +121,7 @@ const Achievements = () => {
       </div>
 
       {/* Category Filter */}
-      <div className="flex gap-2 mb-6 overflow-x-auto">
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
         {categories.map((category) => {
           const IconComponent = category.icon;
           return (
@@ -130,7 +130,7 @@ const Achievements = () => {
               variant={selectedCategory === category.name ? "default" : "outline"}
               size="sm"
               onClick={() => setSelectedCategory(category.name)}
-              className="whitespace-nowrap flex items-center gap-2"
+              className="whitespace-nowrap flex items-center gap-2 min-w-fit"
             >
               <IconComponent className="w-4 h-4" />
               {category.label}
@@ -184,12 +184,12 @@ const Achievements = () => {
           <div className="grid gap-3">
             {pinnedAchievements.map((achievement) => (
               <Card key={achievement.id} className="tier-card border-accent/30 bg-accent/5">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-4">
+                <CardContent className="p-3">
+                  <div className="flex items-center gap-3">
                     {/* Video Thumbnail */}
-                    <div className="relative w-20 h-16 bg-muted rounded-lg overflow-hidden">
+                    <div className="relative w-16 h-12 bg-muted rounded-lg overflow-hidden flex-shrink-0">
                       <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                        <Play className="w-6 h-6 text-white hover:scale-110 transition-transform cursor-pointer" />
+                        <Play className="w-4 h-4 text-white hover:scale-110 transition-transform cursor-pointer" />
                       </div>
                       <div className="absolute top-1 right-1">
                         <Badge className="text-xs bg-green-400/20 text-green-400 border-green-400/30">
@@ -199,38 +199,37 @@ const Achievements = () => {
                     </div>
 
                     {/* Achievement Details */}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-foreground">{achievement.exercise}</h3>
-                        <span className={`text-lg ${getMedalColor(achievement.medal)} tier-glow`}>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1 mb-1">
+                        <h3 className="font-semibold text-foreground text-sm truncate">{achievement.exercise}</h3>
+                        <span className={`text-sm ${getMedalColor(achievement.medal)} tier-glow`}>
                           {getMedalIcon(achievement.medal)}
                         </span>
-                        <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                        <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
                       </div>
                       
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex flex-col gap-1 text-xs text-muted-foreground">
                         <div className="flex items-center gap-1">
-                          <Weight className="w-4 h-4" />
-                          <span className="font-bold text-accent text-lg">
+                          <Weight className="w-3 h-3" />
+                          <span className="font-bold text-accent text-sm">
                             {achievement.weight} {achievement.unit}
                           </span>
                         </div>
                         
                         <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
+                          <Calendar className="w-3 h-3" />
                           <span>{new Date(achievement.date).toLocaleDateString()}</span>
                         </div>
                       </div>
                       
-                      <Badge variant="outline" className="mt-2 text-xs border-accent/30 text-accent">
+                      <Badge variant="outline" className="mt-1 text-xs border-accent/30 text-accent">
                         {achievement.category}
                       </Badge>
                     </div>
 
                     {/* Challenge Button */}
-                    <Button variant="outline" size="sm" className="text-xs hover:tier-glow transition-all">
-                      <Users className="w-3 h-3 mr-1" />
-                      Challenge
+                    <Button variant="outline" size="sm" className="text-xs hover:tier-glow transition-all flex-shrink-0">
+                      <Users className="w-3 h-3" />
                     </Button>
                   </div>
                 </CardContent>
@@ -249,12 +248,12 @@ const Achievements = () => {
         <div className="space-y-3">
           {filteredAchievements.map((achievement) => (
             <Card key={achievement.id} className="tier-card transition-all duration-200 hover:scale-105">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-4">
+              <CardContent className="p-3">
+                <div className="flex items-center gap-3">
                   {/* Video Thumbnail */}
-                  <div className="relative w-20 h-16 bg-muted rounded-lg overflow-hidden">
+                  <div className="relative w-16 h-12 bg-muted rounded-lg overflow-hidden flex-shrink-0">
                     <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                      <Play className="w-6 h-6 text-white hover:scale-110 transition-transform cursor-pointer" />
+                      <Play className="w-4 h-4 text-white hover:scale-110 transition-transform cursor-pointer" />
                     </div>
                     <div className="absolute top-1 right-1">
                       {achievement.verified ? (
@@ -270,40 +269,39 @@ const Achievements = () => {
                   </div>
 
                   {/* Achievement Details */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-foreground">{achievement.exercise}</h3>
-                      <span className={`text-lg ${getMedalColor(achievement.medal)}`}>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1 mb-1">
+                      <h3 className="font-semibold text-foreground text-sm truncate">{achievement.exercise}</h3>
+                      <span className={`text-sm ${getMedalColor(achievement.medal)}`}>
                         {getMedalIcon(achievement.medal)}
                       </span>
                       {achievement.isPinned && (
-                        <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                        <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
                       )}
                     </div>
                     
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex flex-col gap-1 text-xs text-muted-foreground">
                       <div className="flex items-center gap-1">
-                        <Weight className="w-4 h-4" />
-                        <span className="font-bold text-accent">
+                        <Weight className="w-3 h-3" />
+                        <span className="font-bold text-accent text-sm">
                           {achievement.weight} {achievement.unit}
                         </span>
                       </div>
                       
                       <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
+                        <Calendar className="w-3 h-3" />
                         <span>{new Date(achievement.date).toLocaleDateString()}</span>
                       </div>
                     </div>
                     
-                    <Badge variant="outline" className="mt-2 text-xs">
+                    <Badge variant="outline" className="mt-1 text-xs">
                       {achievement.category}
                     </Badge>
                   </div>
 
                   {/* Challenge Button */}
-                  <Button variant="outline" size="sm" className="text-xs">
-                    <Users className="w-3 h-3 mr-1" />
-                    Challenge
+                  <Button variant="outline" size="sm" className="text-xs flex-shrink-0">
+                    <Users className="w-3 h-3" />
                   </Button>
                 </div>
               </CardContent>

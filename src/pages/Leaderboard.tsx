@@ -97,7 +97,7 @@ const Leaderboard = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-6 pb-24">
+    <div className="min-h-screen bg-background text-foreground p-4 pb-24 max-w-md mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <Crown className="w-8 h-8 text-accent tier-glow energy-pulse" />
@@ -108,9 +108,9 @@ const Leaderboard = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-3 mb-6">
+      <div className="flex flex-col gap-3 mb-6 sm:flex-row">
         <Select value={muscleFilter} onValueChange={setMuscleFilter}>
-          <SelectTrigger className="w-32">
+          <SelectTrigger className="w-full sm:w-32">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -128,7 +128,7 @@ const Leaderboard = () => {
           variant={verifiedOnly ? "default" : "outline"} 
           size="sm"
           onClick={() => setVerifiedOnly(!verifiedOnly)}
-          className="flex items-center gap-2"
+          className="flex items-center justify-center gap-2 w-full sm:w-auto"
         >
           <Filter className="w-4 h-4" />
           Verified Only
