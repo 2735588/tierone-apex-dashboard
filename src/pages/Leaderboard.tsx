@@ -7,27 +7,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Leaderboard = () => {
-  const [selectedFilter, setSelectedFilter] = useState("all");
   const [muscleFilter, setMuscleFilter] = useState("overall");
-  const [verifiedOnly, setVerifiedOnly] = useState(false);
 
   const globalLeaders = [
-    { rank: 1, name: "Alex_Beast", score: 967, country: "🇺🇸", verified: true, tier: "Diamond" },
-    { rank: 2, name: "Nordic_Thor", score: 954, country: "🇳🇴", verified: true, tier: "Diamond" },
-    { rank: 3, name: "Aussie_Tank", score: 942, country: "🇦🇺", verified: true, tier: "Diamond" },
-    { rank: 4, name: "UK_Warrior", score: 931, country: "🇬🇧", verified: true, tier: "Gold" },
-    { rank: 5, name: "Tokyo_Titan", score: 928, country: "🇯🇵", verified: false, tier: "Gold" },
-    { rank: 6, name: "Berlin_Beast", score: 919, country: "🇩🇪", verified: true, tier: "Gold" },
-    { rank: 7, name: "Brazil_Bull", score: 908, country: "🇧🇷", verified: true, tier: "Gold" },
-    { rank: 8, name: "Maple_Muscle", score: 895, country: "🇨🇦", verified: false, tier: "Gold" },
+    { rank: 1, name: "Alex_Beast", score: 967, country: "🇺🇸", tier: "Diamond" },
+    { rank: 2, name: "Nordic_Thor", score: 954, country: "🇳🇴", tier: "Diamond" },
+    { rank: 3, name: "Aussie_Tank", score: 942, country: "🇦🇺", tier: "Diamond" },
+    { rank: 4, name: "UK_Warrior", score: 931, country: "🇬🇧", tier: "Gold" },
+    { rank: 5, name: "Tokyo_Titan", score: 928, country: "🇯🇵", tier: "Gold" },
+    { rank: 6, name: "Berlin_Beast", score: 919, country: "🇩🇪", tier: "Gold" },
+    { rank: 7, name: "Brazil_Bull", score: 908, country: "🇧🇷", tier: "Gold" },
+    { rank: 8, name: "Maple_Muscle", score: 895, country: "🇨🇦", tier: "Gold" },
   ];
 
   const nationalLeaders = [
-    { rank: 1, name: "Kiwi_King", score: 847, country: "🇳🇿", verified: true, tier: "Gold" },
-    { rank: 2, name: "Auckland_Alpha", score: 832, country: "🇳🇿", verified: true, tier: "Gold" },
-    { rank: 3, name: "Wellington_Wolf", score: 821, country: "🇳🇿", verified: false, tier: "Gold" },
-    { rank: 4, name: "Christchurch_Chief", score: 809, country: "🇳🇿", verified: true, tier: "Silver" },
-    { rank: 5, name: "Hamilton_Hero", score: 798, country: "🇳🇿", verified: true, tier: "Silver" },
+    { rank: 1, name: "Kiwi_King", score: 847, country: "🇳🇿", tier: "Gold" },
+    { rank: 2, name: "Auckland_Alpha", score: 832, country: "🇳🇿", tier: "Gold" },
+    { rank: 3, name: "Wellington_Wolf", score: 821, country: "🇳🇿", tier: "Gold" },
+    { rank: 4, name: "Christchurch_Chief", score: 809, country: "🇳🇿", tier: "Silver" },
+    { rank: 5, name: "Hamilton_Hero", score: 798, country: "🇳🇿", tier: "Silver" },
   ];
 
   const getTierColor = (tier: string) => {
@@ -46,9 +44,6 @@ const Leaderboard = () => {
     return "";
   };
 
-  const getFilteredLeaders = (leaders: any[]) => {
-    return leaders.filter(user => !verifiedOnly || user.verified);
-  };
 
   const LeaderboardCard = ({ user, isGlobal = false }: { user: any, isGlobal?: boolean }) => (
     <Card className={`tier-card mb-3 transition-all duration-200 hover:scale-105 cursor-pointer ${getTopThreeGlow(user.rank)}`}>
@@ -71,11 +66,6 @@ const Leaderboard = () => {
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-foreground">{user.name}</span>
                 <span className="text-xl">{user.country}</span>
-                {user.verified && (
-                  <Badge variant="outline" className="text-xs bg-green-400/10 text-green-400 border-green-400/30">
-                    ✓ Verified
-                  </Badge>
-                )}
               </div>
               <div className={`text-sm font-medium ${getTierColor(user.tier)}`}>
                 {user.tier} Tier
@@ -108,9 +98,9 @@ const Leaderboard = () => {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col gap-3 mb-6 sm:flex-row">
+      <div className="flex flex-col gap-3 mb-6">
         <Select value={muscleFilter} onValueChange={setMuscleFilter}>
-          <SelectTrigger className="w-full sm:w-32">
+          <SelectTrigger className="w-full">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -123,16 +113,6 @@ const Leaderboard = () => {
             <SelectItem value="legs">Legs</SelectItem>
           </SelectContent>
         </Select>
-        
-        <Button 
-          variant={verifiedOnly ? "default" : "outline"} 
-          size="sm"
-          onClick={() => setVerifiedOnly(!verifiedOnly)}
-          className="flex items-center justify-center gap-2 w-full sm:w-auto"
-        >
-          <Filter className="w-4 h-4" />
-          Verified Only
-        </Button>
       </div>
 
       <Tabs defaultValue="global" className="w-full">
@@ -165,7 +145,7 @@ const Leaderboard = () => {
               <Trophy className="w-5 h-5 text-yellow-400 tier-glow" />
               Top Global Athletes
             </h3>
-            {getFilteredLeaders(globalLeaders).map((user) => (
+            {globalLeaders.map((user) => (
               <LeaderboardCard key={user.rank} user={user} isGlobal={true} />
             ))}
           </div>
@@ -189,7 +169,7 @@ const Leaderboard = () => {
               <Crown className="w-5 h-5 text-primary tier-glow" />
               Top New Zealand Athletes
             </h3>
-            {getFilteredLeaders(nationalLeaders).map((user) => (
+            {nationalLeaders.map((user) => (
               <LeaderboardCard key={user.rank} user={user} />
             ))}
           </div>
