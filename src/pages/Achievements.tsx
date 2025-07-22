@@ -118,7 +118,7 @@ const Achievements = () => {
         <Card className="tier-card text-center">
           <CardContent className="p-3">
             <Award className="w-5 h-5 text-green-400 mx-auto mb-1" />
-            <div className="text-base font-bold text-accent">85%</div>
+            <div className="text-base font-bold text-accent">100%</div>
             <div className="text-xs text-muted-foreground">Verified</div>
           </CardContent>
         </Card>
