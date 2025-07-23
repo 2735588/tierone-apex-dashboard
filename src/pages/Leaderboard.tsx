@@ -46,17 +46,17 @@ const Leaderboard = () => {
 
 
   const LeaderboardCard = ({ user, isGlobal = false }: { user: any, isGlobal?: boolean }) => (
-    <Card className={`tier-card mb-3 transition-all duration-200 hover:scale-105 cursor-pointer ${getTopThreeGlow(user.rank)}`}>
-      <CardContent className="p-4">
+    <Card className={`tier-card mb-2 transition-all duration-200 hover:scale-102 cursor-pointer ${getTopThreeGlow(user.rank)}`}>
+      <CardContent className="p-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
+          <div className="flex items-center gap-3">
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
               user.rank <= 3 ? 'bg-gradient-primary text-primary-foreground tier-glow' : 'bg-muted text-muted-foreground'
             }`}>
               {user.rank <= 3 ? (
-                user.rank === 1 ? <Crown className="w-5 h-5" /> :
-                user.rank === 2 ? <Trophy className="w-5 h-5" /> :
-                <Medal className="w-5 h-5" />
+                user.rank === 1 ? <Crown className="w-4 h-4" /> :
+                user.rank === 2 ? <Trophy className="w-4 h-4" /> :
+                <Medal className="w-4 h-4" />
               ) : (
                 user.rank
               )}
@@ -64,19 +64,19 @@ const Leaderboard = () => {
             
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-foreground">{user.name}</span>
-                <span className="text-xl">{user.country}</span>
+                <span className="font-medium text-foreground text-sm">{user.name}</span>
+                <span className="text-base">{user.country}</span>
               </div>
-              <div className={`text-sm font-medium ${getTierColor(user.tier)}`}>
+              <div className={`text-xs font-medium ${getTierColor(user.tier)}`}>
                 {user.tier} Tier
               </div>
             </div>
           </div>
           
           <div className="text-right">
-            <div className="text-xl font-bold text-accent">{user.score}</div>
+            <div className="text-lg font-bold text-accent">{user.score}</div>
             <div className="text-xs text-muted-foreground">TierScore</div>
-            <Button variant="ghost" size="sm" className="mt-1 text-xs h-6">
+            <Button variant="ghost" size="sm" className="mt-1 text-xs h-5 px-2">
               <Eye className="w-3 h-3 mr-1" />
               View
             </Button>
@@ -131,49 +131,53 @@ const Leaderboard = () => {
 
         <TabsContent value="global">
           {/* Your Position */}
-          <Card className="tier-card mb-6 border-accent/30 bg-accent/5">
-            <CardContent className="p-4">
+          <Card className="tier-card mb-8 border-accent/30 bg-accent/5 tier-glow">
+            <CardContent className="p-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-accent mb-1">#1,847</div>
-                <div className="text-sm text-muted-foreground">Your Global Rank</div>
-                <div className="text-accent font-medium">Top 4% Worldwide</div>
+                <div className="text-4xl font-bold text-accent mb-2">#1,847</div>
+                <div className="text-base text-muted-foreground mb-1">Your Global Rank</div>
+                <div className="text-accent font-semibold text-lg">Top 4% Worldwide</div>
               </div>
             </CardContent>
           </Card>
 
           {/* Global Leaders */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <Trophy className="w-5 h-5 text-yellow-400 tier-glow" />
               Top Global Athletes
             </h3>
-            {globalLeaders.map((user) => (
-              <LeaderboardCard key={user.rank} user={user} isGlobal={true} />
-            ))}
+            <div className="space-y-1">
+              {globalLeaders.map((user) => (
+                <LeaderboardCard key={user.rank} user={user} isGlobal={true} />
+              ))}
+            </div>
           </div>
         </TabsContent>
 
         <TabsContent value="national">
           {/* Your National Position */}
-          <Card className="tier-card mb-6 border-primary/30 bg-primary/5">
-            <CardContent className="p-4">
+          <Card className="tier-card mb-8 border-primary/30 bg-primary/5 tier-glow">
+            <CardContent className="p-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-1">#12</div>
-                <div className="text-sm text-muted-foreground">Your National Rank (NZ)</div>
-                <div className="text-primary font-medium">Top 8% New Zealand</div>
+                <div className="text-4xl font-bold text-primary mb-2">#12</div>
+                <div className="text-base text-muted-foreground mb-1">Your National Rank (NZ)</div>
+                <div className="text-primary font-semibold text-lg">Top 8% New Zealand</div>
               </div>
             </CardContent>
           </Card>
 
           {/* National Leaders */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <Crown className="w-5 h-5 text-primary tier-glow" />
               Top New Zealand Athletes
             </h3>
-            {nationalLeaders.map((user) => (
-              <LeaderboardCard key={user.rank} user={user} />
-            ))}
+            <div className="space-y-1">
+              {nationalLeaders.map((user) => (
+                <LeaderboardCard key={user.rank} user={user} />
+              ))}
+            </div>
           </div>
         </TabsContent>
       </Tabs>
