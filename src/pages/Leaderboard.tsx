@@ -51,7 +51,7 @@ const Leaderboard = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-              user.rank <= 3 ? 'bg-gradient-primary text-primary-foreground tier-glow' : 'bg-muted text-muted-foreground'
+              user.rank <= 3 ? 'bg-gradient-primary text-primary-foreground tier-glow' : 'bg-accent/20 text-accent border border-accent/30 tier-glow'
             }`}>
               {user.rank <= 3 ? (
                 user.rank === 1 ? <Crown className="w-4 h-4" /> :
