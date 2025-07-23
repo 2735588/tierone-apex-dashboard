@@ -10,22 +10,22 @@ const Leaderboard = () => {
   const [muscleFilter, setMuscleFilter] = useState("overall");
 
   const globalLeaders = [
-    { rank: 1, name: "Alex_Beast", score: 967, country: "🇺🇸", tier: "Diamond" },
-    { rank: 2, name: "Nordic_Thor", score: 954, country: "🇳🇴", tier: "Diamond" },
-    { rank: 3, name: "Aussie_Tank", score: 942, country: "🇦🇺", tier: "Diamond" },
-    { rank: 4, name: "UK_Warrior", score: 931, country: "🇬🇧", tier: "Gold" },
-    { rank: 5, name: "Tokyo_Titan", score: 928, country: "🇯🇵", tier: "Gold" },
-    { rank: 6, name: "Berlin_Beast", score: 919, country: "🇩🇪", tier: "Gold" },
-    { rank: 7, name: "Brazil_Bull", score: 908, country: "🇧🇷", tier: "Gold" },
-    { rank: 8, name: "Maple_Muscle", score: 895, country: "🇨🇦", tier: "Gold" },
+    { rank: 1, name: "Alex_Beast", score: 774, country: "🇺🇸", tier: "Diamond" },
+    { rank: 2, name: "Nordic_Thor", score: 763, country: "🇳🇴", tier: "Diamond" },
+    { rank: 3, name: "Aussie_Tank", score: 754, country: "🇦🇺", tier: "Diamond" },
+    { rank: 4, name: "UK_Warrior", score: 745, country: "🇬🇧", tier: "Gold" },
+    { rank: 5, name: "Tokyo_Titan", score: 742, country: "🇯🇵", tier: "Gold" },
+    { rank: 6, name: "Berlin_Beast", score: 735, country: "🇩🇪", tier: "Gold" },
+    { rank: 7, name: "Brazil_Bull", score: 726, country: "🇧🇷", tier: "Gold" },
+    { rank: 8, name: "Maple_Muscle", score: 716, country: "🇨🇦", tier: "Gold" },
   ];
 
   const nationalLeaders = [
-    { rank: 1, name: "Kiwi_King", score: 847, country: "🇳🇿", tier: "Gold" },
-    { rank: 2, name: "Auckland_Alpha", score: 832, country: "🇳🇿", tier: "Gold" },
-    { rank: 3, name: "Wellington_Wolf", score: 821, country: "🇳🇿", tier: "Gold" },
-    { rank: 4, name: "Christchurch_Chief", score: 809, country: "🇳🇿", tier: "Silver" },
-    { rank: 5, name: "Hamilton_Hero", score: 798, country: "🇳🇿", tier: "Silver" },
+    { rank: 1, name: "Kiwi_King", score: 678, country: "🇳🇿", tier: "Gold" },
+    { rank: 2, name: "Auckland_Alpha", score: 666, country: "🇳🇿", tier: "Gold" },
+    { rank: 3, name: "Wellington_Wolf", score: 657, country: "🇳🇿", tier: "Gold" },
+    { rank: 4, name: "Christchurch_Chief", score: 647, country: "🇳🇿", tier: "Silver" },
+    { rank: 5, name: "Hamilton_Hero", score: 638, country: "🇳🇿", tier: "Silver" },
   ];
 
   const getTierColor = (tier: string) => {
@@ -110,7 +110,9 @@ const Leaderboard = () => {
             <SelectItem value="shoulders">Shoulders</SelectItem>
             <SelectItem value="back">Back</SelectItem>
             <SelectItem value="core">Core</SelectItem>
-            <SelectItem value="legs">Legs</SelectItem>
+            <SelectItem value="quads">Quads</SelectItem>
+            <SelectItem value="hamstrings">Hamstrings</SelectItem>
+            <SelectItem value="calves">Calves</SelectItem>
           </SelectContent>
         </Select>
       </div>
