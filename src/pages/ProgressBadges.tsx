@@ -14,7 +14,9 @@ const ProgressBadges = () => {
     { name: "Arms", score: 78, tier: "Silver", progress: 60 },
     { name: "Back", score: 84, tier: "Gold", progress: 80 },
     { name: "Core", score: 65, tier: "Silver", progress: 30 },
-    { name: "Legs", score: 71, tier: "Silver", progress: 45 },
+    { name: "Quads", score: 73, tier: "Silver", progress: 50 },
+    { name: "Hamstrings", score: 68, tier: "Silver", progress: 40 },
+    { name: "Calves", score: 72, tier: "Silver", progress: 45 },
   ];
 
   const badges = [
@@ -139,15 +141,11 @@ const ProgressBadges = () => {
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {muscleGroups.map((muscle) => {
-                const tierInfo = getTierBadge(muscle.score);
                 return (
                   <Card key={muscle.name} className={`tier-card ${muscle.score >= 95 ? 'tier-glow' : ''}`}>
                     <CardContent className="p-4">
                       <div className="flex items-center justify-between mb-2">
                         <span className="font-medium text-foreground">{muscle.name}</span>
-                        <Badge className={`${tierInfo.bgColor} ${tierInfo.color} border-0`}>
-                          {tierInfo.tier}
-                        </Badge>
                       </div>
                       <div className="text-2xl font-bold text-accent mb-1">{muscle.score}</div>
                       <div className="text-xs text-muted-foreground">
