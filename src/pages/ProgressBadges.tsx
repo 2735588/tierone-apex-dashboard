@@ -203,7 +203,9 @@ const ProgressBadges = () => {
     return "text-blue-400";
   };
 
-  const getPotentialColor = () => "text-cyan-400";
+  const getPotentialColor = () => {
+    return isFemale ? "text-[#FF66B2]" : "text-[#00FF66]";
+  };
 
   const getMuscleScoreColor = () => {
     return isFemale ? "text-[#FF66B2]" : "text-[#00FF66]";
@@ -278,7 +280,7 @@ const ProgressBadges = () => {
               <div className={`text-6xl font-bold ${getPotentialColor()} ${getGlowClass()} mb-4`}>
                 {overallPotentialScore}
               </div>
-              <Badge className={`${getTierBadge(overallPotentialScore).color} bg-transparent border-0 text-lg`}>
+              <Badge className={`${getPotentialColor()} bg-transparent border-0 text-lg`}>
                 {getTierBadge(overallPotentialScore).tier} Tier
               </Badge>
             </CardHeader>
