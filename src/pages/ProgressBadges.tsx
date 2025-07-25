@@ -160,6 +160,27 @@ const ProgressBadges = () => {
             </CardHeader>
           </Card>
 
+          {/* Overall Improvement Tips */}
+          <Card className="tier-card">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+                <Target className="w-5 h-5 text-accent" />
+                Overall Improvement Tips
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="text-sm text-muted-foreground">
+                • Prioritize compound lifts that engage multiple muscle groups
+              </div>
+              <div className="text-sm text-muted-foreground">
+                • Use progressive overload and track weekly improvements
+              </div>
+              <div className="text-sm text-muted-foreground">
+                • Ensure adequate recovery, sleep, and protein intake for muscle growth
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Muscle Group Tiers */}
           <div>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -176,15 +197,11 @@ const ProgressBadges = () => {
                     onClick={() => setSelectedMuscleGroup(muscle)}
                   >
                     <CardContent className="p-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="font-medium text-foreground">{muscle.name}</span>
-                        <Badge className={`${tierInfo.color} bg-transparent border-0 text-xs`}>
-                          {tierInfo.tier}
-                        </Badge>
+                      <div className="text-center">
+                        <span className="font-medium text-foreground text-sm">{muscle.name}</span>
+                        <div className={`text-2xl font-bold mt-2 ${tierInfo.color}`}>{muscle.score}</div>
+                        <div className={`text-xs mt-1 ${tierInfo.color}`}>{tierInfo.tier}</div>
                       </div>
-                      
-                      {/* Current Score */}
-                      <div className="text-2xl font-bold text-accent">{muscle.score}</div>
                     </CardContent>
                   </Card>
                 );
