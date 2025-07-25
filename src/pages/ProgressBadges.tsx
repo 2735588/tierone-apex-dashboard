@@ -62,8 +62,28 @@ const ProgressBadges = () => {
     },
     {
       id: 12,
+      name: "Glute Builder: Level 2",
+      description: "Achieve 85+ glute strength & shape",
+      tier: "Gold",
+      unlocked: false,
+      progress: 82,
+      icon: Crown,
+      category: "Performance"
+    },
+    {
+      id: 13,
+      name: "Glute Builder: Level 3",
+      description: "Master 90+ glute development",
+      tier: "Diamond",
+      unlocked: false,
+      progress: 82,
+      icon: Diamond,
+      category: "Performance"
+    },
+    {
+      id: 14,
       name: "Core Queen",
-      description: "Achieve 80+ core stability",
+      description: "Achieve 80+ core stability & strength",
       tier: "Gold",
       unlocked: false,
       progress: 78,
@@ -71,9 +91,9 @@ const ProgressBadges = () => {
       category: "Performance"
     },
     {
-      id: 13,
+      id: 15,
       name: "Form First",
-      description: "Complete 5 technique videos",
+      description: "Complete 5 technique videos with perfect form",
       tier: "Silver",
       unlocked: true,
       progress: 100,
@@ -81,13 +101,33 @@ const ProgressBadges = () => {
       category: "Skill"
     },
     {
-      id: 14,
+      id: 16,
       name: "Strength & Grace",
-      description: "Hit PR on lower body compound",
+      description: "Hit PR on lower body compound movement",
       tier: "Gold",
       unlocked: false,
       progress: 85,
       icon: Zap,
+      category: "Performance"
+    },
+    {
+      id: 17,
+      name: "Balance & Stability",
+      description: "Master 10 unilateral exercises",
+      tier: "Silver",
+      unlocked: true,
+      progress: 100,
+      icon: TrendingUp,
+      category: "Skill"
+    },
+    {
+      id: 18,
+      name: "Posture Perfect",
+      description: "Improve back & shoulder strength to 80+",
+      tier: "Gold",
+      unlocked: false,
+      progress: 74,
+      icon: Award,
       category: "Performance"
     },
   ];
