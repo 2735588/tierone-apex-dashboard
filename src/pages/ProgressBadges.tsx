@@ -217,6 +217,10 @@ const ProgressBadges = () => {
     return isFemale ? "energy-pulse-female" : "energy-pulse";
   };
 
+  const getProgressLineColor = () => {
+    return isFemale ? "#FF66B2" : "#00FF66";
+  };
+
   const getProgressBarGradient = (currentScore: number, potentialScore: number) => {
     const progressPercent = (currentScore / potentialScore) * 100;
     return progressPercent;
@@ -298,8 +302,17 @@ const ProgressBadges = () => {
                     <CardContent className="p-4">
                       <div className="text-center">
                         <span className="font-medium text-foreground text-sm">{muscle.name}</span>
-                        <div className={`text-2xl font-bold mt-2 ${getMuscleScoreColor()}`}>{muscle.score}</div>
-                        <div className={`text-xs mt-1 ${tierInfo.color}`}>{tierInfo.tier}</div>
+                        <div className={`text-2xl font-bold mt-2 mb-3 ${getMuscleScoreColor()}`}>{muscle.score}</div>
+                        {/* Progress Line */}
+                        <div className="w-full bg-muted/30 rounded-full h-1">
+                          <div 
+                            className="h-1 rounded-full transition-all duration-500 ease-out"
+                            style={{ 
+                              width: `${muscle.score}%`,
+                              backgroundColor: getProgressLineColor()
+                            }}
+                          />
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
