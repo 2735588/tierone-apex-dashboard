@@ -168,11 +168,11 @@ const ProgressBadges = () => {
                       </div>
                       
                       {/* Current Score */}
-                      <div className="text-xl font-bold text-accent mb-2">{muscle.score}</div>
+                      <div className="text-xl font-bold text-accent mb-1">{muscle.score}</div>
                       
-                      {/* Potential Score */}
+                      {/* Potential Score - positioned directly below, 1.5x larger */}
                       <div className="mb-3">
-                        <div className={`text-2xl font-bold ${getPotentialColor()} tier-glow`}>
+                        <div className={`text-3xl font-bold ${getPotentialColor()} tier-glow`}>
                           {muscle.potentialScore}
                         </div>
                         <div className="text-xs text-cyan-300/70 font-medium">
