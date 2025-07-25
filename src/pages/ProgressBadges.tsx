@@ -12,6 +12,7 @@ const ProgressBadges = () => {
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<any>(null);
 
   const muscleGroups = [
+    { name: "Potential", score: 95, potentialScore: 100, tier: "Diamond", progress: 95, history: [90, 92, 95], advice: "You're reaching peak performance across all muscle groups", isPotential: true },
     { name: "Chest", score: 87, potentialScore: 98, tier: "Gold", progress: 85, history: [82, 85, 87], advice: "Focus on progressive overload with bench press variations" },
     { name: "Shoulders", score: 92, potentialScore: 99, tier: "Gold", progress: 95, history: [88, 90, 92], advice: "Incorporate more rear delt work for balanced development" },
     { name: "Arms", score: 78, potentialScore: 94, tier: "Silver", progress: 60, history: [74, 76, 78], advice: "Increase training frequency and add isolation exercises" },
@@ -153,10 +154,13 @@ const ProgressBadges = () => {
               {muscleGroups.map((muscle) => {
                 const tierInfo = getTierBadge(muscle.score);
                 const potentialTierInfo = getTierBadge(muscle.potentialScore);
+                const isPotentialCard = muscle.isPotential;
                 return (
                   <Card 
                     key={muscle.name} 
-                    className={`tier-card cursor-pointer transition-all duration-300 hover:scale-105 hover:tier-glow ${muscle.score >= 95 ? 'tier-glow' : ''}`}
+                    className={`tier-card cursor-pointer transition-all duration-300 hover:scale-105 hover:tier-glow ${muscle.score >= 95 ? 'tier-glow' : ''} ${
+                      isPotentialCard ? 'col-span-2 scale-150 my-4 mx-auto max-w-sm' : ''
+                    }`}
                     onClick={() => setSelectedMuscleGroup(muscle)}
                   >
                     <CardContent className="p-4">
