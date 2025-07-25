@@ -142,6 +142,7 @@ const ProgressBadges = () => {
     }
   ];
 
+  // Combine all badges for use throughout the component
   const allBadges = [...badges, ...additionalBadges];
 
   const getBadgeColor = (tier: string, unlocked: boolean) => {
