@@ -205,6 +205,10 @@ const ProgressBadges = () => {
 
   const getPotentialColor = () => "text-cyan-400";
 
+  const getMuscleScoreColor = () => {
+    return isFemale ? "text-[#FF66B2]" : "text-[#00FF66]";
+  };
+
   const getProgressBarGradient = (currentScore: number, potentialScore: number) => {
     const progressPercent = (currentScore / potentialScore) * 100;
     return progressPercent;
@@ -286,7 +290,7 @@ const ProgressBadges = () => {
                     <CardContent className="p-4">
                       <div className="text-center">
                         <span className="font-medium text-foreground text-sm">{muscle.name}</span>
-                        <div className={`text-2xl font-bold mt-2 ${tierInfo.color}`}>{muscle.score}</div>
+                        <div className={`text-2xl font-bold mt-2 ${getMuscleScoreColor()}`}>{muscle.score}</div>
                         <div className={`text-xs mt-1 ${tierInfo.color}`}>{tierInfo.tier}</div>
                       </div>
                     </CardContent>
@@ -407,7 +411,7 @@ const ProgressBadges = () => {
               <div className="space-y-6">
                 {/* Score Overview */}
                 <div className="text-center tier-card p-4">
-                  <div className="text-3xl font-bold text-accent mb-2">
+                  <div className={`text-3xl font-bold mb-2 ${getMuscleScoreColor()}`}>
                     {selectedMuscleGroup.score}
                   </div>
                   <div className="text-sm text-muted-foreground mb-2">Current Score</div>
@@ -425,14 +429,14 @@ const ProgressBadges = () => {
                   <div className="flex justify-between items-center">
                       {selectedMuscleGroup.history.map((score: number, index: number) => (
                         <div key={index} className="text-center">
-                          <div className="text-lg font-bold text-accent">{score}</div>
+                          <div className={`text-lg font-bold ${getMuscleScoreColor()}`}>{score}</div>
                           <div className="text-xs text-muted-foreground">
                             {index === 0 ? '1 year' : index === 1 ? '6 months' : '3 months'}
                           </div>
                         </div>
                       ))}
                     <div className="text-center">
-                      <div className={`text-lg font-bold ${getPotentialColor()}`}>
+                      <div className={`text-lg font-bold ${getMuscleScoreColor()}`}>
                         {selectedMuscleGroup.score}
                       </div>
                       <div className="text-xs text-cyan-300/70">Current</div>
