@@ -142,6 +142,8 @@ const ProgressBadges = () => {
     }
   ];
 
+  const allBadges = [...badges, ...additionalBadges];
+
   const getBadgeColor = (tier: string, unlocked: boolean) => {
     if (!unlocked) return "text-muted-foreground";
     switch (tier) {
