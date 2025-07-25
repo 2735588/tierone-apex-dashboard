@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Flame, Trophy, Target, Clock, Diamond, Crown, Star, Zap, TrendingUp, Award, X, BarChart3 } from "lucide-react";
+import { useGender } from "@/contexts/GenderContext";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,23 +9,90 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const ProgressBadges = () => {
+  const { gender } = useGender();
+  const isFemale = gender === 'female';
   const [currentStreak, setCurrentStreak] = useState(36);
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<any>(null);
 
-  const muscleGroups = [
+  const maleMuscleGroups = [
     { name: "Chest", score: 87, tier: "Gold", history: [82, 85, 87], advice: "Focus on progressive overload with bench press variations" },
     { name: "Shoulders", score: 92, tier: "Gold", history: [88, 90, 92], advice: "Incorporate more rear delt work for balanced development" },
     { name: "Arms", score: 78, tier: "Silver", history: [74, 76, 78], advice: "Increase training frequency and add isolation exercises" },
     { name: "Back", score: 84, tier: "Gold", history: [80, 82, 84], advice: "Focus on mind-muscle connection during pull movements" },
     { name: "Core", score: 65, tier: "Silver", history: [62, 63, 65], advice: "Add compound movements and stability training" },
-    { name: "Quads", score: 73, tier: "Silver", history: [70, 71, 73], advice: "Increase squat depth and add unilateral exercises" },
-    { name: "Hamstrings", score: 68, tier: "Silver", history: [65, 66, 68], advice: "Focus on Romanian deadlifts and hamstring curls" },
-    { name: "Calves", score: 72, tier: "Silver", history: [69, 70, 72], advice: "Increase training frequency and vary rep ranges" },
+    { name: "Legs", score: 73, tier: "Silver", history: [70, 71, 73], advice: "Increase squat depth and add unilateral exercises" },
   ];
+
+  const femaleMuscleGroups = [
+    { name: "Glutes", score: 82, tier: "Gold", history: [78, 80, 82], advice: "Build beautiful glute shape and strength with hip thrusts, Romanian deadlifts, and Bulgarian split squats. Focus on activation exercises and progressive overload for amazing results!" },
+    { name: "Core", score: 78, tier: "Silver", history: [74, 76, 78], advice: "Develop incredible core stability and posture with planks, dead bugs, and Pallof presses. Strong core = confident posture and functional strength!" },
+    { name: "Legs", score: 85, tier: "Gold", history: [82, 84, 85], advice: "Tone and strengthen your legs with unilateral training like lunges, step-ups, and single-leg deadlifts. Build balanced strength while enhancing stability!" },
+    { name: "Back", score: 74, tier: "Silver", history: [70, 72, 74], advice: "Improve posture and build a strong, elegant back with rows, lat pulldowns, and face pulls. Perfect for countering daily desk work!" },
+    { name: "Shoulders", score: 71, tier: "Silver", history: [68, 70, 71], advice: "Strengthen and sculpt your shoulders with lateral raises, overhead presses, and band work. Great for enhancing posture and creating beautiful shoulder definition!" },
+    { name: "Arms", score: 68, tier: "Silver", history: [64, 66, 68], advice: "Build toned, functional arm strength with push-ups, tricep dips, and resistance band exercises. Focus on form and control for the best results!" },
+  ];
+
+  const muscleGroups = isFemale ? femaleMuscleGroups : maleMuscleGroups;
 
   const overallPotentialScore = 98;
 
-  const badges = [
+  const maleSpecificBadges = [
+    {
+      id: 11,
+      name: "Strength Warrior",
+      description: "Achieve 85+ in any muscle group",
+      tier: "Gold",
+      unlocked: true,
+      progress: 100,
+      icon: Trophy,
+      category: "Performance"
+    },
+  ];
+
+  const femaleSpecificBadges = [
+    {
+      id: 11,
+      name: "Glute Builder: Level 1",
+      description: "Reach 75+ glute development score",
+      tier: "Gold",
+      unlocked: true,
+      progress: 100,
+      icon: Trophy,
+      category: "Performance"
+    },
+    {
+      id: 12,
+      name: "Core Queen",
+      description: "Achieve 80+ core stability",
+      tier: "Gold",
+      unlocked: false,
+      progress: 78,
+      icon: Star,
+      category: "Performance"
+    },
+    {
+      id: 13,
+      name: "Form First",
+      description: "Complete 5 technique videos",
+      tier: "Silver",
+      unlocked: true,
+      progress: 100,
+      icon: Target,
+      category: "Skill"
+    },
+    {
+      id: 14,
+      name: "Strength & Grace",
+      description: "Hit PR on lower body compound",
+      tier: "Gold",
+      unlocked: false,
+      progress: 85,
+      icon: Zap,
+      category: "Performance"
+    },
+  ];
+
+  const universalBadges = [
     {
       id: 1,
       name: "Consistency Master",
@@ -36,16 +104,6 @@ const ProgressBadges = () => {
       category: "Streak"
     },
     {
-      id: 2,
-      name: "Strength Warrior",
-      description: "Achieve 85+ in any muscle group",
-      tier: "Gold",
-      unlocked: true,
-      progress: 100,
-      icon: Trophy,
-      category: "Performance"
-    },
-    {
       id: 3,
       name: "Diamond Elite",
       description: "Reach 95+ score in any muscle",
@@ -55,6 +113,13 @@ const ProgressBadges = () => {
       icon: Diamond,
       category: "Performance"
     },
+  ];
+
+  const genderSpecificBadges = isFemale ? femaleSpecificBadges : maleSpecificBadges;
+  const badges = [...universalBadges, ...genderSpecificBadges];
+
+  // Continue with existing badges starting from Scan Specialist
+  const additionalBadges = [
     {
       id: 4,
       name: "Scan Specialist",
@@ -212,7 +277,7 @@ const ProgressBadges = () => {
 
         <TabsContent value="badges" className="space-y-6">
           <div className="grid gap-4">
-            {badges.map((badge) => {
+            {allBadges.map((badge) => {
               const IconComponent = badge.icon;
               return (
                 <Card 
@@ -350,7 +415,7 @@ const ProgressBadges = () => {
                     Related Badges
                   </h4>
                   <div className="space-y-2">
-                    {badges
+                    {allBadges
                       .filter(badge => badge.category === "Performance")
                       .slice(0, 2)
                       .map(badge => (
