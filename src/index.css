@@ -146,6 +146,10 @@ All colors MUST be HSL.
     box-shadow: var(--shadow-glow);
   }
   
+  .tier-glow-female {
+    box-shadow: var(--shadow-glow-female);
+  }
+  
   .tier-card {
     background: hsl(var(--card));
     box-shadow: var(--shadow-card);
@@ -165,6 +169,11 @@ All colors MUST be HSL.
 
   .energy-pulse {
     animation: energy-pulse 4s ease-in-out infinite;
+  }
+
+  .energy-pulse-female {
+    animation: energy-pulse 4s ease-in-out infinite;
+    filter: hue-rotate(160deg);
   }
 
   @keyframes pulse-glow {

@@ -196,9 +196,9 @@ const ProgressBadges = () => {
   };
 
   const getStreakFlameColor = (streak: number) => {
-    if (streak >= 100) return "text-cyan-400 tier-glow animate-pulse";
-    if (streak >= 50) return "text-red-400 energy-pulse";
-    if (streak >= 30) return "text-orange-400 energy-pulse";
+    if (streak >= 100) return `text-cyan-400 ${getGlowClass()} animate-pulse`;
+    if (streak >= 50) return `text-red-400 ${getEnergyPulseClass()}`;
+    if (streak >= 30) return `text-orange-400 ${getEnergyPulseClass()}`;
     if (streak >= 7) return "text-yellow-400";
     return "text-blue-400";
   };
@@ -207,6 +207,14 @@ const ProgressBadges = () => {
 
   const getMuscleScoreColor = () => {
     return isFemale ? "text-[#FF66B2]" : "text-[#00FF66]";
+  };
+
+  const getGlowClass = () => {
+    return isFemale ? "tier-glow-female" : "tier-glow";
+  };
+
+  const getEnergyPulseClass = () => {
+    return isFemale ? "energy-pulse-female" : "energy-pulse";
   };
 
   const getProgressBarGradient = (currentScore: number, potentialScore: number) => {
@@ -246,7 +254,7 @@ const ProgressBadges = () => {
           <Card className="tier-card">
             <CardHeader className="text-center">
               <div className="flex justify-center mb-4">
-                <Flame className={`w-16 h-16 ${getStreakFlameColor(currentStreak)} energy-pulse`} />
+                <Flame className={`w-16 h-16 ${getStreakFlameColor(currentStreak)}`} />
               </div>
               <CardTitle className="text-3xl font-bold text-accent">
                 {currentStreak} Days
@@ -258,12 +266,12 @@ const ProgressBadges = () => {
           </Card>
 
           {/* Overall Potential Score */}
-          <Card className="tier-card tier-glow">
+          <Card className={`tier-card ${getGlowClass()}`}>
             <CardHeader className="text-center">
               <CardTitle className="text-xl font-semibold text-foreground mb-4">
                 Overall Potential
               </CardTitle>
-              <div className={`text-6xl font-bold ${getPotentialColor()} tier-glow mb-4`}>
+              <div className={`text-6xl font-bold ${getPotentialColor()} ${getGlowClass()} mb-4`}>
                 {overallPotentialScore}
               </div>
               <Badge className={`${getTierBadge(overallPotentialScore).color} bg-transparent border-0 text-lg`}>
@@ -284,7 +292,7 @@ const ProgressBadges = () => {
                 return (
                   <Card 
                     key={muscle.name} 
-                    className={`tier-card cursor-pointer transition-all duration-300 hover:scale-105 hover:tier-glow ${muscle.score >= 95 ? 'tier-glow' : ''}`}
+                    className={`tier-card cursor-pointer transition-all duration-300 hover:scale-105 hover:${getGlowClass()} ${muscle.score >= 95 ? getGlowClass() : ''}`}
                     onClick={() => setSelectedMuscleGroup(muscle)}
                   >
                     <CardContent className="p-4">
@@ -330,7 +338,7 @@ const ProgressBadges = () => {
                 <Card 
                   key={badge.id} 
                   className={`tier-card transition-all duration-200 ${
-                    badge.unlocked && badge.tier === "Diamond" ? 'tier-glow' : ''
+                    badge.unlocked && badge.tier === "Diamond" ? getGlowClass() : ''
                   } ${badge.unlocked ? 'hover:scale-105' : 'opacity-75'}`}
                 >
                   <CardContent className="p-4">
@@ -352,7 +360,7 @@ const ProgressBadges = () => {
                             {badge.tier}
                           </Badge>
                           {badge.unlocked && badge.tier === "Diamond" && (
-                            <Diamond className="w-4 h-4 text-cyan-400 tier-glow" />
+                            <Diamond className={`w-4 h-4 text-cyan-400 ${getGlowClass()}`} />
                           )}
                         </div>
                         <p className="text-sm text-muted-foreground mb-2">{badge.description}</p>
