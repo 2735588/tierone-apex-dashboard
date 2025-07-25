@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useGender } from '@/contexts/GenderContext';
 import { TierBadge } from "@/components/TierBadge";
 import { MuscleGroup } from "@/components/MuscleGroup";
 import { ScanButton } from "@/components/ScanButton";
@@ -8,47 +5,15 @@ import { Bell, Settings, Flame, Timer, Activity, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import bodyImage from "@/assets/body-silhouette.png";
 
-const Index = () => {
-  const { gender, isOnboarded } = useGender();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // If user hasn't completed onboarding, redirect to gender selection
-    if (!isOnboarded) {
-      navigate('/onboarding');
-      return;
-    }
-
-    // If user has completed onboarding and selected gender, redirect to appropriate experience
-    if (gender === 'male') {
-      navigate('/male');
-    } else if (gender === 'female') {
-      navigate('/female');
-    }
-  }, [gender, isOnboarded, navigate]);
-
-  // Show loading state while redirecting
-  if (!isOnboarded || gender) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center tier-glow animate-pulse">
-            <Flame className="w-4 h-4 text-primary-foreground" />
-          </div>
-          <span className="text-foreground">Loading TierOne...</span>
-        </div>
-      </div>
-    );
-  }
-
-  // This fallback should not normally be reached
+const FemaleIndex = () => {
+  // Reordered muscle groups with female-focused priorities
   const muscleGroups = [
-    { name: "Chest", score: 87, position: { top: "18%", left: "38%" }, isActive: true },
-    { name: "Shoulders", score: 92, position: { top: "10%", left: "28%" } },
-    { name: "Arms", score: 78, position: { top: "26%", right: "18%" } },
-    { name: "Back", score: 84, position: { top: "20%", right: "28%" } },
-    { name: "Core", score: 65, position: { top: "40%", left: "36%" } },
-    { name: "Legs", score: 71, position: { bottom: "18%", left: "33%" } },
+    { name: "Glutes", score: 82, position: { bottom: "28%", left: "38%" }, isActive: true },
+    { name: "Core", score: 78, position: { top: "40%", left: "36%" } },
+    { name: "Legs", score: 85, position: { bottom: "18%", left: "33%" } },
+    { name: "Back", score: 74, position: { top: "20%", right: "28%" } },
+    { name: "Shoulders", score: 71, position: { top: "10%", left: "28%" } },
+    { name: "Arms", score: 68, position: { top: "26%", right: "18%" } },
   ];
 
   const getBadgeTier = (score: number) => {
@@ -78,7 +43,7 @@ const Index = () => {
           </div>
           <div>
             <h1 className="text-xl font-bold text-foreground">TierOne</h1>
-            <p className="text-sm text-muted-foreground">Welcome back, Alex</p>
+            <p className="text-sm text-muted-foreground">Welcome back, Sarah</p>
           </div>
         </div>
         
@@ -102,23 +67,22 @@ const Index = () => {
             <div className="w-24 h-24 bg-gradient-to-br from-accent via-accent to-accent/70 rounded-full flex items-center justify-center tier-glow energy-pulse shadow-lg">
               <div className="text-center">
                 <div className="text-xs text-white/80 font-medium">GLOBAL</div>
-                <div className="text-lg font-bold text-white">#1,847</div>
+                <div className="text-lg font-bold text-white">#2,145</div>
               </div>
             </div>
-            <div className="text-xs text-accent font-medium mt-2">Top 4% Worldwide</div>
+            <div className="text-xs text-accent font-medium mt-2">Top 6% Worldwide</div>
           </div>
           
           <div className="relative flex flex-col items-center">
             <div className="w-20 h-20 bg-gradient-to-br from-primary via-primary to-primary/70 rounded-full flex items-center justify-center tier-glow shadow-md">
               <div className="text-center">
                 <div className="text-xs text-white/80 font-medium">NZ</div>
-                <div className="text-base font-bold text-white">#12</div>
+                <div className="text-base font-bold text-white">#18</div>
               </div>
             </div>
-            <div className="text-xs text-primary font-medium mt-2">Top 8% NZ</div>
+            <div className="text-xs text-primary font-medium mt-2">Top 12% NZ</div>
           </div>
         </div>
-
 
         {/* Body Scan Model */}
         <div className="relative flex flex-col items-center mb-4">
@@ -136,10 +100,9 @@ const Index = () => {
             START SCAN
           </Button>
         </div>
-
       </div>
     </div>
   );
 };
 
-export default Index;
+export default FemaleIndex;

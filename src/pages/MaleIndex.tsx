@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useGender } from '@/contexts/GenderContext';
 import { TierBadge } from "@/components/TierBadge";
 import { MuscleGroup } from "@/components/MuscleGroup";
 import { ScanButton } from "@/components/ScanButton";
@@ -8,40 +5,7 @@ import { Bell, Settings, Flame, Timer, Activity, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import bodyImage from "@/assets/body-silhouette.png";
 
-const Index = () => {
-  const { gender, isOnboarded } = useGender();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // If user hasn't completed onboarding, redirect to gender selection
-    if (!isOnboarded) {
-      navigate('/onboarding');
-      return;
-    }
-
-    // If user has completed onboarding and selected gender, redirect to appropriate experience
-    if (gender === 'male') {
-      navigate('/male');
-    } else if (gender === 'female') {
-      navigate('/female');
-    }
-  }, [gender, isOnboarded, navigate]);
-
-  // Show loading state while redirecting
-  if (!isOnboarded || gender) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center tier-glow animate-pulse">
-            <Flame className="w-4 h-4 text-primary-foreground" />
-          </div>
-          <span className="text-foreground">Loading TierOne...</span>
-        </div>
-      </div>
-    );
-  }
-
-  // This fallback should not normally be reached
+const MaleIndex = () => {
   const muscleGroups = [
     { name: "Chest", score: 87, position: { top: "18%", left: "38%" }, isActive: true },
     { name: "Shoulders", score: 92, position: { top: "10%", left: "28%" } },
@@ -119,7 +83,6 @@ const Index = () => {
           </div>
         </div>
 
-
         {/* Body Scan Model */}
         <div className="relative flex flex-col items-center mb-4">
           <img 
@@ -136,10 +99,9 @@ const Index = () => {
             START SCAN
           </Button>
         </div>
-
       </div>
     </div>
   );
 };
 
-export default Index;
+export default MaleIndex;
