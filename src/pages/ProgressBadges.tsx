@@ -1,22 +1,25 @@
 import { useState } from "react";
-import { Flame, Trophy, Target, Clock, Diamond, Crown, Star, Zap, TrendingUp, Award } from "lucide-react";
+import { Flame, Trophy, Target, Clock, Diamond, Crown, Star, Zap, TrendingUp, Award, X, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const ProgressBadges = () => {
   const [currentStreak, setCurrentStreak] = useState(36);
+  const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<any>(null);
 
   const muscleGroups = [
-    { name: "Chest", score: 87, tier: "Gold", progress: 85 },
-    { name: "Shoulders", score: 92, tier: "Gold", progress: 95 },
-    { name: "Arms", score: 78, tier: "Silver", progress: 60 },
-    { name: "Back", score: 84, tier: "Gold", progress: 80 },
-    { name: "Core", score: 65, tier: "Silver", progress: 30 },
-    { name: "Quads", score: 73, tier: "Silver", progress: 50 },
-    { name: "Hamstrings", score: 68, tier: "Silver", progress: 40 },
-    { name: "Calves", score: 72, tier: "Silver", progress: 45 },
+    { name: "Chest", score: 87, potentialScore: 98, tier: "Gold", progress: 85, history: [82, 85, 87], advice: "Focus on progressive overload with bench press variations" },
+    { name: "Shoulders", score: 92, potentialScore: 99, tier: "Gold", progress: 95, history: [88, 90, 92], advice: "Incorporate more rear delt work for balanced development" },
+    { name: "Arms", score: 78, potentialScore: 94, tier: "Silver", progress: 60, history: [74, 76, 78], advice: "Increase training frequency and add isolation exercises" },
+    { name: "Back", score: 84, potentialScore: 96, tier: "Gold", progress: 80, history: [80, 82, 84], advice: "Focus on mind-muscle connection during pull movements" },
+    { name: "Core", score: 65, potentialScore: 88, tier: "Silver", progress: 30, history: [62, 63, 65], advice: "Add compound movements and stability training" },
+    { name: "Quads", score: 73, potentialScore: 91, tier: "Silver", progress: 50, history: [70, 71, 73], advice: "Increase squat depth and add unilateral exercises" },
+    { name: "Hamstrings", score: 68, potentialScore: 89, tier: "Silver", progress: 40, history: [65, 66, 68], advice: "Focus on Romanian deadlifts and hamstring curls" },
+    { name: "Calves", score: 72, potentialScore: 87, tier: "Silver", progress: 45, history: [69, 70, 72], advice: "Increase training frequency and vary rep ranges" },
   ];
 
   const badges = [
@@ -83,11 +86,18 @@ const ProgressBadges = () => {
   };
 
   const getStreakFlameColor = (streak: number) => {
-    if (streak >= 100) return "text-cyan-400 tier-glow";
-    if (streak >= 50) return "text-red-400";
-    if (streak >= 30) return "text-orange-400";
+    if (streak >= 100) return "text-cyan-400 tier-glow animate-pulse";
+    if (streak >= 50) return "text-red-400 energy-pulse";
+    if (streak >= 30) return "text-orange-400 energy-pulse";
     if (streak >= 7) return "text-yellow-400";
     return "text-blue-400";
+  };
+
+  const getPotentialColor = () => "text-cyan-400";
+
+  const getProgressBarGradient = (currentScore: number, potentialScore: number) => {
+    const progressPercent = (currentScore / potentialScore) * 100;
+    return progressPercent;
   };
 
   const getTierBadge = (score: number) => {
@@ -141,15 +151,47 @@ const ProgressBadges = () => {
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {muscleGroups.map((muscle) => {
+                const tierInfo = getTierBadge(muscle.score);
+                const potentialTierInfo = getTierBadge(muscle.potentialScore);
                 return (
-                  <Card key={muscle.name} className={`tier-card ${muscle.score >= 95 ? 'tier-glow' : ''}`}>
+                  <Card 
+                    key={muscle.name} 
+                    className={`tier-card cursor-pointer transition-all duration-300 hover:scale-105 hover:tier-glow ${muscle.score >= 95 ? 'tier-glow' : ''}`}
+                    onClick={() => setSelectedMuscleGroup(muscle)}
+                  >
                     <CardContent className="p-4">
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-between mb-3">
                         <span className="font-medium text-foreground">{muscle.name}</span>
+                        <Badge className={`${tierInfo.color} bg-transparent border-0 text-xs`}>
+                          {tierInfo.tier}
+                        </Badge>
                       </div>
-                      <div className="text-2xl font-bold text-accent mb-1">{muscle.score}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {muscle.progress}% to next tier
+                      
+                      {/* Current Score */}
+                      <div className="text-xl font-bold text-accent mb-2">{muscle.score}</div>
+                      
+                      {/* Potential Score */}
+                      <div className="mb-3">
+                        <div className={`text-2xl font-bold ${getPotentialColor()} tier-glow`}>
+                          {muscle.potentialScore}
+                        </div>
+                        <div className="text-xs text-cyan-300/70 font-medium">
+                          POTENTIAL SCORE
+                        </div>
+                      </div>
+                      
+                      {/* Progress Bar */}
+                      <div className="space-y-1">
+                        <div className="flex justify-between text-xs">
+                          <span className="text-muted-foreground">Progress</span>
+                          <span className="text-accent font-medium">
+                            {getProgressBarGradient(muscle.score, muscle.potentialScore).toFixed(0)}%
+                          </span>
+                        </div>
+                        <Progress 
+                          value={getProgressBarGradient(muscle.score, muscle.potentialScore)} 
+                          className="h-2 bg-muted"
+                        />
                       </div>
                     </CardContent>
                   </Card>
@@ -225,6 +267,147 @@ const ProgressBadges = () => {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Detailed Muscle Group Modal */}
+      <Dialog open={!!selectedMuscleGroup} onOpenChange={() => setSelectedMuscleGroup(null)}>
+        <DialogContent className="max-w-md bg-card border border-accent/20">
+          {selectedMuscleGroup && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center justify-between">
+                  <span className="text-foreground">{selectedMuscleGroup.name} Details</span>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setSelectedMuscleGroup(null)}
+                    className="p-1"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </DialogTitle>
+              </DialogHeader>
+              
+              <div className="space-y-6">
+                {/* Score Overview */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center tier-card p-4">
+                    <div className="text-2xl font-bold text-accent mb-1">
+                      {selectedMuscleGroup.score}
+                    </div>
+                    <div className="text-sm text-muted-foreground">Current Score</div>
+                  </div>
+                  <div className="text-center tier-card p-4 tier-glow">
+                    <div className={`text-2xl font-bold ${getPotentialColor()}`}>
+                      {selectedMuscleGroup.potentialScore}
+                    </div>
+                    <div className="text-sm text-cyan-300/70">Potential Score</div>
+                  </div>
+                </div>
+
+                {/* Progress Bar */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Progress to Potential</span>
+                    <span className="text-accent font-medium">
+                      {getProgressBarGradient(selectedMuscleGroup.score, selectedMuscleGroup.potentialScore).toFixed(0)}%
+                    </span>
+                  </div>
+                  <Progress 
+                    value={getProgressBarGradient(selectedMuscleGroup.score, selectedMuscleGroup.potentialScore)} 
+                    className="h-3"
+                  />
+                </div>
+
+                {/* Tier System */}
+                <div className="tier-card p-4">
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    <Trophy className="w-4 h-4 text-accent" />
+                    Tier System
+                  </h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Current Tier</span>
+                      <Badge className={`${getTierBadge(selectedMuscleGroup.score).color} bg-transparent`}>
+                        {getTierBadge(selectedMuscleGroup.score).tier}
+                      </Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Potential Tier</span>
+                      <Badge className={`${getTierBadge(selectedMuscleGroup.potentialScore).color} bg-transparent`}>
+                        {getTierBadge(selectedMuscleGroup.potentialScore).tier}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Historical Progression */}
+                <div className="tier-card p-4">
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    <BarChart3 className="w-4 h-4 text-accent" />
+                    Recent Progress
+                  </h4>
+                  <div className="flex justify-between items-center">
+                    {selectedMuscleGroup.history.map((score: number, index: number) => (
+                      <div key={index} className="text-center">
+                        <div className="text-lg font-bold text-accent">{score}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {index === 0 ? '3w ago' : index === 1 ? '2w ago' : 'Last week'}
+                        </div>
+                      </div>
+                    ))}
+                    <div className="text-center">
+                      <div className={`text-lg font-bold ${getPotentialColor()}`}>
+                        {selectedMuscleGroup.score}
+                      </div>
+                      <div className="text-xs text-cyan-300/70">Current</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Improvement Advice */}
+                <div className="tier-card p-4">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <Target className="w-4 h-4 text-accent" />
+                    Improvement Tips
+                  </h4>
+                  <p className="text-sm text-muted-foreground">
+                    {selectedMuscleGroup.advice}
+                  </p>
+                </div>
+
+                {/* Related Badges */}
+                <div className="tier-card p-4">
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    <Award className="w-4 h-4 text-accent" />
+                    Related Badges
+                  </h4>
+                  <div className="space-y-2">
+                    {badges
+                      .filter(badge => badge.category === "Performance")
+                      .slice(0, 2)
+                      .map(badge => (
+                        <div key={badge.id} className="flex items-center gap-3 p-2 rounded border border-accent/20">
+                          <div className={`w-8 h-8 rounded-full bg-background border flex items-center justify-center ${
+                            badge.unlocked ? 'border-accent' : 'border-muted'
+                          }`}>
+                            <badge.icon className={`w-4 h-4 ${getBadgeColor(badge.tier, badge.unlocked)}`} />
+                          </div>
+                          <div className="flex-1">
+                            <div className="text-sm font-medium">{badge.name}</div>
+                            <div className="text-xs text-muted-foreground">{badge.description}</div>
+                          </div>
+                          {badge.unlocked && (
+                            <Award className="w-4 h-4 text-green-400" />
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
