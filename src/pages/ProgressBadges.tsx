@@ -148,13 +148,13 @@ const ProgressBadges = () => {
           {/* Overall Potential Score */}
           <Card className="tier-card tier-glow">
             <CardHeader className="text-center">
-              <CardTitle className="text-lg font-semibold text-foreground mb-2">
+              <CardTitle className="text-xl font-semibold text-foreground mb-4">
                 Overall Potential
               </CardTitle>
-              <div className={`text-5xl font-bold ${getPotentialColor()} tier-glow mb-2`}>
+              <div className={`text-6xl font-bold ${getPotentialColor()} tier-glow mb-4`}>
                 {overallPotentialScore}
               </div>
-              <Badge className={`${getTierBadge(overallPotentialScore).color} bg-transparent border-0 text-sm`}>
+              <Badge className={`${getTierBadge(overallPotentialScore).color} bg-transparent border-0 text-lg`}>
                 {getTierBadge(overallPotentialScore).tier} Tier
               </Badge>
             </CardHeader>
