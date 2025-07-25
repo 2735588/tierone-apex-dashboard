@@ -50,14 +50,26 @@ All colors MUST be HSL.
     --performance-glow: 142 90% 65%;
     --energy: 142 100% 50%;
     
+    /* Female-specific pink colors */
+    --primary-female: 330 81% 60%;
+    --primary-female-foreground: 220 15% 8%;
+    --accent-female: 330 81% 60%;
+    --accent-female-foreground: 220 15% 8%;
+    --performance-glow-female: 330 71% 70%;
+    
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(142 76% 45%), hsl(142 90% 55%));
+    --gradient-primary-female: linear-gradient(135deg, hsl(330 81% 60%), hsl(330 71% 70%));
     --gradient-glow: linear-gradient(135deg, hsl(142 90% 55% / 0.2), hsl(142 76% 45% / 0.1));
+    --gradient-glow-female: linear-gradient(135deg, hsl(330 81% 60% / 0.2), hsl(330 71% 70% / 0.1));
     --gradient-performance: linear-gradient(90deg, hsl(142 76% 45%), hsl(142 90% 55%), hsl(45 100% 60%));
+    --gradient-performance-female: linear-gradient(90deg, hsl(330 81% 60%), hsl(330 71% 70%), hsl(45 100% 60%));
     
     /* Shadows */
     --shadow-glow: 0 0 20px hsl(142 90% 55% / 0.3);
+    --shadow-glow-female: 0 0 20px hsl(330 81% 60% / 0.3);
     --shadow-tier: 0 8px 32px hsl(142 76% 45% / 0.4);
+    --shadow-tier-female: 0 8px 32px hsl(330 81% 60% / 0.4);
     --shadow-card: 0 4px 16px hsl(220 15% 5% / 0.4);
 
     --radius: 0.75rem;

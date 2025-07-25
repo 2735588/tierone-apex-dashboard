@@ -26,7 +26,9 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					female: 'hsl(var(--primary-female))',
+					'female-foreground': 'hsl(var(--primary-female-foreground))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -42,7 +44,9 @@ export default {
 				},
 				accent: {
 					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					foreground: 'hsl(var(--accent-foreground))',
+					female: 'hsl(var(--accent-female))',
+					'female-foreground': 'hsl(var(--accent-female-foreground))'
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
@@ -73,8 +77,11 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-primary-female': 'var(--gradient-primary-female)',
 				'gradient-glow': 'var(--gradient-glow)',
+				'gradient-glow-female': 'var(--gradient-glow-female)',
 				'gradient-performance': 'var(--gradient-performance)',
+				'gradient-performance-female': 'var(--gradient-performance-female)',
 			},
 			boxShadow: {
 				'glow': 'var(--shadow-glow)',
