@@ -160,27 +160,6 @@ const ProgressBadges = () => {
             </CardHeader>
           </Card>
 
-          {/* Overall Improvement Tips */}
-          <Card className="tier-card">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-                <Target className="w-5 h-5 text-accent" />
-                Overall Improvement Tips
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="text-sm text-muted-foreground">
-                • Prioritize compound lifts that engage multiple muscle groups
-              </div>
-              <div className="text-sm text-muted-foreground">
-                • Use progressive overload and track weekly improvements
-              </div>
-              <div className="text-sm text-muted-foreground">
-                • Ensure adequate recovery, sleep, and protein intake for muscle growth
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Muscle Group Tiers */}
           <div>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -208,6 +187,27 @@ const ProgressBadges = () => {
               })}
             </div>
           </div>
+
+          {/* Overall Improvement Tips */}
+          <Card className="tier-card">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+                <Target className="w-5 h-5 text-accent" />
+                Overall Improvement Tips
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="text-sm text-muted-foreground">
+                • Prioritize compound lifts that engage multiple muscle groups
+              </div>
+              <div className="text-sm text-muted-foreground">
+                • Use progressive overload and track weekly improvements
+              </div>
+              <div className="text-sm text-muted-foreground">
+                • Ensure adequate recovery, sleep, and protein intake for muscle growth
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="badges" className="space-y-6">
