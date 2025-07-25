@@ -423,14 +423,14 @@ const ProgressBadges = () => {
                     Recent Progress
                   </h4>
                   <div className="flex justify-between items-center">
-                    {selectedMuscleGroup.history.map((score: number, index: number) => (
-                      <div key={index} className="text-center">
-                        <div className="text-lg font-bold text-accent">{score}</div>
-                        <div className="text-xs text-muted-foreground">
-                          {index === 0 ? '3w ago' : index === 1 ? '2w ago' : 'Last week'}
+                      {selectedMuscleGroup.history.map((score: number, index: number) => (
+                        <div key={index} className="text-center">
+                          <div className="text-lg font-bold text-accent">{score}</div>
+                          <div className="text-xs text-muted-foreground">
+                            {index === 0 ? '1 year' : index === 1 ? '6 months' : '3 months'}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
                     <div className="text-center">
                       <div className={`text-lg font-bold ${getPotentialColor()}`}>
                         {selectedMuscleGroup.score}
