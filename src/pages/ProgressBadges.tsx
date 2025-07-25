@@ -12,16 +12,17 @@ const ProgressBadges = () => {
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<any>(null);
 
   const muscleGroups = [
-    { name: "Potential", score: 95, potentialScore: 100, tier: "Diamond", progress: 95, history: [90, 92, 95], advice: "You're reaching peak performance across all muscle groups", isPotential: true },
-    { name: "Chest", score: 87, potentialScore: 98, tier: "Gold", progress: 85, history: [82, 85, 87], advice: "Focus on progressive overload with bench press variations" },
-    { name: "Shoulders", score: 92, potentialScore: 99, tier: "Gold", progress: 95, history: [88, 90, 92], advice: "Incorporate more rear delt work for balanced development" },
-    { name: "Arms", score: 78, potentialScore: 94, tier: "Silver", progress: 60, history: [74, 76, 78], advice: "Increase training frequency and add isolation exercises" },
-    { name: "Back", score: 84, potentialScore: 96, tier: "Gold", progress: 80, history: [80, 82, 84], advice: "Focus on mind-muscle connection during pull movements" },
-    { name: "Core", score: 65, potentialScore: 88, tier: "Silver", progress: 30, history: [62, 63, 65], advice: "Add compound movements and stability training" },
-    { name: "Quads", score: 73, potentialScore: 91, tier: "Silver", progress: 50, history: [70, 71, 73], advice: "Increase squat depth and add unilateral exercises" },
-    { name: "Hamstrings", score: 68, potentialScore: 89, tier: "Silver", progress: 40, history: [65, 66, 68], advice: "Focus on Romanian deadlifts and hamstring curls" },
-    { name: "Calves", score: 72, potentialScore: 87, tier: "Silver", progress: 45, history: [69, 70, 72], advice: "Increase training frequency and vary rep ranges" },
+    { name: "Chest", score: 87, tier: "Gold", history: [82, 85, 87], advice: "Focus on progressive overload with bench press variations" },
+    { name: "Shoulders", score: 92, tier: "Gold", history: [88, 90, 92], advice: "Incorporate more rear delt work for balanced development" },
+    { name: "Arms", score: 78, tier: "Silver", history: [74, 76, 78], advice: "Increase training frequency and add isolation exercises" },
+    { name: "Back", score: 84, tier: "Gold", history: [80, 82, 84], advice: "Focus on mind-muscle connection during pull movements" },
+    { name: "Core", score: 65, tier: "Silver", history: [62, 63, 65], advice: "Add compound movements and stability training" },
+    { name: "Quads", score: 73, tier: "Silver", history: [70, 71, 73], advice: "Increase squat depth and add unilateral exercises" },
+    { name: "Hamstrings", score: 68, tier: "Silver", history: [65, 66, 68], advice: "Focus on Romanian deadlifts and hamstring curls" },
+    { name: "Calves", score: 72, tier: "Silver", history: [69, 70, 72], advice: "Increase training frequency and vary rep ranges" },
   ];
+
+  const overallPotentialScore = 98;
 
   const badges = [
     {
@@ -144,6 +145,21 @@ const ProgressBadges = () => {
             </CardHeader>
           </Card>
 
+          {/* Overall Potential Score */}
+          <Card className="tier-card tier-glow">
+            <CardHeader className="text-center">
+              <CardTitle className="text-lg font-semibold text-foreground mb-2">
+                Overall Potential
+              </CardTitle>
+              <div className={`text-5xl font-bold ${getPotentialColor()} tier-glow mb-2`}>
+                {overallPotentialScore}
+              </div>
+              <Badge className={`${getTierBadge(overallPotentialScore).color} bg-transparent border-0 text-sm`}>
+                {getTierBadge(overallPotentialScore).tier} Tier
+              </Badge>
+            </CardHeader>
+          </Card>
+
           {/* Muscle Group Tiers */}
           <div>
             <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -153,14 +169,10 @@ const ProgressBadges = () => {
             <div className="grid grid-cols-2 gap-3">
               {muscleGroups.map((muscle) => {
                 const tierInfo = getTierBadge(muscle.score);
-                const potentialTierInfo = getTierBadge(muscle.potentialScore);
-                const isPotentialCard = muscle.isPotential;
                 return (
                   <Card 
                     key={muscle.name} 
-                    className={`tier-card cursor-pointer transition-all duration-300 hover:scale-105 hover:tier-glow ${muscle.score >= 95 ? 'tier-glow' : ''} ${
-                      isPotentialCard ? 'col-span-2 scale-150 my-4 mx-auto max-w-sm' : ''
-                    }`}
+                    className={`tier-card cursor-pointer transition-all duration-300 hover:scale-105 hover:tier-glow ${muscle.score >= 95 ? 'tier-glow' : ''}`}
                     onClick={() => setSelectedMuscleGroup(muscle)}
                   >
                     <CardContent className="p-4">
@@ -172,31 +184,7 @@ const ProgressBadges = () => {
                       </div>
                       
                       {/* Current Score */}
-                      <div className="text-xl font-bold text-accent mb-1">{muscle.score}</div>
-                      
-                      {/* Potential Score - positioned directly below, 1.5x larger */}
-                      <div className="mb-3">
-                        <div className={`text-3xl font-bold ${getPotentialColor()} tier-glow`}>
-                          {muscle.potentialScore}
-                        </div>
-                        <div className="text-xs text-cyan-300/70 font-medium">
-                          POTENTIAL SCORE
-                        </div>
-                      </div>
-                      
-                      {/* Progress Bar */}
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-xs">
-                          <span className="text-muted-foreground">Progress</span>
-                          <span className="text-accent font-medium">
-                            {getProgressBarGradient(muscle.score, muscle.potentialScore).toFixed(0)}%
-                          </span>
-                        </div>
-                        <Progress 
-                          value={getProgressBarGradient(muscle.score, muscle.potentialScore)} 
-                          className="h-2 bg-muted"
-                        />
-                      </div>
+                      <div className="text-2xl font-bold text-accent">{muscle.score}</div>
                     </CardContent>
                   </Card>
                 );
@@ -293,55 +281,14 @@ const ProgressBadges = () => {
               
               <div className="space-y-6">
                 {/* Score Overview */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="text-center tier-card p-4">
-                    <div className="text-2xl font-bold text-accent mb-1">
-                      {selectedMuscleGroup.score}
-                    </div>
-                    <div className="text-sm text-muted-foreground">Current Score</div>
+                <div className="text-center tier-card p-4">
+                  <div className="text-3xl font-bold text-accent mb-2">
+                    {selectedMuscleGroup.score}
                   </div>
-                  <div className="text-center tier-card p-4 tier-glow">
-                    <div className={`text-2xl font-bold ${getPotentialColor()}`}>
-                      {selectedMuscleGroup.potentialScore}
-                    </div>
-                    <div className="text-sm text-cyan-300/70">Potential Score</div>
-                  </div>
-                </div>
-
-                {/* Progress Bar */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Progress to Potential</span>
-                    <span className="text-accent font-medium">
-                      {getProgressBarGradient(selectedMuscleGroup.score, selectedMuscleGroup.potentialScore).toFixed(0)}%
-                    </span>
-                  </div>
-                  <Progress 
-                    value={getProgressBarGradient(selectedMuscleGroup.score, selectedMuscleGroup.potentialScore)} 
-                    className="h-3"
-                  />
-                </div>
-
-                {/* Tier System */}
-                <div className="tier-card p-4">
-                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                    <Trophy className="w-4 h-4 text-accent" />
-                    Tier System
-                  </h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span>Current Tier</span>
-                      <Badge className={`${getTierBadge(selectedMuscleGroup.score).color} bg-transparent`}>
-                        {getTierBadge(selectedMuscleGroup.score).tier}
-                      </Badge>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Potential Tier</span>
-                      <Badge className={`${getTierBadge(selectedMuscleGroup.potentialScore).color} bg-transparent`}>
-                        {getTierBadge(selectedMuscleGroup.potentialScore).tier}
-                      </Badge>
-                    </div>
-                  </div>
+                  <div className="text-sm text-muted-foreground mb-2">Current Score</div>
+                  <Badge className={`${getTierBadge(selectedMuscleGroup.score).color} bg-transparent border-0`}>
+                    {getTierBadge(selectedMuscleGroup.score).tier} Tier
+                  </Badge>
                 </div>
 
                 {/* Historical Progression */}
