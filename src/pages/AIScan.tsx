@@ -90,17 +90,21 @@ const AIScan = () => {
   const captureCurrentPose = () => {
     // Simulate capturing pose
     setTimeout(() => {
-      console.log(`Current pose: ${currentPose}, Total poses: ${poses.length}`);
-      console.log(`Condition check: ${currentPose} < ${poses.length - 1} = ${currentPose < poses.length - 1}`);
-      
-      if (currentPose < poses.length - 1) {
-        console.log('Moving to next pose');
-        setCurrentPose(prev => prev + 1);
-        startCountdown();
-      } else {
-        console.log('Completing scan - reached final pose');
-        completeScan();
-      }
+      setCurrentPose(prevPose => {
+        const nextPose = prevPose + 1;
+        console.log(`Current pose: ${prevPose}, Next pose: ${nextPose}, Total poses: ${poses.length}`);
+        
+        if (nextPose >= poses.length) {
+          console.log('Completing scan - reached final pose');
+          completeScan();
+          return prevPose; // Don't increment past the last pose
+        } else {
+          console.log('Moving to next pose');
+          // Start countdown for next pose
+          setTimeout(() => startCountdown(), 100);
+          return nextPose;
+        }
+      });
     }, 500);
   };
 
