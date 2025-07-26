@@ -3,9 +3,11 @@ import { MuscleGroup } from "@/components/MuscleGroup";
 import { ScanButton } from "@/components/ScanButton";
 import { Bell, Settings, Flame, Timer, Activity, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import bodyImage from "@/assets/body-silhouette.png";
 
 const MaleIndex = () => {
+  const navigate = useNavigate();
   const muscleGroups = [
     { name: "Chest", score: 87, position: { top: "18%", left: "38%" }, isActive: true },
     { name: "Shoulders", score: 92, position: { top: "10%", left: "28%" } },
@@ -94,7 +96,10 @@ const MaleIndex = () => {
 
         {/* Central Scan Button */}
         <div className="flex justify-center mb-6">
-          <Button className="bg-gradient-primary hover:bg-gradient-primary/90 text-primary-foreground px-10 py-4 rounded-full font-bold tier-glow energy-pulse text-lg shadow-xl transform hover:scale-105 transition-all duration-200">
+          <Button 
+            onClick={() => navigate('/scan')}
+            className="bg-gradient-primary hover:bg-gradient-primary/90 text-primary-foreground px-10 py-4 rounded-full font-bold tier-glow energy-pulse text-lg shadow-xl transform hover:scale-105 transition-all duration-200"
+          >
             <Zap className="w-6 h-6 mr-3" />
             START SCAN
           </Button>
