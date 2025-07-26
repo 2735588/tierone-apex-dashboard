@@ -1,11 +1,17 @@
-import { Camera, Upload, Zap, Clock, Crown, CheckCircle, AlertCircle, Share } from "lucide-react";
+import { Camera, Upload, Zap, Clock, Crown, CheckCircle, AlertCircle, Share, X, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const AIScan = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [scanMode, setScanMode] = useState<'free' | 'premium' | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
+  const [showCamera, setShowCamera] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
 
   const steps = [
     { number: 1, title: "Choose Scan Mode", icon: Crown },
@@ -33,6 +39,67 @@ const AIScan = () => {
         setCurrentStep(currentStep + 1);
       }
     }
+  };
+
+  const startCamera = async () => {
+    try {
+      const mediaStream = await navigator.mediaDevices.getUserMedia({ 
+        video: { facingMode: 'user' } 
+      });
+      setStream(mediaStream);
+      setShowCamera(true);
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+      }
+    } catch (error) {
+      console.error('Error accessing camera:', error);
+      alert('Could not access camera. Please check permissions.');
+    }
+  };
+
+  const stopCamera = () => {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+      setStream(null);
+    }
+    setShowCamera(false);
+  };
+
+  const capturePhoto = () => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      const context = canvas.getContext('2d');
+      
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      if (context) {
+        context.drawImage(video, 0, 0);
+        const photoDataUrl = canvas.toDataURL('image/jpeg');
+        setUploadedPhotos(prev => [...prev, photoDataUrl]);
+        stopCamera();
+      }
+    }
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target?.result) {
+            setUploadedPhotos(prev => [...prev, e.target!.result as string]);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
+  const removePhoto = (index: number) => {
+    setUploadedPhotos(prev => prev.filter((_, i) => i !== index));
   };
 
   const renderStepContent = () => {
@@ -152,36 +219,115 @@ const AIScan = () => {
             <div className="text-center mb-8">
               <Upload className="w-16 h-16 text-accent mx-auto mb-4" />
               <h2 className="text-2xl font-bold text-foreground mb-2">Upload Photos</h2>
-              <p className="text-muted-foreground">Take 10 photos or record a 360° video</p>
+              <p className="text-muted-foreground">Take or upload photos for analysis</p>
             </div>
 
-            <div className="tier-card rounded-xl p-8 text-center border-2 border-dashed border-muted">
-              <Camera className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground mb-4">Tap to take photos or upload from gallery</p>
-              
-              <div className="grid grid-cols-2 gap-3">
-                <Button variant="outline" className="h-12">
-                  <Camera className="w-5 h-5 mr-2" />
-                  Take Photos
-                </Button>
-                <Button variant="outline" className="h-12">
-                  <Upload className="w-5 h-5 mr-2" />
-                  Upload Video
-                </Button>
+            {showCamera ? (
+              <div className="relative">
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  className="w-full h-64 object-cover rounded-xl bg-black"
+                />
+                <canvas ref={canvasRef} className="hidden" />
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-4">
+                  <Button 
+                    onClick={capturePhoto}
+                    className="w-16 h-16 rounded-full bg-white text-black hover:bg-gray-200"
+                  >
+                    <Camera className="w-6 h-6" />
+                  </Button>
+                  <Button 
+                    onClick={stopCamera}
+                    variant="outline"
+                    className="w-16 h-16 rounded-full"
+                  >
+                    <X className="w-6 h-6" />
+                  </Button>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="tier-card rounded-xl p-8 text-center border-2 border-dashed border-muted">
+                <Camera className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground mb-4">Take photos or upload from gallery</p>
+                
+                <div className="grid grid-cols-2 gap-3">
+                  <Button 
+                    variant="outline" 
+                    className="h-12"
+                    onClick={startCamera}
+                  >
+                    <Camera className="w-5 h-5 mr-2" />
+                    Take Photos
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="h-12"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <Upload className="w-5 h-5 mr-2" />
+                    Upload Photos
+                  </Button>
+                </div>
+                
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </div>
+            )}
+
+            {/* Photo Gallery */}
+            {uploadedPhotos.length > 0 && (
+              <div className="tier-card rounded-xl p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-semibold text-foreground">Uploaded Photos</h4>
+                  <span className="text-sm text-muted-foreground">{uploadedPhotos.length}/10</span>
+                </div>
+                <div className="grid grid-cols-3 gap-2">
+                  {uploadedPhotos.map((photo, index) => (
+                    <div key={index} className="relative">
+                      <img 
+                        src={photo} 
+                        alt={`Upload ${index + 1}`}
+                        className="w-full h-20 object-cover rounded-lg"
+                      />
+                      <button
+                        onClick={() => removePhoto(index)}
+                        className="absolute -top-2 -right-2 w-6 h-6 bg-destructive rounded-full flex items-center justify-center text-destructive-foreground text-xs"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="tier-card rounded-xl p-4">
               <div className="text-sm text-muted-foreground text-center">
-                <p>Photos: 0/10 uploaded</p>
+                <p>Photos: {uploadedPhotos.length}/10 uploaded</p>
                 <div className="w-full bg-muted rounded-full h-2 mt-2">
-                  <div className="bg-accent h-full rounded-full" style={{ width: '0%' }} />
+                  <div 
+                    className="bg-accent h-full rounded-full transition-all duration-300" 
+                    style={{ width: `${(uploadedPhotos.length / 10) * 100}%` }} 
+                  />
                 </div>
               </div>
             </div>
 
-            <Button variant="tier" className="w-full" onClick={handleNext} disabled>
-              Process Scan
+            <Button 
+              variant="tier" 
+              className="w-full" 
+              onClick={handleNext} 
+              disabled={uploadedPhotos.length === 0}
+            >
+              Process Scan ({uploadedPhotos.length} photos)
             </Button>
           </div>
         );
