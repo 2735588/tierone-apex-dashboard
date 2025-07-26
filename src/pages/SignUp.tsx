@@ -40,11 +40,11 @@ export const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Background glow effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900" />
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/3 rounded-full blur-3xl" />
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-card" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
       
       {/* Language Selector */}
       <div className="absolute top-6 right-6 z-20">
@@ -54,25 +54,28 @@ export const SignUp = () => {
       <div className="relative z-10 w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">
+          <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center tier-glow mx-auto mb-4">
+            <span className="text-2xl font-bold text-primary-foreground">T1</span>
+          </div>
+          <h1 className="text-4xl font-bold text-foreground mb-2 tracking-tight">
             {t('appName')}
           </h1>
-          <div className="w-16 h-1 bg-gradient-to-r from-white/50 to-white/20 mx-auto rounded-full" />
+          <div className="w-16 h-1 bg-gradient-primary mx-auto rounded-full tier-glow" />
         </div>
 
         {/* Main heading */}
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-white mb-2">
+          <h2 className="text-3xl font-bold text-foreground mb-2">
             {isSignIn ? t('welcomeBack') : t('unleashStrength')}
           </h2>
-          <p className="text-gray-400 text-lg">
+          <p className="text-muted-foreground text-lg">
             {isSignIn ? t('signInSubtitle') : t('signUpSubtitle')}
           </p>
         </div>
 
-        <Card className="bg-gray-900/50 border border-gray-800 backdrop-blur-xl">
+        <Card className="tier-card border border-border backdrop-blur-xl">
           <CardHeader className="pb-4">
-            <h3 className="text-xl font-semibold text-white text-center">
+            <h3 className="text-xl font-semibold text-foreground text-center">
               {isSignIn ? t('signIn') : t('createAccount')}
             </h3>
           </CardHeader>
@@ -81,7 +84,7 @@ export const SignUp = () => {
               {!isSignIn && (
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">
+                    <label className="text-sm font-medium text-foreground">
                       {t('firstName')}
                     </label>
                     <Input
@@ -89,12 +92,12 @@ export const SignUp = () => {
                       value={formData.firstName}
                       onChange={handleInputChange}
                       placeholder="John"
-                      className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-white/30"
+                      className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:border-accent"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-300">
+                    <label className="text-sm font-medium text-foreground">
                       {t('lastName')}
                     </label>
                     <Input
@@ -102,7 +105,7 @@ export const SignUp = () => {
                       value={formData.lastName}
                       onChange={handleInputChange}
                       placeholder="Doe"
-                      className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-white/30"
+                      className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:border-accent"
                       required
                     />
                   </div>
@@ -110,7 +113,7 @@ export const SignUp = () => {
               )}
               
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">
+                <label className="text-sm font-medium text-foreground">
                   {t('email')}
                 </label>
                 <Input
@@ -119,13 +122,13 @@ export const SignUp = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="john@example.com"
-                  className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-white/30"
+                  className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:border-accent"
                   required
                 />
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300">
+                <label className="text-sm font-medium text-foreground">
                   {t('password')}
                 </label>
                 <Input
@@ -134,41 +137,41 @@ export const SignUp = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="••••••••"
-                  className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-white/30"
+                  className="bg-input border-border text-foreground placeholder:text-muted-foreground focus:border-accent"
                   required
                 />
               </div>
 
               <Button 
                 type="submit" 
-                className="w-full bg-white text-black hover:bg-gray-200 font-semibold py-3 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-white/20"
+                className="w-full bg-gradient-primary text-primary-foreground hover:bg-gradient-primary/90 font-semibold py-3 transition-all duration-300 hover:scale-105 tier-glow"
               >
                 {isSignIn ? t('signIn') : t('signUp')}
               </Button>
             </form>
 
             <div className="relative">
-              <Separator className="bg-gray-700" />
+              <Separator className="bg-border" />
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="bg-gray-900 px-3 text-sm text-gray-400">{t('or')}</span>
+                <span className="bg-card px-3 text-sm text-muted-foreground">{t('or')}</span>
               </div>
             </div>
 
             <Button
               onClick={handleGoogleSignIn}
               variant="outline"
-              className="w-full bg-transparent border-gray-700 text-white hover:bg-gray-800/50 hover:border-gray-600 py-3 transition-all duration-300"
+              className="w-full bg-transparent border-border text-foreground hover:bg-accent/10 hover:border-accent py-3 transition-all duration-300"
             >
               <Chrome className="w-5 h-5 mr-2" />
               {t('continueWithGoogle')}
             </Button>
 
             <div className="text-center pt-4">
-              <p className="text-gray-400 text-sm">
+              <p className="text-muted-foreground text-sm">
                 {isSignIn ? t('dontHaveAccount') : t('alreadyHaveAccount')}{" "}
                 <button
                   onClick={() => setIsSignIn(!isSignIn)}
-                  className="text-white hover:text-gray-300 font-medium transition-colors underline-offset-4 hover:underline"
+                  className="text-accent hover:text-accent/80 font-medium transition-colors underline-offset-4 hover:underline"
                 >
                   {isSignIn ? t('signUp') : t('signIn')}
                 </button>
@@ -179,13 +182,13 @@ export const SignUp = () => {
 
         {/* Footer */}
         <div className="text-center mt-8">
-          <p className="text-xs text-gray-500 leading-relaxed">
+          <p className="text-xs text-muted-foreground leading-relaxed">
             {t('termsAndPrivacy').split('Terms of Service')[0]}
-            <button className="text-gray-400 hover:text-white transition-colors underline-offset-4 hover:underline">
+            <button className="text-muted-foreground hover:text-accent transition-colors underline-offset-4 hover:underline">
               {t('termsOfService')}
             </button>
             {t('termsAndPrivacy').split('Terms of Service')[1]?.split('Privacy Policy')[0] || ' and '}
-            <button className="text-gray-400 hover:text-white transition-colors underline-offset-4 hover:underline">
+            <button className="text-muted-foreground hover:text-accent transition-colors underline-offset-4 hover:underline">
               {t('privacyPolicy')}
             </button>
           </p>
