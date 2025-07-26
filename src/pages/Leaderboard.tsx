@@ -14,53 +14,53 @@ const Leaderboard = () => {
 
   const globalLeaders = [
     { rank: 1, name: "Alex_Beast", score: 774, country: "🇺🇸", tier: "Diamond", records: [
-      { muscle: "Chest", score: 95, isPinned: true },
-      { muscle: "Arms", score: 92, isPinned: true },
-      { muscle: "Shoulders", score: 88, isPinned: false }
+      { exercise: "Bench Press", weight: 315, unit: "lbs", isPinned: true },
+      { exercise: "Deadlift", weight: 495, unit: "lbs", isPinned: true },
+      { exercise: "Squat", weight: 405, unit: "lbs", isPinned: false }
     ]},
     { rank: 2, name: "Nordic_Thor", score: 763, country: "🇳🇴", tier: "Diamond", records: [
-      { muscle: "Back", score: 98, isPinned: true },
-      { muscle: "Core", score: 89, isPinned: true },
-      { muscle: "Quads", score: 85, isPinned: false }
+      { exercise: "Deadlift", weight: 220, unit: "kg", isPinned: true },
+      { exercise: "Overhead Press", weight: 100, unit: "kg", isPinned: true },
+      { exercise: "Squat", weight: 180, unit: "kg", isPinned: false }
     ]},
     { rank: 3, name: "Aussie_Tank", score: 754, country: "🇦🇺", tier: "Diamond", records: [
-      { muscle: "Hamstrings", score: 94, isPinned: true },
-      { muscle: "Calves", score: 91, isPinned: true }
+      { exercise: "Squat", weight: 200, unit: "kg", isPinned: true },
+      { exercise: "Bench Press", weight: 150, unit: "kg", isPinned: true }
     ]},
     { rank: 4, name: "UK_Warrior", score: 745, country: "🇬🇧", tier: "Gold", records: [
-      { muscle: "Chest", score: 87, isPinned: true },
-      { muscle: "Arms", score: 84, isPinned: false }
+      { exercise: "Bench Press", weight: 275, unit: "lbs", isPinned: true },
+      { exercise: "Barbell Row", weight: 225, unit: "lbs", isPinned: false }
     ]},
     { rank: 5, name: "Tokyo_Titan", score: 742, country: "🇯🇵", tier: "Gold", records: [
-      { muscle: "Shoulders", score: 86, isPinned: true }
+      { exercise: "Overhead Press", weight: 85, unit: "kg", isPinned: true }
     ]},
     { rank: 6, name: "Berlin_Beast", score: 735, country: "🇩🇪", tier: "Gold", records: [
-      { muscle: "Back", score: 82, isPinned: true }
+      { exercise: "Deadlift", weight: 190, unit: "kg", isPinned: true }
     ]},
     { rank: 7, name: "Brazil_Bull", score: 726, country: "🇧🇷", tier: "Gold", records: [
-      { muscle: "Core", score: 79, isPinned: true }
+      { exercise: "Squat", weight: 170, unit: "kg", isPinned: true }
     ]},
     { rank: 8, name: "Maple_Muscle", score: 716, country: "🇨🇦", tier: "Gold", records: [
-      { muscle: "Quads", score: 78, isPinned: true }
+      { exercise: "Bench Press", weight: 225, unit: "lbs", isPinned: true }
     ]},
   ];
 
   const nationalLeaders = [
     { rank: 1, name: "Kiwi_King", score: 678, country: "🇳🇿", tier: "Gold", records: [
-      { muscle: "Chest", score: 81, isPinned: true },
-      { muscle: "Arms", score: 79, isPinned: true }
+      { exercise: "Bench Press", weight: 130, unit: "kg", isPinned: true },
+      { exercise: "Deadlift", weight: 180, unit: "kg", isPinned: true }
     ]},
     { rank: 2, name: "Auckland_Alpha", score: 666, country: "🇳🇿", tier: "Gold", records: [
-      { muscle: "Back", score: 77, isPinned: true }
+      { exercise: "Squat", weight: 160, unit: "kg", isPinned: true }
     ]},
     { rank: 3, name: "Wellington_Wolf", score: 657, country: "🇳🇿", tier: "Gold", records: [
-      { muscle: "Core", score: 75, isPinned: true }
+      { exercise: "Overhead Press", weight: 75, unit: "kg", isPinned: true }
     ]},
     { rank: 4, name: "Christchurch_Chief", score: 647, country: "🇳🇿", tier: "Silver", records: [
-      { muscle: "Quads", score: 73, isPinned: true }
+      { exercise: "Deadlift", weight: 170, unit: "kg", isPinned: true }
     ]},
     { rank: 5, name: "Hamilton_Hero", score: 638, country: "🇳🇿", tier: "Silver", records: [
-      { muscle: "Shoulders", score: 71, isPinned: true }
+      { exercise: "Bench Press", weight: 115, unit: "kg", isPinned: true }
     ]},
   ];
 
@@ -268,10 +268,10 @@ const Leaderboard = () => {
                       <div key={index} className="flex items-center justify-between p-2 bg-accent/5 rounded-lg border border-accent/20">
                         <div className="flex items-center gap-2">
                           <Target className="w-3 h-3 text-accent" />
-                          <span className="text-sm font-medium">{record.muscle}</span>
+                          <span className="text-sm font-medium">{record.exercise}</span>
                         </div>
                         <div className="text-sm font-bold text-accent">
-                          {record.score}
+                          {record.weight} {record.unit}
                         </div>
                       </div>
                     ))}
