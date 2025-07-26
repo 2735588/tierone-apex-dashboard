@@ -1,22 +1,36 @@
-import { Camera, Upload, Zap, Clock, Crown, CheckCircle, AlertCircle, Share, X, RotateCcw } from "lucide-react";
+import { Camera, Zap, Clock, Crown, CheckCircle, AlertCircle, Share, RotateCcw, Smartphone, User, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AIScan = () => {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [scanMode, setScanMode] = useState<'free' | 'premium' | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([]);
-  const [showCamera, setShowCamera] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
+  const [currentPose, setCurrentPose] = useState(0);
+  const [countdown, setCountdown] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
+
+  const poses = [
+    "Face Forward, Arms Slightly Out",
+    "Left Side View", 
+    "Right Side View",
+    "Back View",
+    "Arms Raised Front",
+    "Arms Flexed Front", 
+    "Arms Flexed Side",
+    "Arms Down Relaxed",
+    "Slight Squat Pose",
+    "Neutral Stance"
+  ];
 
   const steps = [
     { number: 1, title: "Choose Scan Mode", icon: Crown },
-    { number: 2, title: "Instructions", icon: AlertCircle },
-    { number: 3, title: "Upload Photos", icon: Upload },
+    { number: 2, title: "Setup Instructions", icon: AlertCircle },
+    { number: 3, title: "Live Scan", icon: Camera },
     { number: 4, title: "Processing", icon: Clock },
     { number: 5, title: "Results", icon: CheckCircle },
   ];
@@ -29,77 +43,81 @@ const AIScan = () => {
   const handleNext = () => {
     if (currentStep < 5) {
       if (currentStep === 3) {
-        setIsProcessing(true);
-        // Simulate processing
-        setTimeout(() => {
-          setIsProcessing(false);
-          setCurrentStep(5);
-        }, 3000);
+        startScan();
       } else {
         setCurrentStep(currentStep + 1);
       }
     }
   };
 
-  const startCamera = async () => {
+  const startScan = async () => {
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({ 
         video: { facingMode: 'user' } 
       });
       setStream(mediaStream);
-      setShowCamera(true);
+      setIsScanning(true);
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
       }
+      // Start pose sequence
+      startPoseSequence();
     } catch (error) {
       console.error('Error accessing camera:', error);
-      alert('Could not access camera. Please check permissions.');
+      alert('Could not access camera. Please check permissions and try again.');
     }
   };
 
-  const stopCamera = () => {
+  const startPoseSequence = () => {
+    setCurrentPose(0);
+    startCountdown();
+  };
+
+  const startCountdown = () => {
+    setCountdown(3);
+    const timer = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          captureCurrentPose();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const captureCurrentPose = () => {
+    // Simulate capturing pose
+    setTimeout(() => {
+      if (currentPose < poses.length - 1) {
+        setCurrentPose(prev => prev + 1);
+        startCountdown();
+      } else {
+        completeScan();
+      }
+    }, 500);
+  };
+
+  const completeScan = () => {
     if (stream) {
       stream.getTracks().forEach(track => track.stop());
       setStream(null);
     }
-    setShowCamera(false);
+    setIsScanning(false);
+    setIsProcessing(true);
+    setCurrentStep(4);
+    
+    // Simulate processing
+    setTimeout(() => {
+      setIsProcessing(false);
+      setCurrentStep(5);
+    }, 3000);
   };
 
-  const capturePhoto = () => {
-    if (videoRef.current && canvasRef.current) {
-      const video = videoRef.current;
-      const canvas = canvasRef.current;
-      const context = canvas.getContext('2d');
-      
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      
-      if (context) {
-        context.drawImage(video, 0, 0);
-        const photoDataUrl = canvas.toDataURL('image/jpeg');
-        setUploadedPhotos(prev => [...prev, photoDataUrl]);
-        stopCamera();
-      }
-    }
-  };
-
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          if (e.target?.result) {
-            setUploadedPhotos(prev => [...prev, e.target!.result as string]);
-          }
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-  };
-
-  const removePhoto = (index: number) => {
-    setUploadedPhotos(prev => prev.filter((_, i) => i !== index));
+  const handleViewResults = () => {
+    // Navigate to progress page
+    navigate('/progress-badges');
   };
 
   const renderStepContent = () => {
@@ -170,45 +188,75 @@ const AIScan = () => {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <AlertCircle className="w-16 h-16 text-accent mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-foreground mb-2">Scan Instructions</h2>
-              <p className="text-muted-foreground">Follow these steps for the best results</p>
+              <Smartphone className="w-16 h-16 text-accent mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-foreground mb-2">📸 TierOne Scan Instructions</h2>
+              <p className="text-muted-foreground">Follow these steps for accurate results</p>
             </div>
 
             <div className="space-y-4">
+              {/* Setup Environment */}
               <div className="tier-card rounded-xl p-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-sm font-bold">1</div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">Positioning</h4>
-                    <p className="text-sm text-muted-foreground">Stand 2 meters back from camera with good lighting</p>
-                  </div>
+                <h4 className="font-semibold text-accent mb-3 flex items-center gap-2">
+                  <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center text-xs font-bold text-accent-foreground">✅</div>
+                  Setup Your Environment
+                </h4>
+                <div className="space-y-2 text-sm text-muted-foreground ml-8">
+                  <p><strong>Lighting:</strong> Use bright, even lighting. Avoid shadows or strong backlight.</p>
+                  <p><strong>Background:</strong> Stand in front of a plain wall or uncluttered background.</p>
+                  <p><strong>Camera Position:</strong> Place your phone upright on a stable surface, at chest height.</p>
                 </div>
               </div>
 
+              {/* Body Positioning */}
               <div className="tier-card rounded-xl p-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-sm font-bold">2</div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">Pose</h4>
-                    <p className="text-sm text-muted-foreground">Flex and hold pose for clear muscle definition</p>
-                  </div>
+                <h4 className="font-semibold text-accent mb-3 flex items-center gap-2">
+                  <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center text-xs font-bold text-accent-foreground">👤</div>
+                  Positioning Your Body
+                </h4>
+                <div className="space-y-2 text-sm text-muted-foreground ml-8">
+                  <p><strong>Distance:</strong> Stand 2–3 meters (6–10 feet) away from your phone.</p>
+                  <p><strong>Framing:</strong> Make sure your entire body (head to feet) is visible.</p>
+                  <p><strong>Clothing:</strong> Wear tight-fitting gym wear so your physique can be analyzed properly.</p>
+                  <p><strong>Shoes:</strong> Remove bulky shoes if possible — barefoot or socks preferred.</p>
                 </div>
               </div>
 
+              {/* Pose Sequence */}
               <div className="tier-card rounded-xl p-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-sm font-bold">3</div>
-                  <div>
-                    <h4 className="font-semibold text-foreground">Angles</h4>
-                    <p className="text-sm text-muted-foreground">Take 10 photos: front, back, sides (slow 360° turn)</p>
+                <h4 className="font-semibold text-accent mb-3 flex items-center gap-2">
+                  <div className="w-6 h-6 bg-accent rounded-full flex items-center justify-center text-xs font-bold text-accent-foreground">🧍</div>
+                  Pose Sequence
+                </h4>
+                <div className="text-sm text-muted-foreground ml-8 mb-3">
+                  <p>The app will guide you through 10 poses automatically with a 3-second countdown.</p>
+                </div>
+                <div className="grid grid-cols-1 gap-1 text-xs text-muted-foreground ml-8">
+                  {poses.map((pose, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <span className="w-4 h-4 bg-muted rounded-full flex items-center justify-center text-xs">{index + 1}</span>
+                      <span>{pose}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Time Estimate */}
+              <div className="tier-card rounded-xl p-4 bg-accent/5 border border-accent/20">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-accent" />
+                    <span className="font-semibold text-foreground">Estimated Time: ~1 Minute</span>
                   </div>
                 </div>
+                <p className="text-sm text-muted-foreground mt-2">
+                  💡 <strong>Pro Tip:</strong> Stay relaxed and stand naturally — the AI detects real muscle shape.
+                </p>
               </div>
             </div>
 
             <Button variant="tier" className="w-full" onClick={handleNext}>
-              I'm Ready - Start Scan
+              Start Live Scan
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>
         );
@@ -217,118 +265,61 @@ const AIScan = () => {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <Upload className="w-16 h-16 text-accent mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-foreground mb-2">Upload Photos</h2>
-              <p className="text-muted-foreground">Take or upload photos for analysis</p>
+              <Camera className="w-16 h-16 text-accent mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-foreground mb-2">Live Scan</h2>
+              <p className="text-muted-foreground">Follow the pose instructions on screen</p>
             </div>
 
-            {showCamera ? (
-              <div className="relative">
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  playsInline
-                  className="w-full h-64 object-cover rounded-xl bg-black"
-                />
-                <canvas ref={canvasRef} className="hidden" />
-                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-4">
-                  <Button 
-                    onClick={capturePhoto}
-                    className="w-16 h-16 rounded-full bg-white text-black hover:bg-gray-200"
-                  >
-                    <Camera className="w-6 h-6" />
-                  </Button>
-                  <Button 
-                    onClick={stopCamera}
-                    variant="outline"
-                    className="w-16 h-16 rounded-full"
-                  >
-                    <X className="w-6 h-6" />
-                  </Button>
+            {isScanning ? (
+              <div className="space-y-4">
+                {/* Camera View */}
+                <div className="relative">
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    className="w-full h-80 object-cover rounded-xl bg-black"
+                  />
+                  
+                  {/* Pose Overlay */}
+                  <div className="absolute top-4 left-4 right-4 bg-black/70 rounded-lg p-3 text-center">
+                    <div className="text-white font-semibold">
+                      Pose {currentPose + 1}/10: {poses[currentPose]}
+                    </div>
+                    {countdown > 0 && (
+                      <div className="text-3xl font-bold text-accent mt-2">
+                        {countdown}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Progress Bar */}
+                  <div className="absolute bottom-4 left-4 right-4 bg-black/70 rounded-lg p-3">
+                    <div className="flex items-center justify-between text-white text-sm mb-2">
+                      <span>Scan Progress</span>
+                      <span>{currentPose + 1}/10</span>
+                    </div>
+                    <div className="w-full bg-gray-600 rounded-full h-2">
+                      <div 
+                        className="bg-accent h-full rounded-full transition-all duration-300" 
+                        style={{ width: `${((currentPose + 1) / 10) * 100}%` }} 
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             ) : (
-              <div className="tier-card rounded-xl p-8 text-center border-2 border-dashed border-muted">
-                <Camera className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground mb-4">Take photos or upload from gallery</p>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <Button 
-                    variant="outline" 
-                    className="h-12"
-                    onClick={startCamera}
-                  >
-                    <Camera className="w-5 h-5 mr-2" />
-                    Take Photos
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="h-12"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    <Upload className="w-5 h-5 mr-2" />
-                    Upload Photos
-                  </Button>
-                </div>
-                
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
+              <div className="tier-card rounded-xl p-8 text-center border-2 border-dashed border-accent/30">
+                <Camera className="w-12 h-12 text-accent mx-auto mb-4" />
+                <p className="text-muted-foreground mb-4">Ready to start your scan?</p>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Make sure you're positioned correctly and have good lighting
+                </p>
+                <Button variant="tier" className="w-full" onClick={handleNext}>
+                  Begin Scan Sequence
+                </Button>
               </div>
             )}
-
-            {/* Photo Gallery */}
-            {uploadedPhotos.length > 0 && (
-              <div className="tier-card rounded-xl p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-semibold text-foreground">Uploaded Photos</h4>
-                  <span className="text-sm text-muted-foreground">{uploadedPhotos.length}/10</span>
-                </div>
-                <div className="grid grid-cols-3 gap-2">
-                  {uploadedPhotos.map((photo, index) => (
-                    <div key={index} className="relative">
-                      <img 
-                        src={photo} 
-                        alt={`Upload ${index + 1}`}
-                        className="w-full h-20 object-cover rounded-lg"
-                      />
-                      <button
-                        onClick={() => removePhoto(index)}
-                        className="absolute -top-2 -right-2 w-6 h-6 bg-destructive rounded-full flex items-center justify-center text-destructive-foreground text-xs"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="tier-card rounded-xl p-4">
-              <div className="text-sm text-muted-foreground text-center">
-                <p>Photos: {uploadedPhotos.length}/10 uploaded</p>
-                <div className="w-full bg-muted rounded-full h-2 mt-2">
-                  <div 
-                    className="bg-accent h-full rounded-full transition-all duration-300" 
-                    style={{ width: `${(uploadedPhotos.length / 10) * 100}%` }} 
-                  />
-                </div>
-              </div>
-            </div>
-
-            <Button 
-              variant="tier" 
-              className="w-full" 
-              onClick={handleNext} 
-              disabled={uploadedPhotos.length === 0}
-            >
-              Process Scan ({uploadedPhotos.length} photos)
-            </Button>
           </div>
         );
 
@@ -411,7 +402,7 @@ const AIScan = () => {
             )}
 
             <div className="space-y-3">
-              <Button variant="tier" className="w-full">
+              <Button variant="tier" className="w-full" onClick={handleViewResults}>
                 View Full Results
               </Button>
               <Button variant="outline" className="w-full">
