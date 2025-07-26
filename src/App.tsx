@@ -15,6 +15,7 @@ import ProgressBadges from "./pages/ProgressBadges";
 import Leaderboard from "./pages/Leaderboard";
 import Achievements from "./pages/Achievements";
 import AIScan from "./pages/AIScan";
+import { Scan } from "./pages/Scan";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
@@ -38,8 +39,9 @@ const App = () => (
               <Route path="/progress-badges" element={<ProgressBadges />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/achievements" element={<Achievements />} />
-              <Route path="/ai-scan" element={<AIScan />} />
-              <Route path="/profile" element={<Profile />} />
+          <Route path="/scan" element={<Scan />} />
+          <Route path="/ai-scan" element={<AIScan />} />
+          <Route path="/profile" element={<Profile />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
