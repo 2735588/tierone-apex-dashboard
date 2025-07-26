@@ -1,13 +1,13 @@
-import { Crown, Trophy, Medal, Users, Globe, Flag, Filter, Eye } from "lucide-react";
+import { Crown, Trophy, Medal, Users, Globe, Flag, Search, Eye } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 const Leaderboard = () => {
-  const [muscleFilter, setMuscleFilter] = useState("overall");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const globalLeaders = [
     { rank: 1, name: "Alex_Beast", score: 774, country: "🇺🇸", tier: "Diamond" },
@@ -42,6 +42,13 @@ const Leaderboard = () => {
     if (rank === 2) return "tier-glow border-gray-300/50 shadow-gray-300/20";
     if (rank === 3) return "tier-glow border-orange-400/50 shadow-orange-400/20";
     return "";
+  };
+
+  const filterUsers = (users: any[]) => {
+    if (!searchQuery.trim()) return users;
+    return users.filter(user => 
+      user.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   };
 
 
@@ -97,24 +104,17 @@ const Leaderboard = () => {
         </div>
       </div>
 
-      {/* Filters */}
+      {/* User Search */}
       <div className="flex flex-col gap-3 mb-6">
-        <Select value={muscleFilter} onValueChange={setMuscleFilter}>
-          <SelectTrigger className="w-full">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="overall">Overall</SelectItem>
-            <SelectItem value="chest">Chest</SelectItem>
-            <SelectItem value="arms">Arms</SelectItem>
-            <SelectItem value="shoulders">Shoulders</SelectItem>
-            <SelectItem value="back">Back</SelectItem>
-            <SelectItem value="core">Core</SelectItem>
-            <SelectItem value="quads">Quads</SelectItem>
-            <SelectItem value="hamstrings">Hamstrings</SelectItem>
-            <SelectItem value="calves">Calves</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+          <Input
+            placeholder="Search for users..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
       </div>
 
       <Tabs defaultValue="global" className="w-full">
@@ -148,7 +148,7 @@ const Leaderboard = () => {
               Top Global Athletes
             </h3>
             <div className="space-y-1">
-              {globalLeaders.map((user) => (
+              {filterUsers(globalLeaders).map((user) => (
                 <LeaderboardCard key={user.rank} user={user} isGlobal={true} />
               ))}
             </div>
@@ -174,7 +174,7 @@ const Leaderboard = () => {
               Top New Zealand Athletes
             </h3>
             <div className="space-y-1">
-              {nationalLeaders.map((user) => (
+              {filterUsers(nationalLeaders).map((user) => (
                 <LeaderboardCard key={user.rank} user={user} />
               ))}
             </div>
