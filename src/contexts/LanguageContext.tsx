@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { translations } from '@/utils/translations';
 
 interface Language {
   code: string;
@@ -21,6 +22,7 @@ interface LanguageContextType {
   currentLanguage: Language;
   setLanguage: (language: Language) => void;
   availableLanguages: Language[];
+  t: (key: keyof typeof translations.en) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -38,12 +40,20 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider = ({ children }: LanguageProviderProps) => {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(languages[0]); // Default to English
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(() => {
+    // Load saved language from localStorage or default to English
+    const savedLanguage = localStorage.getItem('selectedLanguage');
+    return languages.find(lang => lang.code === savedLanguage) || languages[0];
+  });
 
   const setLanguage = (language: Language) => {
     setCurrentLanguage(language);
-    // TODO: Save to user preferences in backend when available
     localStorage.setItem('selectedLanguage', language.code);
+  };
+
+  const t = (key: keyof typeof translations.en): string => {
+    const languageTranslations = translations[currentLanguage.code as keyof typeof translations];
+    return languageTranslations?.[key] || translations.en[key];
   };
 
   return (
@@ -52,6 +62,7 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
         currentLanguage,
         setLanguage,
         availableLanguages: languages,
+        t,
       }}
     >
       {children}

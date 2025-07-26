@@ -6,9 +6,11 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Chrome } from 'lucide-react';
 import { LanguageSelector } from '@/components/LanguageSelector';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const SignUp = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [isSignIn, setIsSignIn] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -53,7 +55,7 @@ export const SignUp = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">
-            TierOne
+            {t('appName')}
           </h1>
           <div className="w-16 h-1 bg-gradient-to-r from-white/50 to-white/20 mx-auto rounded-full" />
         </div>
@@ -61,17 +63,17 @@ export const SignUp = () => {
         {/* Main heading */}
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-white mb-2">
-            {isSignIn ? 'Welcome Back' : 'Unleash Your Strength'}
+            {isSignIn ? t('welcomeBack') : t('unleashStrength')}
           </h2>
           <p className="text-gray-400 text-lg">
-            {isSignIn ? 'Sign in to continue your journey' : 'Join the elite fitness tracking experience'}
+            {isSignIn ? t('signInSubtitle') : t('signUpSubtitle')}
           </p>
         </div>
 
         <Card className="bg-gray-900/50 border border-gray-800 backdrop-blur-xl">
           <CardHeader className="pb-4">
             <h3 className="text-xl font-semibold text-white text-center">
-              {isSignIn ? 'Sign In' : 'Create Account'}
+              {isSignIn ? t('signIn') : t('createAccount')}
             </h3>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -80,7 +82,7 @@ export const SignUp = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-300">
-                      First Name
+                      {t('firstName')}
                     </label>
                     <Input
                       name="firstName"
@@ -93,7 +95,7 @@ export const SignUp = () => {
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-300">
-                      Last Name
+                      {t('lastName')}
                     </label>
                     <Input
                       name="lastName"
@@ -109,7 +111,7 @@ export const SignUp = () => {
               
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-300">
-                  Email
+                  {t('email')}
                 </label>
                 <Input
                   type="email"
@@ -124,7 +126,7 @@ export const SignUp = () => {
               
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-300">
-                  Password
+                  {t('password')}
                 </label>
                 <Input
                   type="password"
@@ -141,14 +143,14 @@ export const SignUp = () => {
                 type="submit" 
                 className="w-full bg-white text-black hover:bg-gray-200 font-semibold py-3 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-white/20"
               >
-                {isSignIn ? 'Sign In' : 'Sign Up'}
+                {isSignIn ? t('signIn') : t('signUp')}
               </Button>
             </form>
 
             <div className="relative">
               <Separator className="bg-gray-700" />
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="bg-gray-900 px-3 text-sm text-gray-400">or</span>
+                <span className="bg-gray-900 px-3 text-sm text-gray-400">{t('or')}</span>
               </div>
             </div>
 
@@ -158,17 +160,17 @@ export const SignUp = () => {
               className="w-full bg-transparent border-gray-700 text-white hover:bg-gray-800/50 hover:border-gray-600 py-3 transition-all duration-300"
             >
               <Chrome className="w-5 h-5 mr-2" />
-              Continue with Google
+              {t('continueWithGoogle')}
             </Button>
 
             <div className="text-center pt-4">
               <p className="text-gray-400 text-sm">
-                {isSignIn ? "Don't have an account?" : "Already have an account?"}{" "}
+                {isSignIn ? t('dontHaveAccount') : t('alreadyHaveAccount')}{" "}
                 <button
                   onClick={() => setIsSignIn(!isSignIn)}
                   className="text-white hover:text-gray-300 font-medium transition-colors underline-offset-4 hover:underline"
                 >
-                  {isSignIn ? 'Sign Up' : 'Sign In'}
+                  {isSignIn ? t('signUp') : t('signIn')}
                 </button>
               </p>
             </div>
@@ -178,13 +180,13 @@ export const SignUp = () => {
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-xs text-gray-500 leading-relaxed">
-            By signing up, you agree to our{" "}
+            {t('termsAndPrivacy').split('Terms of Service')[0]}
             <button className="text-gray-400 hover:text-white transition-colors underline-offset-4 hover:underline">
-              Terms of Service
-            </button>{" "}
-            and{" "}
+              {t('termsOfService')}
+            </button>
+            {t('termsAndPrivacy').split('Terms of Service')[1]?.split('Privacy Policy')[0] || ' and '}
             <button className="text-gray-400 hover:text-white transition-colors underline-offset-4 hover:underline">
-              Privacy Policy
+              {t('privacyPolicy')}
             </button>
           </p>
         </div>
