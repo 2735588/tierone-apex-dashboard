@@ -1,32 +1,73 @@
-import { Crown, Trophy, Medal, Users, Globe, Flag, Search, Eye } from "lucide-react";
+import { Crown, Trophy, Medal, Users, Globe, Flag, Search, Eye, Star, Award, Target } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const Leaderboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const globalLeaders = [
-    { rank: 1, name: "Alex_Beast", score: 774, country: "🇺🇸", tier: "Diamond" },
-    { rank: 2, name: "Nordic_Thor", score: 763, country: "🇳🇴", tier: "Diamond" },
-    { rank: 3, name: "Aussie_Tank", score: 754, country: "🇦🇺", tier: "Diamond" },
-    { rank: 4, name: "UK_Warrior", score: 745, country: "🇬🇧", tier: "Gold" },
-    { rank: 5, name: "Tokyo_Titan", score: 742, country: "🇯🇵", tier: "Gold" },
-    { rank: 6, name: "Berlin_Beast", score: 735, country: "🇩🇪", tier: "Gold" },
-    { rank: 7, name: "Brazil_Bull", score: 726, country: "🇧🇷", tier: "Gold" },
-    { rank: 8, name: "Maple_Muscle", score: 716, country: "🇨🇦", tier: "Gold" },
+    { rank: 1, name: "Alex_Beast", score: 774, country: "🇺🇸", tier: "Diamond", records: [
+      { muscle: "Chest", score: 95, isPinned: true },
+      { muscle: "Arms", score: 92, isPinned: true },
+      { muscle: "Shoulders", score: 88, isPinned: false }
+    ]},
+    { rank: 2, name: "Nordic_Thor", score: 763, country: "🇳🇴", tier: "Diamond", records: [
+      { muscle: "Back", score: 98, isPinned: true },
+      { muscle: "Core", score: 89, isPinned: true },
+      { muscle: "Quads", score: 85, isPinned: false }
+    ]},
+    { rank: 3, name: "Aussie_Tank", score: 754, country: "🇦🇺", tier: "Diamond", records: [
+      { muscle: "Hamstrings", score: 94, isPinned: true },
+      { muscle: "Calves", score: 91, isPinned: true }
+    ]},
+    { rank: 4, name: "UK_Warrior", score: 745, country: "🇬🇧", tier: "Gold", records: [
+      { muscle: "Chest", score: 87, isPinned: true },
+      { muscle: "Arms", score: 84, isPinned: false }
+    ]},
+    { rank: 5, name: "Tokyo_Titan", score: 742, country: "🇯🇵", tier: "Gold", records: [
+      { muscle: "Shoulders", score: 86, isPinned: true }
+    ]},
+    { rank: 6, name: "Berlin_Beast", score: 735, country: "🇩🇪", tier: "Gold", records: [
+      { muscle: "Back", score: 82, isPinned: true }
+    ]},
+    { rank: 7, name: "Brazil_Bull", score: 726, country: "🇧🇷", tier: "Gold", records: [
+      { muscle: "Core", score: 79, isPinned: true }
+    ]},
+    { rank: 8, name: "Maple_Muscle", score: 716, country: "🇨🇦", tier: "Gold", records: [
+      { muscle: "Quads", score: 78, isPinned: true }
+    ]},
   ];
 
   const nationalLeaders = [
-    { rank: 1, name: "Kiwi_King", score: 678, country: "🇳🇿", tier: "Gold" },
-    { rank: 2, name: "Auckland_Alpha", score: 666, country: "🇳🇿", tier: "Gold" },
-    { rank: 3, name: "Wellington_Wolf", score: 657, country: "🇳🇿", tier: "Gold" },
-    { rank: 4, name: "Christchurch_Chief", score: 647, country: "🇳🇿", tier: "Silver" },
-    { rank: 5, name: "Hamilton_Hero", score: 638, country: "🇳🇿", tier: "Silver" },
+    { rank: 1, name: "Kiwi_King", score: 678, country: "🇳🇿", tier: "Gold", records: [
+      { muscle: "Chest", score: 81, isPinned: true },
+      { muscle: "Arms", score: 79, isPinned: true }
+    ]},
+    { rank: 2, name: "Auckland_Alpha", score: 666, country: "🇳🇿", tier: "Gold", records: [
+      { muscle: "Back", score: 77, isPinned: true }
+    ]},
+    { rank: 3, name: "Wellington_Wolf", score: 657, country: "🇳🇿", tier: "Gold", records: [
+      { muscle: "Core", score: 75, isPinned: true }
+    ]},
+    { rank: 4, name: "Christchurch_Chief", score: 647, country: "🇳🇿", tier: "Silver", records: [
+      { muscle: "Quads", score: 73, isPinned: true }
+    ]},
+    { rank: 5, name: "Hamilton_Hero", score: 638, country: "🇳🇿", tier: "Silver", records: [
+      { muscle: "Shoulders", score: 71, isPinned: true }
+    ]},
   ];
+
+  const handleUserClick = (user: any) => {
+    setSelectedUser(user);
+    setIsProfileOpen(true);
+  };
 
   const getTierColor = (tier: string) => {
     switch (tier) {
@@ -53,7 +94,10 @@ const Leaderboard = () => {
 
 
   const LeaderboardCard = ({ user, isGlobal = false }: { user: any, isGlobal?: boolean }) => (
-    <Card className={`tier-card mb-2 transition-all duration-200 hover:scale-102 cursor-pointer ${getTopThreeGlow(user.rank)}`}>
+    <Card 
+      className={`tier-card mb-2 transition-all duration-200 hover:scale-102 cursor-pointer ${getTopThreeGlow(user.rank)}`}
+      onClick={() => handleUserClick(user)}
+    >
       <CardContent className="p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -181,6 +225,68 @@ const Leaderboard = () => {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* User Profile Modal */}
+      <Dialog open={isProfileOpen} onOpenChange={setIsProfileOpen}>
+        <DialogContent className="max-w-sm mx-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <span className="text-base">{selectedUser?.country}</span>
+              {selectedUser?.name}
+            </DialogTitle>
+          </DialogHeader>
+          
+          {selectedUser && (
+            <div className="space-y-4">
+              {/* Tier Score Section */}
+              <Card className="tier-card">
+                <CardContent className="p-4">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-accent mb-2">
+                      {selectedUser.score}
+                    </div>
+                    <div className="text-sm text-muted-foreground mb-2">Overall TierScore</div>
+                    <Badge className={`${getTierColor(selectedUser.tier)} border-current`} variant="outline">
+                      <Award className="w-3 h-3 mr-1" />
+                      {selectedUser.tier} Tier
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Pinned Records Section */}
+              <Card className="tier-card">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-sm flex items-center gap-2">
+                    <Star className="w-4 h-4 text-yellow-400" />
+                    Pinned Records
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="space-y-2">
+                    {selectedUser.records?.filter((record: any) => record.isPinned).map((record: any, index: number) => (
+                      <div key={index} className="flex items-center justify-between p-2 bg-accent/5 rounded-lg border border-accent/20">
+                        <div className="flex items-center gap-2">
+                          <Target className="w-3 h-3 text-accent" />
+                          <span className="text-sm font-medium">{record.muscle}</span>
+                        </div>
+                        <div className="text-sm font-bold text-accent">
+                          {record.score}
+                        </div>
+                      </div>
+                    ))}
+                    {!selectedUser.records?.some((record: any) => record.isPinned) && (
+                      <div className="text-center text-muted-foreground text-sm py-4">
+                        No pinned records yet
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
