@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { BottomNavigation } from "@/components/BottomNavigation";
 import { GenderProvider } from "@/contexts/GenderContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 import Index from "./pages/Index";
 import { SignUp } from "./pages/SignUp";
 import GenderSelection from "./pages/GenderSelection";
@@ -21,8 +22,9 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <GenderProvider>
-      <TooltipProvider>
+    <LanguageProvider>
+      <GenderProvider>
+        <TooltipProvider>
         <Toaster />
         <Sonner />
         <BrowserRouter>
@@ -44,8 +46,9 @@ const App = () => (
             <BottomNavigation />
           </div>
         </BrowserRouter>
-      </TooltipProvider>
-    </GenderProvider>
+        </TooltipProvider>
+      </GenderProvider>
+    </LanguageProvider>
   </QueryClientProvider>
 );
 
