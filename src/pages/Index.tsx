@@ -14,12 +14,16 @@ const Index = () => {
       return;
     }
 
-    // If user has completed onboarding and selected gender, show home
-    // The gender-specific pages will be accessed through navigation
-  }, [isOnboarded, navigate]);
+    // If user has completed onboarding and selected gender, redirect to appropriate experience
+    if (gender === 'male') {
+      navigate('/male');
+    } else if (gender === 'female') {
+      navigate('/female');
+    }
+  }, [gender, isOnboarded, navigate]);
 
-  // Show loading state while checking onboarding status
-  if (!isOnboarded) {
+  // Show loading state while redirecting
+  if (!isOnboarded || gender) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex items-center gap-3">
