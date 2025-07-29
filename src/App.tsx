@@ -31,17 +31,17 @@ const App = () => (
         <BrowserRouter>
           <div className="min-h-screen bg-background pb-20">
             <Routes>
-              <Route path="/" element={<SignUp />} />
-              <Route path="/home" element={<Index />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/" element={<Index />} />
               <Route path="/onboarding" element={<GenderSelection />} />
               <Route path="/male" element={<MaleIndex />} />
               <Route path="/female" element={<FemaleIndex />} />
               <Route path="/progress-badges" element={<ProgressBadges />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="/achievements" element={<Achievements />} />
-          <Route path="/scan" element={<Scan />} />
-          <Route path="/ai-scan" element={<AIScan />} />
-          <Route path="/profile" element={<Profile />} />
+              <Route path="/scan" element={<Scan />} />
+              <Route path="/ai-scan" element={<AIScan />} />
+              <Route path="/profile" element={<Profile />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
