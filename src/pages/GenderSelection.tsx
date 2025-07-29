@@ -19,7 +19,7 @@ const GenderSelection = () => {
       setGender(selectedGender);
       completeOnboarding();
       // Navigate to home page, not root
-      navigate('/home');
+      navigate('/');
     }
   };
 

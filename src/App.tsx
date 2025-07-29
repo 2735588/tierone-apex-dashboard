@@ -31,8 +31,8 @@ const App = () => (
         <BrowserRouter>
           <div className="min-h-screen bg-background pb-20">
             <Routes>
-              <Route path="/" element={<SignUp />} />
-              <Route path="/home" element={<Index />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/" element={<Index />} />
               <Route path="/onboarding" element={<GenderSelection />} />
               <Route path="/male" element={<MaleIndex />} />
               <Route path="/female" element={<FemaleIndex />} />

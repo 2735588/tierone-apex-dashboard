@@ -13,17 +13,11 @@ const Index = () => {
       navigate('/onboarding');
       return;
     }
+    // After onboarding, show the new home page (no gender-specific redirects)
+  }, [isOnboarded, navigate]);
 
-    // If user has completed onboarding and selected gender, redirect to appropriate experience
-    if (gender === 'male') {
-      navigate('/male');
-    } else if (gender === 'female') {
-      navigate('/female');
-    }
-  }, [gender, isOnboarded, navigate]);
-
-  // Show loading state while redirecting
-  if (!isOnboarded || gender) {
+  // Show loading state while checking onboarding status
+  if (!isOnboarded) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex items-center gap-3">
