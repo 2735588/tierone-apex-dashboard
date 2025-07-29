@@ -62,7 +62,7 @@ const Home = () => {
         </span>
       </div>
 
-      {/* Header with Streak */}
+      {/* Header */}
       <div className="flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center tier-glow">
@@ -74,31 +74,32 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Streak Tracker */}
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 bg-card/50 backdrop-blur-sm border border-accent/20 rounded-xl px-3 py-2">
-            <Flame className={`w-6 h-6 ${getStreakIntensity(currentStreak)} transition-all duration-300`} />
-            <div className="text-center">
-              <div className="text-xs text-muted-foreground">Streak</div>
-              <div className="text-sm font-bold text-accent">{currentStreak} days</div>
-            </div>
-          </div>
+        <div className="flex items-center gap-2">          
+          <Button variant="ghost" size="sm" className="relative">
+            <Bell className="w-5 h-5" />
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full energy-pulse"></div>
+          </Button>
           
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" className="relative">
-              <Bell className="w-5 h-5" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full energy-pulse"></div>
-            </Button>
-            
-            <Button variant="ghost" size="sm">
-              <Settings className="w-5 h-5" />
-            </Button>
-          </div>
+          <Button variant="ghost" size="sm">
+            <Settings className="w-5 h-5" />
+          </Button>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="px-6 py-4 space-y-6">
+      <div className="px-6 py-4 space-y-8">
+        
+        {/* Centered Large Streak Tracker */}
+        <div className="flex justify-center">
+          <div className="flex items-center gap-4 bg-card/50 backdrop-blur-sm border border-accent/30 rounded-2xl px-8 py-6 tier-glow">
+            <Flame className={`w-12 h-12 ${getStreakIntensity(currentStreak)} transition-all duration-500`} />
+            <div className="text-center">
+              <div className="text-sm text-muted-foreground mb-1">Current Streak</div>
+              <div className="text-4xl font-bold text-accent tier-glow">{currentStreak}</div>
+              <div className="text-sm text-muted-foreground">days strong</div>
+            </div>
+          </div>
+        </div>
         
         {/* Workout Log CTA */}
         <div className="text-center space-y-4">
