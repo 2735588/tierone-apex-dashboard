@@ -8,12 +8,12 @@ const Index = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // If user hasn't completed onboarding, redirect to gender selection
+    // If user hasn't completed onboarding, redirect to onboarding
     if (!isOnboarded) {
       navigate('/onboarding');
       return;
     }
-    // After onboarding, show the new home page (no gender-specific redirects)
+    // If onboarded, stay on home page (no more automatic redirects to gender pages)
   }, [isOnboarded, navigate]);
 
   // Show loading state while checking onboarding status
@@ -30,6 +30,7 @@ const Index = () => {
     );
   }
 
+  // Show the new home page for onboarded users
   return <Home />;
 };
 
