@@ -11,10 +11,8 @@ export const BottomNavigation = () => {
     return null;
   }
 
-  // Get the appropriate home path based on gender
+  // Always use the new home page
   const getHomePath = () => {
-    if (gender === 'male') return '/male';
-    if (gender === 'female') return '/female';
     return '/';
   };
 
@@ -27,8 +25,8 @@ export const BottomNavigation = () => {
   ];
 
   const isActive = (path: string) => {
-    if (path === getHomePath()) {
-      return location.pathname === '/male' || location.pathname === '/female' || location.pathname === '/';
+    if (path === '/') {
+      return location.pathname === '/';
     }
     return location.pathname === path;
   };
