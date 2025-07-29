@@ -4,16 +4,16 @@ import { useGender } from '@/contexts/GenderContext';
 import Home from './Home';
 
 const Index = () => {
-  const { gender, isOnboarded } = useGender();
+  const { isOnboarded } = useGender();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // If user hasn't completed onboarding, redirect to onboarding
+    // If user hasn't completed onboarding, redirect to signup
     if (!isOnboarded) {
-      navigate('/onboarding');
+      navigate('/signup');
       return;
     }
-    // If onboarded, stay on home page (no more automatic redirects to gender pages)
+    // If onboarded, show the home page
   }, [isOnboarded, navigate]);
 
   // Show loading state while checking onboarding status

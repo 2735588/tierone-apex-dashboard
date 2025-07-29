@@ -16,7 +16,7 @@ const Home = () => {
       description: "30-day transformation challenge",
       daysLeft: 15,
       participants: 2847,
-      prize: "💰 $500 Prize Pool"
+      prize: "$500 Prize Pool"
     },
     {
       id: 2,
@@ -24,7 +24,7 @@ const Home = () => {
       description: "See who can do the most push-ups",
       daysLeft: 3,
       participants: 1205,
-      prize: "🏆 Champion Badge"
+      prize: "Champion Badge"
     },
     {
       id: 3,
@@ -32,7 +32,7 @@ const Home = () => {
       description: "Longest gym streak wins",
       daysLeft: 22,
       participants: 892,
-      prize: "👑 VIP Status"
+      prize: "VIP Status"
     }
   ];
 
@@ -169,7 +169,7 @@ const Home = () => {
                     </div>
                     
                     <div className="text-right">
-                      <div className="text-lg mb-1">{competition.prize.split(' ')[0]}</div>
+                      <div className="text-lg mb-1">{competition.prize}</div>
                       <Button size="sm" variant="outline" className="text-xs">
                         Join
                       </Button>
