@@ -1,40 +1,86 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Flame, Plus, Trophy, Calendar, Target, Bell, Settings, ChevronRight } from "lucide-react";
+import { Flame, Plus, Trophy, Calendar, Target, Bell, Settings, ChevronRight, Zap, Award, Users, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Home = () => {
   const navigate = useNavigate();
   const [currentStreak, setCurrentStreak] = useState(7); // Mock streak data
 
-  // Mock competitions data
-  const competitions = [
+  // Mock competitions data organized by categories
+  const globalCompetitions = [
     {
       id: 1,
-      title: "Summer Shred Challenge",
-      description: "30-day transformation challenge",
+      title: "Global Fitness Championship",
+      description: "Worldwide transformation challenge",
       daysLeft: 15,
-      participants: 2847,
-      prize: "$500 Prize Pool"
+      participants: 28475,
+      prize: "$10,000 Prize Pool",
+      category: "Global"
     },
     {
       id: 2,
-      title: "Push-Up Championships",
-      description: "See who can do the most push-ups",
-      daysLeft: 3,
-      participants: 1205,
-      prize: "Champion Badge"
-    },
-    {
-      id: 3,
-      title: "Consistency King",
-      description: "Longest gym streak wins",
-      daysLeft: 22,
-      participants: 892,
-      prize: "VIP Status"
+      title: "International Push-Up League",
+      description: "Global push-up competition",
+      daysLeft: 8,
+      participants: 15203,
+      prize: "Champion Title + $2,500",
+      category: "Global"
     }
   ];
+
+  const sponsoredChallenges = [
+    {
+      id: 3,
+      title: "Nike Air Max Challenge",
+      description: "Run 100 miles in 30 days",
+      daysLeft: 12,
+      participants: 5847,
+      prize: "Nike Air Max + $500",
+      category: "Sponsored"
+    },
+    {
+      id: 4,
+      title: "Protein World Shred",
+      description: "Transform with Protein World",
+      daysLeft: 25,
+      participants: 3652,
+      prize: "1 Year Supply + Cash",
+      category: "Sponsored"
+    }
+  ];
+
+  const communityChallenges = [
+    {
+      id: 5,
+      title: "Local Gym Heroes",
+      description: "Compete with your gym buddies",
+      daysLeft: 7,
+      participants: 145,
+      prize: "Gym Champion Badge",
+      category: "Community"
+    },
+    {
+      id: 6,
+      title: "Weekend Warriors",
+      description: "Weekend workout consistency",
+      daysLeft: 3,
+      participants: 892,
+      prize: "VIP Community Status",
+      category: "Community"
+    }
+  ];
+
+  const motivationalQuotes = [
+    "Every workout is a step closer to your best self",
+    "Champions train when others sleep",
+    "The only bad workout is the one you didn't do",
+    "Consistency beats perfection every time"
+  ];
+
+  const [currentQuote] = useState(motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]);
 
   const getStreakIntensity = (streak: number) => {
     if (streak >= 100) return "text-orange-400 drop-shadow-[0_0_20px_rgba(251,146,60,0.8)]";
@@ -104,28 +150,28 @@ const Home = () => {
         {/* Workout Log CTA */}
         <div className="text-center space-y-4">
           <div className="space-y-2">
-            <h2 className="text-lg font-semibold text-foreground">Ready to dominate today?</h2>
-            <p className="text-sm text-muted-foreground">Log your workout and keep the momentum going</p>
+            <h2 className="text-2xl font-bold text-foreground">Ready to dominate today?</h2>
+            <p className="text-muted-foreground">Log your workout and keep the momentum going</p>
           </div>
           
           <Button
             onClick={handleLogWorkout}
-            className="w-full max-w-sm bg-gradient-primary text-primary-foreground font-bold text-lg rounded-2xl tier-glow h-14 hover:scale-105 transition-all duration-300"
+            className="w-full max-w-sm bg-gradient-primary text-primary-foreground font-bold text-xl rounded-2xl tier-glow h-16 hover:scale-105 transition-all duration-300"
           >
-            <Plus className="w-6 h-6 mr-3" />
+            <Plus className="w-7 h-7 mr-3" />
             Log Today's Workout
           </Button>
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <Button
             variant="outline"
             onClick={() => navigate('/scan')}
             className="h-20 bg-card/30 backdrop-blur-sm border-accent/20 hover:bg-accent/10 flex-col gap-2"
           >
             <Target className="w-6 h-6 text-accent" />
-            <span className="text-sm">Body Scan</span>
+            <span className="text-xs font-medium">Body Scan</span>
           </Button>
           
           <Button
@@ -134,59 +180,186 @@ const Home = () => {
             className="h-20 bg-card/30 backdrop-blur-sm border-accent/20 hover:bg-accent/10 flex-col gap-2"
           >
             <Trophy className="w-6 h-6 text-accent" />
-            <span className="text-sm">Leaderboard</span>
+            <span className="text-xs font-medium">Leaderboard</span>
+          </Button>
+
+          <Button
+            variant="outline"
+            onClick={() => navigate('/achievements')}
+            className="h-20 bg-card/30 backdrop-blur-sm border-accent/20 hover:bg-accent/10 flex-col gap-2"
+          >
+            <Award className="w-6 h-6 text-accent" />
+            <span className="text-xs font-medium">Achievements</span>
           </Button>
         </div>
 
-        {/* Competitions & Events */}
+        {/* Motivational Quote */}
+        <div className="bg-gradient-to-r from-accent/10 to-primary/10 border border-accent/20 rounded-xl p-4 text-center">
+          <p className="text-muted-foreground italic font-medium">
+            "{currentQuote}"
+          </p>
+        </div>
+
+        {/* Global Competitions */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-foreground">Competitions & Events</h3>
+            <div className="flex items-center gap-2">
+              <Zap className="w-5 h-5 text-accent" />
+              <h3 className="text-lg font-bold text-foreground">Global Competitions</h3>
+            </div>
             <Button variant="ghost" size="sm" className="text-accent">
               View All
               <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
           </div>
 
-          <div className="space-y-3 max-h-80 overflow-y-auto">
-            {competitions.map((competition) => (
-              <Card key={competition.id} className="bg-card/30 backdrop-blur-sm border-accent/20 hover:border-accent/40 transition-all duration-300">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-foreground mb-1">{competition.title}</h4>
-                      <p className="text-sm text-muted-foreground mb-2">{competition.description}</p>
+          <ScrollArea className="w-full">
+            <div className="flex gap-4 pb-4">
+              {globalCompetitions.map((competition) => (
+                <Card key={competition.id} className="min-w-[280px] bg-card/30 backdrop-blur-sm border-accent/20 hover:border-accent/40 transition-all duration-300">
+                  <CardContent className="p-4">
+                    <div className="space-y-3">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h4 className="font-bold text-foreground mb-1">{competition.title}</h4>
+                          <p className="text-sm text-muted-foreground">{competition.description}</p>
+                        </div>
+                        <div className="bg-accent/20 px-2 py-1 rounded-full">
+                          <span className="text-xs font-bold text-accent">GLOBAL</span>
+                        </div>
+                      </div>
                       
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
                         <div className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
+                          <Clock className="w-3 h-3" />
                           <span>{competition.daysLeft} days left</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <Target className="w-3 h-3" />
-                          <span>{competition.participants.toLocaleString()} competing</span>
+                          <Users className="w-3 h-3" />
+                          <span>{competition.participants.toLocaleString()}</span>
                         </div>
                       </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm font-bold text-accent">{competition.prize}</div>
+                        <Button size="sm" variant="tier" className="text-xs h-8">
+                          Join Competition
+                        </Button>
+                      </div>
                     </div>
-                    
-                    <div className="text-right">
-                      <div className="text-lg mb-1">{competition.prize}</div>
-                      <Button size="sm" variant="outline" className="text-xs">
-                        Join
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </ScrollArea>
         </div>
 
-        {/* Motivational Quote */}
-        <div className="bg-gradient-to-r from-accent/10 to-primary/10 border border-accent/20 rounded-xl p-4 text-center">
-          <p className="text-sm text-muted-foreground italic">
-            "Every workout is a step closer to your best self"
-          </p>
+        {/* Sponsored Challenges */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Award className="w-5 h-5 text-accent" />
+              <h3 className="text-lg font-bold text-foreground">Sponsored Challenges</h3>
+            </div>
+            <Button variant="ghost" size="sm" className="text-accent">
+              View All
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          </div>
+
+          <ScrollArea className="w-full">
+            <div className="flex gap-4 pb-4">
+              {sponsoredChallenges.map((competition) => (
+                <Card key={competition.id} className="min-w-[280px] bg-card/30 backdrop-blur-sm border-accent/20 hover:border-accent/40 transition-all duration-300">
+                  <CardContent className="p-4">
+                    <div className="space-y-3">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h4 className="font-bold text-foreground mb-1">{competition.title}</h4>
+                          <p className="text-sm text-muted-foreground">{competition.description}</p>
+                        </div>
+                        <div className="bg-primary/20 px-2 py-1 rounded-full">
+                          <span className="text-xs font-bold text-primary">SPONSORED</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          <span>{competition.daysLeft} days left</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Users className="w-3 h-3" />
+                          <span>{competition.participants.toLocaleString()}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm font-bold text-accent">{competition.prize}</div>
+                        <Button size="sm" variant="tier" className="text-xs h-8">
+                          Join Challenge
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
+
+        {/* Community Challenges */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Users className="w-5 h-5 text-accent" />
+              <h3 className="text-lg font-bold text-foreground">Community Challenges</h3>
+            </div>
+            <Button variant="ghost" size="sm" className="text-accent">
+              View All
+              <ChevronRight className="w-4 h-4 ml-1" />
+            </Button>
+          </div>
+
+          <ScrollArea className="w-full">
+            <div className="flex gap-4 pb-4">
+              {communityChallenges.map((competition) => (
+                <Card key={competition.id} className="min-w-[280px] bg-card/30 backdrop-blur-sm border-accent/20 hover:border-accent/40 transition-all duration-300">
+                  <CardContent className="p-4">
+                    <div className="space-y-3">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h4 className="font-bold text-foreground mb-1">{competition.title}</h4>
+                          <p className="text-sm text-muted-foreground">{competition.description}</p>
+                        </div>
+                        <div className="bg-secondary/20 px-2 py-1 rounded-full">
+                          <span className="text-xs font-bold text-secondary-foreground">COMMUNITY</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          <span>{competition.daysLeft} days left</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Users className="w-3 h-3" />
+                          <span>{competition.participants.toLocaleString()}</span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm font-bold text-accent">{competition.prize}</div>
+                        <Button size="sm" variant="tier" className="text-xs h-8">
+                          Join Community
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </ScrollArea>
         </div>
       </div>
     </div>
