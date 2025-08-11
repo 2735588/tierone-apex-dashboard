@@ -17,7 +17,7 @@ const Home = () => {
       description: "Worldwide transformation challenge",
       daysLeft: 15,
       participants: 28475,
-      prize: "$10,000 Prize Pool",
+      prize: "Global Champion Badge",
       category: "Global"
     },
     {
@@ -26,7 +26,7 @@ const Home = () => {
       description: "Global push-up competition",
       daysLeft: 8,
       participants: 15203,
-      prize: "Champion Title + $2,500",
+      prize: "Elite Athlete Badge",
       category: "Global"
     }
   ];
