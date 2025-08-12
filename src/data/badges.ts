@@ -40,9 +40,10 @@ export const streakBadges: TierOneBadge[] = [
     imageUrl: '/lovable-uploads/933e3d9d-e327-4e42-b904-12415fa75bad.png',
     category: 'Consistency',
     requirement: 'Log workouts for 50 consecutive days',
-    isUnlocked: false,
-    progress: 74,
-    rarity: 'rare'
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'rare',
+    earnedDate: '2024-02-10'
   },
   {
     id: 'streak-100',
@@ -53,9 +54,10 @@ export const streakBadges: TierOneBadge[] = [
     imageUrl: '/lovable-uploads/fe1282cf-b9a1-44ca-b828-2c7147bcc107.png',
     category: 'Consistency',
     requirement: 'Log workouts for 100 consecutive days',
-    isUnlocked: false,
-    progress: 37,
-    rarity: 'epic'
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'epic',
+    earnedDate: '2024-03-01'
   }
 ];
 
@@ -84,9 +86,10 @@ export const sponsoredBadges: TierOneBadge[] = [
     imageUrl: '/lovable-uploads/692bf62e-ddac-4e9d-9109-a40cacc38e5d.png',
     category: 'Brand Challenges',
     requirement: 'Place top 3 in Gymshark Pushup Competition',
-    isUnlocked: false,
-    progress: 0,
-    rarity: 'legendary'
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'legendary',
+    earnedDate: '2024-02-15'
   }
 ];
 
@@ -101,9 +104,10 @@ export const globalBadges: TierOneBadge[] = [
     imageUrl: '/lovable-uploads/419f2907-7325-49a6-b671-55d02f66a06a.png',
     category: 'Global Events',
     requirement: 'Participate in TierOne Global Sprint Challenge',
-    isUnlocked: false,
-    progress: 0,
-    rarity: 'epic'
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'epic',
+    earnedDate: '2024-03-15'
   }
 ];
 
@@ -146,9 +150,10 @@ export const muscleGroupBadges: TierOneBadge[] = [
     imageUrl: '/lovable-uploads/7188c940-69c8-4a96-b333-27323f631ad2.png',
     category: 'Performance',
     requirement: 'Achieve 80+ score in a muscle group',
-    isUnlocked: false,
-    progress: 87,
-    rarity: 'epic'
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'epic',
+    earnedDate: '2024-02-25'
   },
   {
     id: 'muscle-diamond',
@@ -159,9 +164,10 @@ export const muscleGroupBadges: TierOneBadge[] = [
     imageUrl: '/lovable-uploads/d832c910-8a35-4ebd-9604-136fa047bf7e.png',
     category: 'Performance',
     requirement: 'Achieve top 5% global ranking',
-    isUnlocked: false,
-    progress: 12,
-    rarity: 'legendary'
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'legendary',
+    earnedDate: '2024-03-10'
   }
 ];
 

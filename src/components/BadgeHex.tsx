@@ -138,8 +138,8 @@ export const BadgeHex = ({
           {description}
         </p>
         
-        {/* Progress Indicator */}
-        {showProgress && (
+        {/* Progress Indicator - Hidden */}
+        {showProgress && false && (
           <Badge variant={isUnlocked ? "default" : "outline"} className="text-xs">
             {isUnlocked ? 'Earned' : `${progress}%`}
           </Badge>
