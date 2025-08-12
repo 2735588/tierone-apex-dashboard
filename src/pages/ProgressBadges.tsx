@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { BadgeHex } from "@/components/BadgeHex";
+import { BadgeModal } from "@/components/BadgeModal";
 import { tierOneBadges, getBadgesByType } from "@/data/badges";
 
 const ProgressBadges = () => {
@@ -248,81 +249,21 @@ const ProgressBadges = () => {
               
               <div className="grid grid-cols-3 gap-4">
                 {category.badges.map((badge) => (
-                  <Dialog key={badge.id}>
-                    <DialogTrigger asChild>
-                      <div className="cursor-pointer">
-                        <BadgeHex
-                          name={badge.name}
-                          description={badge.description}
-                          type={badge.type}
-                          glow={badge.glow}
-                          imageUrl={badge.imageUrl}
-                          isUnlocked={badge.isUnlocked}
-                          progress={badge.progress}
-                          showProgress={!badge.isUnlocked}
-                          size="md"
-                        />
-                      </div>
-                    </DialogTrigger>
-                    <DialogContent className="tier-card">
-                      <DialogHeader>
-                        <DialogTitle className="flex items-center gap-3">
-                          <div className="w-12 h-12">
-                            <BadgeHex
-                              name={badge.name}
-                              description=""
-                              type={badge.type}
-                              glow={badge.glow}
-                              imageUrl={badge.imageUrl}
-                              isUnlocked={badge.isUnlocked}
-                              size="sm"
-                            />
-                          </div>
-                          {badge.name}
-                        </DialogTitle>
-                        <DialogDescription>
-                          {badge.description}
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Requirement:</span>
-                          <span className="text-sm font-medium text-right max-w-48">{badge.requirement}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Category:</span>
-                          <span className="text-sm font-medium">{badge.category}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Rarity:</span>
-                          <Badge variant={badge.isUnlocked ? "default" : "outline"} className="capitalize">
-                            {badge.rarity}
-                          </Badge>
-                        </div>
-                        {badge.earnedDate && (
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-muted-foreground">Earned:</span>
-                            <span className="text-sm font-medium">{new Date(badge.earnedDate).toLocaleDateString()}</span>
-                          </div>
-                        )}
-                        {!badge.isUnlocked && (
-                          <div className="space-y-2">
-                            <div className="flex justify-between items-center">
-                              <span className="text-sm text-muted-foreground">Progress:</span>
-                              <span className="text-sm font-medium">{badge.progress}%</span>
-                            </div>
-                            <Progress value={badge.progress} className="h-3" />
-                          </div>
-                        )}
-                        {badge.isUnlocked && (
-                          <div className="flex items-center gap-2 text-green-400">
-                            <Trophy className="w-4 h-4" />
-                            <span className="text-sm font-medium">Badge Earned!</span>
-                          </div>
-                        )}
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                  <BadgeModal key={badge.id} badge={badge}>
+                    <div className="cursor-pointer">
+                      <BadgeHex
+                        name={badge.name}
+                        description={badge.description}
+                        type={badge.type}
+                        glow={badge.glow}
+                        imageUrl={badge.imageUrl}
+                        isUnlocked={badge.isUnlocked}
+                        progress={badge.progress}
+                        showProgress={!badge.isUnlocked}
+                        size="md"
+                      />
+                    </div>
+                  </BadgeModal>
                 ))}
               </div>
             </div>
