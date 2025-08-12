@@ -1,8 +1,9 @@
 import { X, Trophy, Lock } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TierOneBadge } from "@/data/badges";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 interface BadgeModalProps {
   badge: TierOneBadge;
@@ -16,6 +17,10 @@ export const BadgeModal = ({ badge, children }: BadgeModalProps) => {
         {children}
       </DialogTrigger>
       <DialogContent className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md border-0 p-0 max-w-none w-full h-full data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
+        <VisuallyHidden>
+          <DialogTitle>{badge.name}</DialogTitle>
+          <DialogDescription>{badge.requirement}</DialogDescription>
+        </VisuallyHidden>
         <div className="relative w-full h-full flex flex-col items-center justify-center p-6">
           {/* Close Button */}
           <DialogTrigger asChild>
