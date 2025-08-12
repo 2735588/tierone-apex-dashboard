@@ -76,17 +76,109 @@ const ProgressBadges = () => {
         <p className="text-muted-foreground">Track your journey to elite performance</p>
       </div>
 
-      <Tabs defaultValue="streaks" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-6">
+      <Tabs defaultValue="scores" className="w-full">
+        <TabsList className="grid w-full grid-cols-3 mb-6">
+          <TabsTrigger value="scores" className="flex items-center gap-2">
+            <BarChart3 className="w-4 h-4" />
+            Muscle Scores
+          </TabsTrigger>
           <TabsTrigger value="streaks" className="flex items-center gap-2">
             <Flame className="w-4 h-4" />
-            Streaks & Consistency
+            Streaks
           </TabsTrigger>
           <TabsTrigger value="badges" className="flex items-center gap-2">
             <Trophy className="w-4 h-4" />
-            TierOne Badges
+            Badges
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="scores" className="space-y-6">
+          {/* Overall Potential Score */}
+          <Card className={`tier-card ${getGlowClass()}`}>
+            <CardHeader className="text-center">
+              <CardTitle className="text-xl font-semibold text-foreground mb-4">
+                Overall Potential
+              </CardTitle>
+              <div className={`text-6xl font-bold ${getPotentialColor()} ${getGlowClass()} mb-4`}>
+                {overallPotentialScore}
+              </div>
+              <Badge className={`${getPotentialColor()} bg-transparent border-0 text-lg`}>
+                {getTierBadge(overallPotentialScore).tier} Tier
+              </Badge>
+            </CardHeader>
+          </Card>
+
+          {/* Muscle Group Scores */}
+          <div className="grid gap-4">
+            {muscleGroups.map((muscle, index) => {
+              const tierBadge = getTierBadge(muscle.score);
+              return (
+                <Dialog key={index}>
+                  <DialogTrigger asChild>
+                    <Card className="tier-card cursor-pointer hover:scale-[1.02] transition-transform">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-3 h-3 rounded-full ${tierBadge.bgColor} ${tierBadge.color}`} />
+                            <span className="font-medium">{muscle.name}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className={`text-2xl font-bold ${tierBadge.color}`}>
+                              {muscle.score}
+                            </span>
+                            <Badge variant="outline" className={tierBadge.color}>
+                              {muscle.tier}
+                            </Badge>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </DialogTrigger>
+                  <DialogContent className="tier-card">
+                    <DialogHeader>
+                      <DialogTitle className="flex items-center gap-2">
+                        <div className={`w-4 h-4 rounded-full ${tierBadge.bgColor} ${tierBadge.color}`} />
+                        {muscle.name} Analysis
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div className="text-center">
+                        <div className={`text-4xl font-bold ${tierBadge.color} mb-2`}>
+                          {muscle.score}
+                        </div>
+                        <Badge className={tierBadge.color}>
+                          {muscle.tier} Tier
+                        </Badge>
+                      </div>
+                      <div>
+                        <h4 className="font-medium mb-2">Progress Trend</h4>
+                        <div className="flex items-center gap-2">
+                          {muscle.history.map((score: number, i: number) => (
+                            <div key={i} className="flex-1">
+                              <div className="h-2 bg-muted rounded-full overflow-hidden">
+                                <div 
+                                  className={`h-full ${tierBadge.color.replace('text-', 'bg-')} transition-all`}
+                                  style={{ width: `${(score / 100) * 100}%` }}
+                                />
+                              </div>
+                              <div className="text-xs text-center mt-1">{score}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="font-medium mb-2">Training Focus</h4>
+                        <p className="text-sm text-muted-foreground">
+                          {muscle.advice}
+                        </p>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              );
+            })}
+          </div>
+        </TabsContent>
 
         <TabsContent value="streaks" className="space-y-6">
           {/* Current Streak */}
