@@ -15,14 +15,14 @@ export const BadgeModal = ({ badge, children }: BadgeModalProps) => {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md border-0 p-0 max-w-none w-full h-full flex items-center justify-center animate-fade-in">
-        <div className="relative w-full h-full flex flex-col items-center justify-center p-6 animate-scale-in">
+      <DialogContent className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md border-0 p-0 max-w-none w-full h-full data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95">
+        <div className="relative w-full h-full flex flex-col items-center justify-center p-6">
           {/* Close Button */}
           <DialogTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
-              className="absolute top-6 right-6 z-10 w-12 h-12 rounded-full bg-background/10 backdrop-blur-sm hover:bg-background/20 text-white"
+              className="absolute top-6 right-6 z-10 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white border-0"
             >
               <X className="w-6 h-6" />
             </Button>
@@ -37,14 +37,14 @@ export const BadgeModal = ({ badge, children }: BadgeModalProps) => {
                 className="w-full h-full object-contain filter drop-shadow-2xl"
               />
             ) : (
-              <div className="w-48 h-48 bg-tier-card border-2 border-accent/30 clip-hexagon flex items-center justify-center filter drop-shadow-2xl">
+              <div className="w-48 h-48 bg-card border-2 border-accent/30 rounded-full flex items-center justify-center filter drop-shadow-2xl">
                 <Trophy className="w-16 h-16 text-tier-gold" />
               </div>
             )}
           </div>
 
           {/* Badge Content */}
-          <div className="text-center space-y-6 max-w-md">
+          <div className="text-center space-y-6 max-w-md px-4">
             {/* Badge Title */}
             <h1 className="text-4xl font-bold text-white mb-4">
               {badge.name}
@@ -58,12 +58,12 @@ export const BadgeModal = ({ badge, children }: BadgeModalProps) => {
             {/* Status Badge */}
             <div className="flex justify-center">
               {badge.isUnlocked ? (
-                <Badge className="bg-green-500/20 text-green-400 border-green-400/30 px-6 py-3 text-lg font-semibold flex items-center gap-2">
+                <Badge className="bg-green-500/20 text-green-400 border-green-400/30 px-6 py-3 text-lg font-semibold flex items-center gap-2 border">
                   <Trophy className="w-5 h-5" />
                   Badge Earned!
                 </Badge>
               ) : (
-                <Badge className="bg-gray-500/20 text-gray-400 border-gray-400/30 px-6 py-3 text-lg font-semibold flex items-center gap-2">
+                <Badge className="bg-gray-500/20 text-gray-400 border-gray-400/30 px-6 py-3 text-lg font-semibold flex items-center gap-2 border">
                   <Lock className="w-5 h-5" />
                   Locked
                 </Badge>
@@ -73,7 +73,7 @@ export const BadgeModal = ({ badge, children }: BadgeModalProps) => {
             {/* Earned Date */}
             {badge.isUnlocked && badge.earnedDate && (
               <div className="text-center">
-                <p className="text-gray-400 text-lg">
+                <p className="text-gray-300 text-lg">
                   Earned on {new Date(badge.earnedDate).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'long',
