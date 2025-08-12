@@ -126,7 +126,14 @@ All colors MUST be HSL.
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+  
+  /* Badge Glows */
+  --badge-glow-green: 0 0 20px hsl(142 76% 36% / 0.5), 0 0 40px hsl(142 76% 36% / 0.3);
+  --badge-glow-bronze: 0 0 20px hsl(30 70% 50% / 0.5), 0 0 40px hsl(30 70% 50% / 0.3);
+  --badge-glow-silver: 0 0 20px hsl(210 40% 80% / 0.5), 0 0 40px hsl(210 40% 80% / 0.3);
+  --badge-glow-gold: 0 0 20px hsl(45 93% 58% / 0.5), 0 0 40px hsl(45 93% 58% / 0.3);
+  --badge-glow-diamond: 0 0 20px hsl(220 91% 69% / 0.5), 0 0 40px hsl(220 91% 69% / 0.3);
   }
 }
 
@@ -280,5 +287,36 @@ All colors MUST be HSL.
       height: 300px;
       opacity: 0;
     }
+  }
+
+  /* Badge Glow Effects */
+  .badge-glow-green {
+    box-shadow: var(--badge-glow-green);
+    filter: drop-shadow(0 0 10px hsl(142 76% 36% / 0.4));
+  }
+
+  .badge-glow-bronze {
+    box-shadow: var(--badge-glow-bronze);
+    filter: drop-shadow(0 0 10px hsl(30 70% 50% / 0.4));
+  }
+
+  .badge-glow-silver {
+    box-shadow: var(--badge-glow-silver);
+    filter: drop-shadow(0 0 10px hsl(210 40% 80% / 0.4));
+  }
+
+  .badge-glow-gold {
+    box-shadow: var(--badge-glow-gold);
+    filter: drop-shadow(0 0 10px hsl(45 93% 58% / 0.4));
+  }
+
+  .badge-glow-diamond {
+    box-shadow: var(--badge-glow-diamond);
+    filter: drop-shadow(0 0 10px hsl(220 91% 69% / 0.4));
+  }
+
+  /* Hexagon Clip Path */
+  .clip-hexagon {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   }
 }

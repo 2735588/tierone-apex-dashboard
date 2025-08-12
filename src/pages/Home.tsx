@@ -33,22 +33,24 @@ const Home = () => {
 
   const sponsoredChallenges = [
     {
-      id: 3,
-      title: "Nike Air Max Challenge",
-      description: "Run 100 miles in 30 days",
+      id: 1,
+      title: "Gymshark Push-Up Challenge",
+      description: "30-day push-up progression",
       daysLeft: 12,
-      participants: 5847,
-      prize: "Nike Air Max + $500",
-      category: "Sponsored"
+      participants: 8429,
+      prize: "Gymshark Badge + Gear",
+      category: "Sponsored",
+      brand: "Gymshark"
     },
     {
-      id: 4,
-      title: "Protein World Shred",
-      description: "Transform with Protein World",
-      daysLeft: 25,
-      participants: 3652,
-      prize: "1 Year Supply + Cash",
-      category: "Sponsored"
+      id: 2,
+      title: "Nike Running Series",
+      description: "Weekly distance goals",
+      daysLeft: 5,
+      participants: 12847,
+      prize: "Nike Champion Badge",
+      category: "Sponsored",
+      brand: "Nike"
     }
   ];
 
