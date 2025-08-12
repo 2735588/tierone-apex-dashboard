@@ -9,24 +9,31 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { BadgeHex } from "@/components/BadgeHex";
 import { tierOneBadges, getBadgesByType } from "@/data/badges";
+import { MuscleModel3D } from "@/components/MuscleModel3D";
 
 const ProgressBadges = () => {
   const { gender } = useGender();
   const isFemale = gender === 'female';
   const [currentStreak, setCurrentStreak] = useState(36);
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<any>(null);
+  const [hoveredMuscle, setHoveredMuscle] = useState<string | null>(null);
 
-  const muscleGroups = isFemale ? [
-    { name: "Glutes", score: 82, tier: "Gold", history: [78, 80, 82], advice: "Build beautiful glute shape and strength with hip thrusts, Romanian deadlifts, and Bulgarian split squats." },
-    { name: "Core", score: 78, tier: "Silver", history: [74, 76, 78], advice: "Develop incredible core stability and posture with planks, dead bugs, and Pallof presses." },
-    { name: "Legs", score: 85, tier: "Gold", history: [82, 84, 85], advice: "Tone and strengthen your legs with unilateral training like lunges, step-ups, and single-leg deadlifts." },
-  ] : [
-    { name: "Chest", score: 87, tier: "Gold", history: [82, 85, 87], advice: "Focus on progressive overload with bench press variations" },
-    { name: "Shoulders", score: 92, tier: "Gold", history: [88, 90, 92], advice: "Incorporate more rear delt work for balanced development" },
-    { name: "Arms", score: 78, tier: "Silver", history: [74, 76, 78], advice: "Increase training frequency and add isolation exercises" },
+  const muscleGroups = [
+    { name: "Chest", key: "chest", score: 87, tier: "Gold", history: [82, 85, 87], advice: "Focus on progressive overload with bench press variations and incline movements for upper chest development." },
+    { name: "Back", key: "back", score: 84, tier: "Gold", history: [79, 82, 84], advice: "Strengthen your back with pull-ups, rows, and deadlifts for better posture and overall strength." },
+    { name: "Shoulders", key: "shoulders", score: 92, tier: "Gold", history: [88, 90, 92], advice: "Incorporate more rear delt work and overhead pressing for balanced shoulder development." },
+    { name: "Arms", key: "arms", score: 78, tier: "Silver", history: [74, 76, 78], advice: "Increase training frequency with both compound and isolation exercises for arm growth." },
+    { name: "Legs", key: "legs", score: 89, tier: "Gold", history: [85, 87, 89], advice: "Build powerful legs with squats, deadlifts, and unilateral training for balanced development." },
+    { name: "Core", key: "core", score: 81, tier: "Gold", history: [77, 79, 81], advice: "Develop core stability with planks, anti-rotation exercises, and compound movements." }
   ];
 
   const overallPotentialScore = 98;
+  
+  // Create muscle scores object for 3D model
+  const muscleScores = muscleGroups.reduce((acc, muscle) => {
+    acc[muscle.key] = muscle.score;
+    return acc;
+  }, {} as { [key: string]: number });
 
   // Get TierOne badges organized by category
   const allBadges = tierOneBadges;
@@ -108,6 +115,22 @@ const ProgressBadges = () => {
             </CardHeader>
           </Card>
 
+          {/* 3D Muscle Model */}
+          <Card className="tier-card">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Target className="w-5 h-5 text-accent" />
+                Interactive Muscle Map
+              </CardTitle>
+              <CardDescription>
+                Hover over muscle groups below to see them glow on the 3D model
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6">
+              <MuscleModel3D hoveredMuscle={hoveredMuscle} muscleScores={muscleScores} />
+            </CardContent>
+          </Card>
+
           {/* Muscle Group Scores */}
           <Card className="tier-card">
             <CardHeader>
@@ -122,7 +145,11 @@ const ProgressBadges = () => {
                 return (
                   <Dialog key={index}>
                     <DialogTrigger asChild>
-                      <div className="cursor-pointer space-y-2 hover:opacity-80 transition-opacity">
+                      <div 
+                        className="cursor-pointer space-y-2 hover:opacity-80 transition-opacity"
+                        onMouseEnter={() => setHoveredMuscle(muscle.key)}
+                        onMouseLeave={() => setHoveredMuscle(null)}
+                      >
                         <div className="flex items-center justify-between">
                           <span className="font-medium text-foreground">{muscle.name}</span>
                           <div className="flex items-center gap-2">
