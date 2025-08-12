@@ -9,14 +9,12 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { BadgeHex } from "@/components/BadgeHex";
 import { tierOneBadges, getBadgesByType } from "@/data/badges";
-import { MuscleModel3D } from "@/components/MuscleModel3D";
 
 const ProgressBadges = () => {
   const { gender } = useGender();
   const isFemale = gender === 'female';
   const [currentStreak, setCurrentStreak] = useState(36);
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<any>(null);
-  const [hoveredMuscle, setHoveredMuscle] = useState<string | null>(null);
 
   const muscleGroups = [
     { name: "Chest", key: "chest", score: 87, tier: "Gold", history: [82, 85, 87], advice: "Focus on progressive overload with bench press variations and incline movements for upper chest development." },
@@ -28,12 +26,6 @@ const ProgressBadges = () => {
   ];
 
   const overallPotentialScore = 98;
-  
-  // Create muscle scores object for 3D model
-  const muscleScores = muscleGroups.reduce((acc, muscle) => {
-    acc[muscle.key] = muscle.score;
-    return acc;
-  }, {} as { [key: string]: number });
 
   // Get TierOne badges organized by category
   const allBadges = tierOneBadges;
@@ -115,75 +107,64 @@ const ProgressBadges = () => {
             </CardHeader>
           </Card>
 
-          {/* 3D Muscle Model */}
-          <Card className="tier-card">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Target className="w-5 h-5 text-accent" />
-                Interactive Muscle Map
-              </CardTitle>
-              <CardDescription>
-                Hover over muscle groups below to see them glow on the 3D model
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-6">
-              <MuscleModel3D hoveredMuscle={hoveredMuscle} muscleScores={muscleScores} />
-            </CardContent>
-          </Card>
-
           {/* Muscle Group Scores */}
           <Card className="tier-card">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-accent" />
-                Muscle Group Scores
+                Muscle Group Performance
               </CardTitle>
+              <CardDescription>
+                Track your strength and development across all major muscle groups
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-8">
               {muscleGroups.map((muscle, index) => {
-                const tierBadge = getTierBadge(muscle.score);
+                const glowIntensity = muscle.score >= 90 ? 'muscle-glow-high' : muscle.score >= 80 ? 'muscle-glow-medium' : muscle.score >= 70 ? 'muscle-glow-low' : '';
                 return (
                   <Dialog key={index}>
                     <DialogTrigger asChild>
-                      <div 
-                        className="cursor-pointer space-y-2 hover:opacity-80 transition-opacity"
-                        onMouseEnter={() => setHoveredMuscle(muscle.key)}
-                        onMouseLeave={() => setHoveredMuscle(null)}
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="font-medium text-foreground">{muscle.name}</span>
-                          <div className="flex items-center gap-2">
-                            <span className={`text-xl font-bold ${tierBadge.color}`}>
+                      <div className="cursor-pointer group hover:scale-[1.02] transition-all duration-300">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                            <span className="font-semibold text-lg text-foreground group-hover:text-green-400 transition-colors">
+                              {muscle.name}
+                            </span>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-3xl font-bold text-green-400 group-hover:text-green-300 transition-colors">
                               {muscle.score}
                             </span>
-                            <Badge variant="outline" className={`${tierBadge.color} text-xs`}>
-                              {muscle.tier}
-                            </Badge>
+                            <span className="text-sm text-muted-foreground font-medium">
+                              /100
+                            </span>
                           </div>
                         </div>
-                        <div className="w-full bg-muted rounded-full h-2">
-                          <div 
-                            className="bg-green-400 h-2 rounded-full transition-all duration-500"
-                            style={{ width: `${muscle.score}%` }}
-                          />
+                        <div className="relative">
+                          <div className="w-full bg-muted/30 rounded-full h-3 overflow-hidden">
+                            <div 
+                              className={`h-full bg-gradient-to-r from-green-500 to-green-400 rounded-full transition-all duration-700 ease-out ${glowIntensity}`}
+                              style={{ width: `${muscle.score}%` }}
+                            />
+                          </div>
+                          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-full animate-pulse opacity-60" />
                         </div>
                       </div>
                     </DialogTrigger>
                     <DialogContent className="tier-card">
                       <DialogHeader>
                         <DialogTitle className="flex items-center gap-2">
-                          <div className={`w-4 h-4 rounded-full ${tierBadge.bgColor} ${tierBadge.color}`} />
+                          <div className="w-4 h-4 rounded-full bg-green-400 animate-pulse" />
                           {muscle.name} Analysis
                         </DialogTitle>
                       </DialogHeader>
                       <div className="space-y-4">
                         <div className="text-center">
-                          <div className={`text-4xl font-bold ${tierBadge.color} mb-2`}>
+                          <div className="text-6xl font-bold text-green-400 mb-2">
                             {muscle.score}
                           </div>
-                          <Badge className={tierBadge.color}>
-                            {muscle.tier} Tier
-                          </Badge>
+                          <p className="text-muted-foreground">Current Performance Score</p>
                         </div>
                         <div>
                           <h4 className="font-medium mb-2">Progress Trend</h4>
