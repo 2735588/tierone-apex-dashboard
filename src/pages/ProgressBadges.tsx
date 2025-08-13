@@ -129,15 +129,25 @@ const ProgressBadges = () => {
             </CardHeader>
           </Card>
 
-          {/* Body Silhouette */}
+          {/* Body Silhouette - Scan Style */}
           <Card className="tier-card">
             <CardContent className="p-6">
               <div className="flex justify-center">
-                <img 
-                  src={bodySilhouette} 
-                  alt="Body silhouette showing muscle groups"
-                  className="w-48 h-auto opacity-90 filter brightness-110 drop-shadow-[0_0_20px_rgba(34,197,94,0.6)] hover:drop-shadow-[0_0_30px_rgba(34,197,94,0.8)] transition-all duration-300"
-                />
+                <div className="relative">
+                  <div className="scan-grid-bg absolute inset-0 rounded-full opacity-20" />
+                  <div className="relative w-48 h-64 flex items-center justify-center">
+                    <img 
+                      src={bodySilhouette} 
+                      alt="Body silhouette showing muscle groups"
+                      className="w-full h-full object-contain body-scan-pulse filter brightness-110"
+                    />
+                    {/* Scanning effect overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/10 to-transparent scan-line opacity-60" />
+                  </div>
+                  
+                  {/* Progress ring around body */}
+                  <div className="absolute inset-0 rounded-full border-2 border-accent/30 tier-glow animate-pulse" />
+                </div>
               </div>
             </CardContent>
           </Card>
