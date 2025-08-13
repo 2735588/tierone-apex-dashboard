@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { BadgeHex } from "@/components/BadgeHex";
 import { BadgeModal } from "@/components/BadgeModal";
 import { tierOneBadges, getBadgesByType } from "@/data/badges";
+import bodySilhouette from "@/assets/body-silhouette.png";
 
 const ProgressBadges = () => {
   const { gender } = useGender();
@@ -126,6 +127,19 @@ const ProgressBadges = () => {
                 {getTierBadge(overallPotentialScore).tier} Tier
               </Badge>
             </CardHeader>
+          </Card>
+
+          {/* Body Silhouette */}
+          <Card className="tier-card">
+            <CardContent className="p-6">
+              <div className="flex justify-center">
+                <img 
+                  src={bodySilhouette} 
+                  alt="Body silhouette showing muscle groups"
+                  className="w-48 h-auto opacity-80 filter brightness-110"
+                />
+              </div>
+            </CardContent>
           </Card>
 
           {/* Muscle Group Scores */}
