@@ -35,11 +35,31 @@ const ProgressBadges = () => {
   const globalBadges = getBadgesByType('global');
   const muscleGroupBadges = getBadgesByType('muscle-group');
   
+  // Group muscle group badges by muscle group
+  const chestBadges = muscleGroupBadges.filter(badge => badge.category === 'Chest Performance');
+  const backBadges = muscleGroupBadges.filter(badge => badge.category === 'Back Performance');
+  const shouldersBadges = muscleGroupBadges.filter(badge => badge.category === 'Shoulders Performance');
+  const armsBadges = muscleGroupBadges.filter(badge => badge.category === 'Arms Performance');
+  const legsBadges = muscleGroupBadges.filter(badge => badge.category === 'Legs Performance');
+  const coreBadges = muscleGroupBadges.filter(badge => badge.category === 'Core Performance');
+  
   const badgeCategories = [
     { name: 'Consistency', badges: streakBadges, icon: Flame },
     { name: 'Brand Challenges', badges: sponsoredBadges, icon: Award },
     { name: 'Global Events', badges: globalBadges, icon: Trophy },
-    { name: 'Performance', badges: muscleGroupBadges, icon: Target }
+    { 
+      name: 'Performance', 
+      badges: [], // We'll handle performance badges separately with subcategories
+      icon: Target,
+      subcategories: [
+        { name: 'Chest', badges: chestBadges },
+        { name: 'Back', badges: backBadges },
+        { name: 'Shoulders', badges: shouldersBadges },
+        { name: 'Arms', badges: armsBadges },
+        { name: 'Legs', badges: legsBadges },
+        { name: 'Core', badges: coreBadges }
+      ]
+    }
   ];
 
   const getBadgeColor = (tier: string, unlocked: boolean) => {
@@ -242,30 +262,72 @@ const ProgressBadges = () => {
               <div className="flex items-center gap-2">
                 <category.icon className="w-5 h-5 text-accent" />
                 <h3 className="text-lg font-semibold">{category.name}</h3>
-                <Badge variant="outline" className="ml-auto">
-                  {category.badges.filter(badge => badge.isUnlocked).length}/{category.badges.length}
-                </Badge>
+                {category.subcategories ? (
+                  <Badge variant="outline" className="ml-auto">
+                    {category.subcategories.reduce((total, sub) => total + sub.badges.filter(badge => badge.isUnlocked).length, 0)}/
+                    {category.subcategories.reduce((total, sub) => total + sub.badges.length, 0)}
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="ml-auto">
+                    {category.badges.filter(badge => badge.isUnlocked).length}/{category.badges.length}
+                  </Badge>
+                )}
               </div>
               
-              <div className="grid grid-cols-3 gap-4">
-                {category.badges.map((badge) => (
-                  <BadgeModal key={badge.id} badge={badge}>
-                    <div className="cursor-pointer">
-                      <BadgeHex
-                        name={badge.name}
-                        description={badge.description}
-                        type={badge.type}
-                        glow={badge.glow}
-                        imageUrl={badge.imageUrl}
-                        isUnlocked={badge.isUnlocked}
-                        progress={badge.progress}
-                        showProgress={!badge.isUnlocked}
-                        size="md"
-                      />
+              {/* Handle Performance category with subcategories */}
+              {category.subcategories ? (
+                category.subcategories.map((subcategory, subIndex) => (
+                  <div key={subIndex} className="space-y-3">
+                    <div className="flex items-center gap-2 ml-6">
+                      <div className="w-2 h-2 rounded-full bg-accent/60" />
+                      <h4 className="text-md font-medium text-muted-foreground">{subcategory.name}</h4>
+                      <Badge variant="secondary" className="ml-auto text-xs">
+                        {subcategory.badges.filter(badge => badge.isUnlocked).length}/{subcategory.badges.length}
+                      </Badge>
                     </div>
-                  </BadgeModal>
-                ))}
-              </div>
+                    <div className="grid grid-cols-3 gap-4 ml-6">
+                      {subcategory.badges.map((badge) => (
+                        <BadgeModal key={badge.id} badge={badge}>
+                          <div className="cursor-pointer">
+                            <BadgeHex
+                              name={badge.name}
+                              description={badge.description}
+                              type={badge.type}
+                              glow={badge.glow}
+                              imageUrl={badge.imageUrl}
+                              isUnlocked={badge.isUnlocked}
+                              progress={badge.progress}
+                              showProgress={!badge.isUnlocked}
+                              size="md"
+                            />
+                          </div>
+                        </BadgeModal>
+                      ))}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                /* Handle regular categories without subcategories */
+                <div className="grid grid-cols-3 gap-4">
+                  {category.badges.map((badge) => (
+                    <BadgeModal key={badge.id} badge={badge}>
+                      <div className="cursor-pointer">
+                        <BadgeHex
+                          name={badge.name}
+                          description={badge.description}
+                          type={badge.type}
+                          glow={badge.glow}
+                          imageUrl={badge.imageUrl}
+                          isUnlocked={badge.isUnlocked}
+                          progress={badge.progress}
+                          showProgress={!badge.isUnlocked}
+                          size="md"
+                        />
+                      </div>
+                    </BadgeModal>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
 
