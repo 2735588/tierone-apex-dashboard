@@ -136,7 +136,7 @@ const ProgressBadges = () => {
                 <img 
                   src={bodySilhouette} 
                   alt="Body silhouette showing muscle groups"
-                  className="w-48 h-auto opacity-80 filter brightness-110"
+                  className="w-48 h-auto opacity-90 filter brightness-110 drop-shadow-[0_0_20px_rgba(34,197,94,0.6)] hover:drop-shadow-[0_0_30px_rgba(34,197,94,0.8)] transition-all duration-300"
                 />
               </div>
             </CardContent>
