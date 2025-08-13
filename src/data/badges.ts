@@ -112,63 +112,366 @@ export const globalBadges: TierOneBadge[] = [
 ];
 
 // Muscle Group Performance Badges
-export const muscleGroupBadges: TierOneBadge[] = [
+
+// Chest Badges
+export const chestBadges: TierOneBadge[] = [
   {
-    id: 'muscle-bronze',
-    name: 'Bronze Tier',
-    description: 'Score ≥ 60 in any muscle group',
+    id: 'chest-bronze',
+    name: 'Chest Bronze',
+    description: 'Score ≥ 60 in Chest',
     type: 'muscle-group',
     glow: 'bronze',
     imageUrl: '/lovable-uploads/65d9305f-1a94-40d2-b250-2f765da7e4c8.png',
-    category: 'Performance',
-    requirement: 'Achieve 60+ score in a muscle group',
+    category: 'Chest Performance',
+    requirement: 'Achieve 60+ score in Chest',
     isUnlocked: true,
     progress: 100,
     rarity: 'common',
     earnedDate: '2024-01-10'
   },
   {
-    id: 'muscle-silver',
-    name: 'Silver Tier',
-    description: 'Score ≥ 70 in any muscle group',
+    id: 'chest-silver',
+    name: 'Chest Silver',
+    description: 'Score ≥ 70 in Chest',
     type: 'muscle-group',
     glow: 'silver',
     imageUrl: '/lovable-uploads/9033ee23-3f60-416a-87f0-de1d51f7c5d8.png',
-    category: 'Performance',
-    requirement: 'Achieve 70+ score in a muscle group',
+    category: 'Chest Performance',
+    requirement: 'Achieve 70+ score in Chest',
     isUnlocked: true,
     progress: 100,
     rarity: 'rare',
     earnedDate: '2024-01-20'
   },
   {
-    id: 'muscle-gold',
-    name: 'Gold Tier',
-    description: 'Score ≥ 80 in any muscle group',
+    id: 'chest-gold',
+    name: 'Chest Gold',
+    description: 'Score ≥ 80 in Chest',
     type: 'muscle-group',
     glow: 'gold',
     imageUrl: '/lovable-uploads/7188c940-69c8-4a96-b333-27323f631ad2.png',
-    category: 'Performance',
-    requirement: 'Achieve 80+ score in a muscle group',
+    category: 'Chest Performance',
+    requirement: 'Achieve 80+ score in Chest',
     isUnlocked: true,
     progress: 100,
     rarity: 'epic',
     earnedDate: '2024-02-25'
   },
   {
-    id: 'muscle-diamond',
-    name: 'Diamond Elite',
-    description: 'Top 5% globally in any muscle group',
+    id: 'chest-diamond',
+    name: 'Chest Diamond',
+    description: 'Score ≥ 90 in Chest',
     type: 'muscle-group',
     glow: 'diamond',
     imageUrl: '/lovable-uploads/d832c910-8a35-4ebd-9604-136fa047bf7e.png',
-    category: 'Performance',
-    requirement: 'Achieve top 5% global ranking',
+    category: 'Chest Performance',
+    requirement: 'Achieve 90+ score in Chest',
+    isUnlocked: false,
+    progress: 85,
+    rarity: 'legendary'
+  }
+];
+
+// Back Badges
+export const backBadges: TierOneBadge[] = [
+  {
+    id: 'back-bronze',
+    name: 'Back Bronze',
+    description: 'Score ≥ 60 in Back',
+    type: 'muscle-group',
+    glow: 'bronze',
+    imageUrl: '/lovable-uploads/65d9305f-1a94-40d2-b250-2f765da7e4c8.png',
+    category: 'Back Performance',
+    requirement: 'Achieve 60+ score in Back',
     isUnlocked: true,
     progress: 100,
-    rarity: 'legendary',
-    earnedDate: '2024-03-10'
+    rarity: 'common',
+    earnedDate: '2024-01-12'
+  },
+  {
+    id: 'back-silver',
+    name: 'Back Silver',
+    description: 'Score ≥ 70 in Back',
+    type: 'muscle-group',
+    glow: 'silver',
+    imageUrl: '/lovable-uploads/9033ee23-3f60-416a-87f0-de1d51f7c5d8.png',
+    category: 'Back Performance',
+    requirement: 'Achieve 70+ score in Back',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'rare',
+    earnedDate: '2024-01-25'
+  },
+  {
+    id: 'back-gold',
+    name: 'Back Gold',
+    description: 'Score ≥ 80 in Back',
+    type: 'muscle-group',
+    glow: 'gold',
+    imageUrl: '/lovable-uploads/7188c940-69c8-4a96-b333-27323f631ad2.png',
+    category: 'Back Performance',
+    requirement: 'Achieve 80+ score in Back',
+    isUnlocked: false,
+    progress: 75,
+    rarity: 'epic'
+  },
+  {
+    id: 'back-diamond',
+    name: 'Back Diamond',
+    description: 'Score ≥ 90 in Back',
+    type: 'muscle-group',
+    glow: 'diamond',
+    imageUrl: '/lovable-uploads/d832c910-8a35-4ebd-9604-136fa047bf7e.png',
+    category: 'Back Performance',
+    requirement: 'Achieve 90+ score in Back',
+    isUnlocked: false,
+    progress: 60,
+    rarity: 'legendary'
   }
+];
+
+// Shoulders Badges
+export const shouldersBadges: TierOneBadge[] = [
+  {
+    id: 'shoulders-bronze',
+    name: 'Shoulders Bronze',
+    description: 'Score ≥ 60 in Shoulders',
+    type: 'muscle-group',
+    glow: 'bronze',
+    imageUrl: '/lovable-uploads/65d9305f-1a94-40d2-b250-2f765da7e4c8.png',
+    category: 'Shoulders Performance',
+    requirement: 'Achieve 60+ score in Shoulders',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'common',
+    earnedDate: '2024-01-08'
+  },
+  {
+    id: 'shoulders-silver',
+    name: 'Shoulders Silver',
+    description: 'Score ≥ 70 in Shoulders',
+    type: 'muscle-group',
+    glow: 'silver',
+    imageUrl: '/lovable-uploads/9033ee23-3f60-416a-87f0-de1d51f7c5d8.png',
+    category: 'Shoulders Performance',
+    requirement: 'Achieve 70+ score in Shoulders',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'rare',
+    earnedDate: '2024-01-18'
+  },
+  {
+    id: 'shoulders-gold',
+    name: 'Shoulders Gold',
+    description: 'Score ≥ 80 in Shoulders',
+    type: 'muscle-group',
+    glow: 'gold',
+    imageUrl: '/lovable-uploads/7188c940-69c8-4a96-b333-27323f631ad2.png',
+    category: 'Shoulders Performance',
+    requirement: 'Achieve 80+ score in Shoulders',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'epic',
+    earnedDate: '2024-03-05'
+  },
+  {
+    id: 'shoulders-diamond',
+    name: 'Shoulders Diamond',
+    description: 'Score ≥ 90 in Shoulders',
+    type: 'muscle-group',
+    glow: 'diamond',
+    imageUrl: '/lovable-uploads/d832c910-8a35-4ebd-9604-136fa047bf7e.png',
+    category: 'Shoulders Performance',
+    requirement: 'Achieve 90+ score in Shoulders',
+    isUnlocked: false,
+    progress: 82,
+    rarity: 'legendary'
+  }
+];
+
+// Arms Badges
+export const armsBadges: TierOneBadge[] = [
+  {
+    id: 'arms-bronze',
+    name: 'Arms Bronze',
+    description: 'Score ≥ 60 in Arms',
+    type: 'muscle-group',
+    glow: 'bronze',
+    imageUrl: '/lovable-uploads/65d9305f-1a94-40d2-b250-2f765da7e4c8.png',
+    category: 'Arms Performance',
+    requirement: 'Achieve 60+ score in Arms',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'common',
+    earnedDate: '2024-01-05'
+  },
+  {
+    id: 'arms-silver',
+    name: 'Arms Silver',
+    description: 'Score ≥ 70 in Arms',
+    type: 'muscle-group',
+    glow: 'silver',
+    imageUrl: '/lovable-uploads/9033ee23-3f60-416a-87f0-de1d51f7c5d8.png',
+    category: 'Arms Performance',
+    requirement: 'Achieve 70+ score in Arms',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'rare',
+    earnedDate: '2024-01-22'
+  },
+  {
+    id: 'arms-gold',
+    name: 'Arms Gold',
+    description: 'Score ≥ 80 in Arms',
+    type: 'muscle-group',
+    glow: 'gold',
+    imageUrl: '/lovable-uploads/7188c940-69c8-4a96-b333-27323f631ad2.png',
+    category: 'Arms Performance',
+    requirement: 'Achieve 80+ score in Arms',
+    isUnlocked: false,
+    progress: 78,
+    rarity: 'epic'
+  },
+  {
+    id: 'arms-diamond',
+    name: 'Arms Diamond',
+    description: 'Score ≥ 90 in Arms',
+    type: 'muscle-group',
+    glow: 'diamond',
+    imageUrl: '/lovable-uploads/d832c910-8a35-4ebd-9604-136fa047bf7e.png',
+    category: 'Arms Performance',
+    requirement: 'Achieve 90+ score in Arms',
+    isUnlocked: false,
+    progress: 65,
+    rarity: 'legendary'
+  }
+];
+
+// Legs Badges
+export const legsBadges: TierOneBadge[] = [
+  {
+    id: 'legs-bronze',
+    name: 'Legs Bronze',
+    description: 'Score ≥ 60 in Legs',
+    type: 'muscle-group',
+    glow: 'bronze',
+    imageUrl: '/lovable-uploads/65d9305f-1a94-40d2-b250-2f765da7e4c8.png',
+    category: 'Legs Performance',
+    requirement: 'Achieve 60+ score in Legs',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'common',
+    earnedDate: '2024-01-14'
+  },
+  {
+    id: 'legs-silver',
+    name: 'Legs Silver',
+    description: 'Score ≥ 70 in Legs',
+    type: 'muscle-group',
+    glow: 'silver',
+    imageUrl: '/lovable-uploads/9033ee23-3f60-416a-87f0-de1d51f7c5d8.png',
+    category: 'Legs Performance',
+    requirement: 'Achieve 70+ score in Legs',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'rare',
+    earnedDate: '2024-02-05'
+  },
+  {
+    id: 'legs-gold',
+    name: 'Legs Gold',
+    description: 'Score ≥ 80 in Legs',
+    type: 'muscle-group',
+    glow: 'gold',
+    imageUrl: '/lovable-uploads/7188c940-69c8-4a96-b333-27323f631ad2.png',
+    category: 'Legs Performance',
+    requirement: 'Achieve 80+ score in Legs',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'epic',
+    earnedDate: '2024-02-28'
+  },
+  {
+    id: 'legs-diamond',
+    name: 'Legs Diamond',
+    description: 'Score ≥ 90 in Legs',
+    type: 'muscle-group',
+    glow: 'diamond',
+    imageUrl: '/lovable-uploads/d832c910-8a35-4ebd-9604-136fa047bf7e.png',
+    category: 'Legs Performance',
+    requirement: 'Achieve 90+ score in Legs',
+    isUnlocked: false,
+    progress: 88,
+    rarity: 'legendary'
+  }
+];
+
+// Core Badges
+export const coreBadges: TierOneBadge[] = [
+  {
+    id: 'core-bronze',
+    name: 'Core Bronze',
+    description: 'Score ≥ 60 in Core',
+    type: 'muscle-group',
+    glow: 'bronze',
+    imageUrl: '/lovable-uploads/65d9305f-1a94-40d2-b250-2f765da7e4c8.png',
+    category: 'Core Performance',
+    requirement: 'Achieve 60+ score in Core',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'common',
+    earnedDate: '2024-01-16'
+  },
+  {
+    id: 'core-silver',
+    name: 'Core Silver',
+    description: 'Score ≥ 70 in Core',
+    type: 'muscle-group',
+    glow: 'silver',
+    imageUrl: '/lovable-uploads/9033ee23-3f60-416a-87f0-de1d51f7c5d8.png',
+    category: 'Core Performance',
+    requirement: 'Achieve 70+ score in Core',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'rare',
+    earnedDate: '2024-02-12'
+  },
+  {
+    id: 'core-gold',
+    name: 'Core Gold',
+    description: 'Score ≥ 80 in Core',
+    type: 'muscle-group',
+    glow: 'gold',
+    imageUrl: '/lovable-uploads/7188c940-69c8-4a96-b333-27323f631ad2.png',
+    category: 'Core Performance',
+    requirement: 'Achieve 80+ score in Core',
+    isUnlocked: false,
+    progress: 72,
+    rarity: 'epic'
+  },
+  {
+    id: 'core-diamond',
+    name: 'Core Diamond',
+    description: 'Score ≥ 90 in Core',
+    type: 'muscle-group',
+    glow: 'diamond',
+    imageUrl: '/lovable-uploads/d832c910-8a35-4ebd-9604-136fa047bf7e.png',
+    category: 'Core Performance',
+    requirement: 'Achieve 90+ score in Core',
+    isUnlocked: false,
+    progress: 55,
+    rarity: 'legendary'
+  }
+];
+
+// Combined muscle group badges
+export const muscleGroupBadges: TierOneBadge[] = [
+  ...chestBadges,
+  ...backBadges,
+  ...shouldersBadges,
+  ...armsBadges,
+  ...legsBadges,
+  ...coreBadges
 ];
 
 // Combined badge collection
