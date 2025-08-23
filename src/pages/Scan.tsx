@@ -17,6 +17,8 @@ export const Scan = () => {
   const [showConsentModal, setShowConsentModal] = useState(false);
   const [hasConsent, setHasConsent] = useState(false);
 
+  const SHOW_MOCK = import.meta.env.VITE_SHOW_MOCK === 'true';
+
   useEffect(() => {
     const consent = localStorage.getItem('t1_consent');
     setHasConsent(consent === 'true');
@@ -158,16 +160,20 @@ export const Scan = () => {
             Position yourself in good lighting for best results
           </div>
 
-          {/* Test Mock Backend */}
-          <button onClick={runTestScan} className="mt-4 px-4 py-2 rounded-lg border w-full">
-            Test Scan (mock)
-          </button>
-          {isProcessing && <p className="mt-2 text-center">Processing…</p>}
-          {score && (
-            <div className="mt-3 text-center">
-              <div>Score: <b>{score.overall_score}</b></div>
-              <div>Tier: <b>{score.tier}</b></div>
-            </div>
+          {/* Test Mock Backend - Only show in development */}
+          {SHOW_MOCK && (
+            <>
+              <button onClick={runTestScan} className="mt-4 px-4 py-2 rounded-lg border w-full">
+                Test Scan (mock)
+              </button>
+              {isProcessing && <p className="mt-2 text-center">Processing…</p>}
+              {score && (
+                <div className="mt-3 text-center">
+                  <div>Score: <b>{score.overall_score}</b></div>
+                  <div>Tier: <b>{score.tier}</b></div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
