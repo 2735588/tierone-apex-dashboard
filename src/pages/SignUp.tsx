@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Chrome } from 'lucide-react';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { BrandMark } from '@/components/Brand';
 
 export const SignUp = () => {
   const navigate = useNavigate();
@@ -55,7 +56,7 @@ export const SignUp = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center tier-glow mx-auto mb-4">
-            <span className="text-2xl font-bold text-primary-foreground">T1</span>
+            <BrandMark width={32} height={32} className="filter brightness-0 invert" />
           </div>
           <h1 className="text-4xl font-bold text-foreground mb-2 tracking-tight">
             {t('appName')}

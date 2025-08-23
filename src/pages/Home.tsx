@@ -4,6 +4,7 @@ import { Flame, Plus, Trophy, Calendar, Target, Bell, Settings, ChevronRight, Za
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { BrandMark } from "@/components/Brand";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -114,7 +115,7 @@ const Home = () => {
       <div className="flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center tier-glow">
-            <Flame className="w-5 h-5 text-primary-foreground" />
+            <BrandMark width={20} height={20} className="filter brightness-0 invert" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-foreground">TierOne</h1>

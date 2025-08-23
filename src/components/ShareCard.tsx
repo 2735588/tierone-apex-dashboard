@@ -4,6 +4,7 @@ import html2canvas from "html2canvas";
 import { Button } from "@/components/ui/button";
 import { ScorePayload } from "@/services";
 import { toast } from "@/hooks/use-toast";
+import { BrandMark } from "@/components/Brand";
 
 interface ShareCardProps {
   scoreData: ScorePayload;
@@ -118,7 +119,7 @@ export const ShareCard = ({ scoreData, handle = "@athlete" }: ShareCardProps) =>
         <div className="text-center">
           <div className="flex items-center justify-center gap-2 mb-6">
             <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
-              <span className="text-sm font-bold text-white">T1</span>
+              <BrandMark width={16} height={16} className="filter brightness-0 invert" />
             </div>
             <span className="text-white font-bold text-xl">TierOne</span>
           </div>

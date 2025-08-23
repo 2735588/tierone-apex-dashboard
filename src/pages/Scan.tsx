@@ -9,6 +9,7 @@ import { PhotoConsentModal } from "@/components/PhotoConsentModal";
 import { ShareCard } from "@/components/ShareCard";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import bodyImage from "@/assets/body-silhouette.png";
+import { BrandMark } from "@/components/Brand";
 
 export const Scan = () => {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ export const Scan = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center tier-glow">
-              <span className="text-sm font-bold text-primary-foreground">T1</span>
+              <BrandMark width={16} height={16} className="filter brightness-0 invert" />
             </div>
             <h1 className="text-2xl font-bold text-foreground">Body Scan</h1>
           </div>

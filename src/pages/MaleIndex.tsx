@@ -5,6 +5,7 @@ import { Bell, Settings, Flame, Timer, Activity, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import bodyImage from "@/assets/body-silhouette.png";
+import { BrandMark } from "@/components/Brand";
 
 const MaleIndex = () => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const MaleIndex = () => {
       <div className="flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center tier-glow">
-            <Flame className="w-5 h-5 text-primary-foreground" />
+            <BrandMark width={20} height={20} className="filter brightness-0 invert" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-foreground">TierOne</h1>

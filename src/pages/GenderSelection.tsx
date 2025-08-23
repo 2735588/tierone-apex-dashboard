@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Flame, User, Users } from 'lucide-react';
 import { useGender, Gender } from '@/contexts/GenderContext';
+import { BrandMark } from '@/components/Brand';
 
 const GenderSelection = () => {
   const { setGender, completeOnboarding } = useGender();
@@ -28,7 +29,7 @@ const GenderSelection = () => {
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
         <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center tier-glow">
-          <Flame className="w-6 h-6 text-primary-foreground" />
+          <BrandMark width={24} height={24} className="filter brightness-0 invert" />
         </div>
         <div>
           <h1 className="text-2xl font-bold text-foreground">TierOne</h1>
