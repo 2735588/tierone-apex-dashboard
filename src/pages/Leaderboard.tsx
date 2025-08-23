@@ -1,22 +1,39 @@
 import { Crown, Trophy, Medal, Users, Globe, Flag, Search, Eye, Star, Award, Target } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useDebounce } from 'use-debounce';
 import { fetchLeaderboard } from "@/services";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const Leaderboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch] = useDebounce(searchQuery, 300);
+  const [selectedCountry, setSelectedCountry] = useState("NZ");
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [rows, setRows] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => { 
-    fetchLeaderboard().then(setRows); 
+    setIsLoading(true);
+    fetchLeaderboard().then((data) => {
+      setRows(data);
+      setIsLoading(false);
+    });
   }, []);
+
+  const countries = [
+    { code: "NZ", name: "New Zealand", flag: "🇳🇿" },
+    { code: "AU", name: "Australia", flag: "🇦🇺" },
+    { code: "US", name: "United States", flag: "🇺🇸" },
+    { code: "GB", name: "United Kingdom", flag: "🇬🇧" },
+  ];
 
   const globalLeaders = [
     { rank: 1, name: "Alex_Beast", score: 774, country: "🇺🇸", tier: "Diamond", records: [
@@ -92,17 +109,57 @@ const Leaderboard = () => {
   };
 
   const filterUsers = (users: any[]) => {
-    if (!searchQuery.trim()) return users;
+    if (!debouncedSearch.trim()) return users;
     return users.filter(user => 
-      user.name.toLowerCase().includes(searchQuery.toLowerCase())
+      user.name.toLowerCase().includes(debouncedSearch.toLowerCase())
     );
   };
+
+  const SkeletonRow = () => (
+    <Card className="tier-card mb-2">
+      <CardContent className="p-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Skeleton className="w-8 h-8 rounded-full" />
+            <div>
+              <Skeleton className="h-4 w-24 mb-1" />
+              <Skeleton className="h-3 w-16" />
+            </div>
+          </div>
+          <div className="text-right">
+            <Skeleton className="h-5 w-12 mb-1" />
+            <Skeleton className="h-3 w-16 mb-1" />
+            <Skeleton className="h-5 w-12" />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const EmptyState = () => (
+    <Card className="tier-card">
+      <CardContent className="p-8 text-center">
+        <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+        <h3 className="text-lg font-semibold text-foreground mb-2">No users found</h3>
+        <p className="text-muted-foreground">Try adjusting your search terms</p>
+      </CardContent>
+    </Card>
+  );
 
 
   const LeaderboardCard = ({ user, isGlobal = false }: { user: any, isGlobal?: boolean }) => (
     <Card 
       className={`tier-card mb-2 transition-all duration-200 hover:scale-102 cursor-pointer ${getTopThreeGlow(user.rank)}`}
       onClick={() => handleUserClick(user)}
+      role="button"
+      tabIndex={0}
+      aria-label={`View profile for ${user.name}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleUserClick(user);
+        }
+      }}
     >
       <CardContent className="p-3">
         <div className="flex items-center justify-between">
@@ -133,7 +190,15 @@ const Leaderboard = () => {
           <div className="text-right">
             <div className="text-lg font-bold text-accent">{user.score}</div>
             <div className="text-xs text-muted-foreground">TierScore</div>
-            <Button variant="ghost" size="sm" className="mt-1 text-xs h-5 px-2">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="mt-1 text-xs h-5 px-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleUserClick(user);
+              }}
+            >
               <Eye className="w-3 h-3 mr-1" />
               View
             </Button>
@@ -167,82 +232,142 @@ const Leaderboard = () => {
         </div>
       </div>
 
-      <Tabs defaultValue="global" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger value="global" className="flex items-center gap-2">
-            <Globe className="w-4 h-4" />
-            Global
-          </TabsTrigger>
-          <TabsTrigger value="national" className="flex items-center gap-2">
-            <Flag className="w-4 h-4" />
-            National (NZ)
-          </TabsTrigger>
-        </TabsList>
+      {/* Sticky Controls */}
+      <div className="sticky top-0 bg-background z-10 pb-4">
+        <Tabs defaultValue="global" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-4">
+            <TabsTrigger value="global" className="flex items-center gap-2">
+              <Globe className="w-4 h-4" />
+              Global
+            </TabsTrigger>
+            <TabsTrigger value="national" className="flex items-center gap-2">
+              <Flag className="w-4 h-4" />
+              National
+            </TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="global">
-          {/* Your Position */}
-          <Card className="tier-card mb-8 border-accent/30 bg-accent/5 tier-glow">
-            <CardContent className="p-6">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-accent mb-2">#1,847</div>
-                <div className="text-base text-muted-foreground mb-1">Your Global Rank</div>
-                <div className="text-accent font-semibold text-lg">Top 4% Worldwide</div>
+          {/* Country Selector for National */}
+          <div className="mb-4">
+            <Select value={selectedCountry} onValueChange={setSelectedCountry}>
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-background border-border z-50">
+                {countries.map((country) => (
+                  <SelectItem key={country.code} value={country.code}>
+                    <div className="flex items-center gap-2">
+                      <span>{country.flag}</span>
+                      <span>{country.name}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <TabsContent value="global">
+            {/* Your Position */}
+            <Card className="tier-card mb-8 border-accent/30 bg-accent/5 tier-glow">
+              <CardContent className="p-6">
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-accent mb-2">#1,847</div>
+                  <div className="text-base text-muted-foreground mb-1">Your Global Rank</div>
+                  <div className="text-accent font-semibold text-lg">Top 4% Worldwide</div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Global Leaders */}
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-yellow-400 tier-glow" />
+                Top Global Athletes
+              </h3>
+              <div className="space-y-1">
+                {isLoading ? (
+                  Array.from({ length: 8 }).map((_, i) => (
+                    <SkeletonRow key={i} />
+                  ))
+                ) : (
+                  (() => {
+                    const filteredUsers = filterUsers(globalLeaders);
+                    return filteredUsers.length > 0 ? (
+                      filteredUsers.map((user) => (
+                        <LeaderboardCard key={user.rank} user={user} isGlobal={true} />
+                      ))
+                    ) : (
+                      <EmptyState />
+                    );
+                  })()
+                )}
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Global Leaders */}
-          <div className="mt-8">
-            <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-yellow-400 tier-glow" />
-              Top Global Athletes
-            </h3>
-            <div className="space-y-1">
-              {filterUsers(globalLeaders).map((user) => (
-                <LeaderboardCard key={user.rank} user={user} isGlobal={true} />
-              ))}
             </div>
-          </div>
-        </TabsContent>
+          </TabsContent>
 
-        <TabsContent value="national">
-          {/* Your National Position */}
-          <Card className="tier-card mb-8 border-primary/30 bg-primary/5 tier-glow">
-            <CardContent className="p-6">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-primary mb-2">#12</div>
-                <div className="text-base text-muted-foreground mb-1">Your National Rank (NZ)</div>
-                <div className="text-primary font-semibold text-lg">Top 8% New Zealand</div>
+          <TabsContent value="national">
+            {/* Your National Position */}
+            <Card className="tier-card mb-8 border-primary/30 bg-primary/5 tier-glow">
+              <CardContent className="p-6">
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-primary mb-2">#12</div>
+                  <div className="text-base text-muted-foreground mb-1">
+                    Your National Rank ({countries.find(c => c.code === selectedCountry)?.flag} {selectedCountry})
+                  </div>
+                  <div className="text-primary font-semibold text-lg">
+                    Top 8% {countries.find(c => c.code === selectedCountry)?.name}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* National Leaders */}
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                <Crown className="w-5 h-5 text-primary tier-glow" />
+                Top {countries.find(c => c.code === selectedCountry)?.name} Athletes
+              </h3>
+              <div className="space-y-1">
+                {isLoading ? (
+                  Array.from({ length: 8 }).map((_, i) => (
+                    <SkeletonRow key={i} />
+                  ))
+                ) : (
+                  (() => {
+                    const filteredUsers = filterUsers(nationalLeaders);
+                    return filteredUsers.length > 0 ? (
+                      filteredUsers.map((user) => (
+                        <LeaderboardCard key={user.rank} user={user} />
+                      ))
+                    ) : (
+                      <EmptyState />
+                    );
+                  })()
+                )}
               </div>
-            </CardContent>
-          </Card>
-
-          {/* National Leaders */}
-          <div className="mt-8">
-            <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
-              <Crown className="w-5 h-5 text-primary tier-glow" />
-              Top New Zealand Athletes
-            </h3>
-            <div className="space-y-1">
-              {filterUsers(nationalLeaders).map((user) => (
-                <LeaderboardCard key={user.rank} user={user} />
-              ))}
             </div>
-          </div>
 
-          {/* Mock Data Section */}
-          <div className="mt-8">
-            <h4 className="text-md font-semibold mb-4">Mock Data:</h4>
-            <ul className="mt-3 space-y-1">
-              {rows.map(r => (
-                <li key={r.position} className="text-sm p-2 bg-card rounded">
-                  #{r.position} {r.handle} — {r.overall_score}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </TabsContent>
-      </Tabs>
+            {/* Mock Data Section */}
+            <div className="mt-8">
+              <h4 className="text-md font-semibold mb-4">Mock Data:</h4>
+              {isLoading ? (
+                <div className="space-y-1">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Skeleton key={i} className="h-10 w-full" />
+                  ))}
+                </div>
+              ) : (
+                <ul className="mt-3 space-y-1">
+                  {rows.map(r => (
+                    <li key={r.position} className="text-sm p-2 bg-card rounded">
+                      #{r.position} {r.handle} — {r.overall_score}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
 
       {/* User Profile Modal */}
       <Dialog open={isProfileOpen} onOpenChange={setIsProfileOpen}>
