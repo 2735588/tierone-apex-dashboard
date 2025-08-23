@@ -2,6 +2,9 @@ import { Camera, Zap, Clock, Crown, CheckCircle, AlertCircle, Share, RotateCcw, 
 import { Button } from "@/components/ui/button";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ShareCard } from "@/components/ShareCard";
+import { ScorePayload } from "@/services";
 
 const AIScan = () => {
   const navigate = useNavigate();
@@ -11,8 +14,24 @@ const AIScan = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [currentPose, setCurrentPose] = useState(0);
   const [countdown, setCountdown] = useState(0);
+  const [showShareCard, setShowShareCard] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
+
+  // Mock score data for the share card
+  const mockScoreData: ScorePayload = {
+    overall_score: 2863,
+    tier: "Platinum",
+    bodyfat_pct: 12,
+    muscle_scores: [
+      { muscle_group: "Chest", tier_score: 85, percentile: 92 },
+      { muscle_group: "Arms", tier_score: 82, percentile: 88 },
+      { muscle_group: "Shoulders", tier_score: 78, percentile: 85 },
+      { muscle_group: "Back", tier_score: 75, percentile: 82 },
+      { muscle_group: "Core", tier_score: 68, percentile: 70 },
+      { muscle_group: "Legs", tier_score: 73, percentile: 78 }
+    ]
+  };
 
   const poses = [
     "Face Forward, Arms Slightly Out",
@@ -414,9 +433,13 @@ const AIScan = () => {
               <Button variant="tier" className="w-full" onClick={handleViewResults}>
                 View Full Results
               </Button>
-              <Button variant="outline" className="w-full">
+              <Button 
+                variant="outline" 
+                className="w-full"
+                onClick={() => setShowShareCard(true)}
+              >
                 <Share className="w-4 h-4 mr-2" />
-                Share Results
+                Create Share Card
               </Button>
             </div>
           </div>
@@ -448,6 +471,19 @@ const AIScan = () => {
 
       {/* Step Content */}
       {renderStepContent()}
+
+      {/* Share Card Modal */}
+      <Dialog open={showShareCard} onOpenChange={setShowShareCard}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Create Share Card</DialogTitle>
+          </DialogHeader>
+          <ShareCard 
+            scoreData={mockScoreData} 
+            handle="@alex_athlete"
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -6,6 +6,8 @@ import { Progress } from "@/components/ui/progress";
 import { useGender } from "@/contexts/GenderContext";
 import { startScan, completeScan, fetchScore } from "@/services";
 import { PhotoConsentModal } from "@/components/PhotoConsentModal";
+import { ShareCard } from "@/components/ShareCard";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import bodyImage from "@/assets/body-silhouette.png";
 
 export const Scan = () => {
@@ -16,6 +18,7 @@ export const Scan = () => {
   const [score, setScore] = useState<any>(null);
   const [showConsentModal, setShowConsentModal] = useState(false);
   const [hasConsent, setHasConsent] = useState(false);
+  const [showShareCard, setShowShareCard] = useState(false);
 
   const SHOW_MOCK = import.meta.env.VITE_SHOW_MOCK === 'true';
 
@@ -168,9 +171,17 @@ export const Scan = () => {
               </button>
               {isProcessing && <p className="mt-2 text-center">Processing…</p>}
               {score && (
-                <div className="mt-3 text-center">
+                <div className="mt-3 text-center space-y-3">
                   <div>Score: <b>{score.overall_score}</b></div>
                   <div>Tier: <b>{score.tier}</b></div>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setShowShareCard(true)}
+                    className="w-full"
+                  >
+                    Create Share Card
+                  </Button>
                 </div>
               )}
             </>
@@ -186,6 +197,21 @@ export const Scan = () => {
           navigate('/ai-scan');
         }}
       />
+
+      {/* Share Card Modal */}
+      {score && (
+        <Dialog open={showShareCard} onOpenChange={setShowShareCard}>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Create Share Card</DialogTitle>
+            </DialogHeader>
+            <ShareCard 
+              scoreData={score} 
+              handle="@alex_athlete"
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
