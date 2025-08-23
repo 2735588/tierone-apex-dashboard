@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Camera, Zap, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useGender } from "@/contexts/GenderContext";
 import { startScan, completeScan, fetchScore } from "@/services";
+import { PhotoConsentModal } from "@/components/PhotoConsentModal";
 import bodyImage from "@/assets/body-silhouette.png";
 
 export const Scan = () => {
@@ -13,6 +14,13 @@ export const Scan = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [score, setScore] = useState<any>(null);
+  const [showConsentModal, setShowConsentModal] = useState(false);
+  const [hasConsent, setHasConsent] = useState(false);
+
+  useEffect(() => {
+    const consent = localStorage.getItem('t1_consent');
+    setHasConsent(consent === 'true');
+  }, []);
 
   // Mock data - in real app this would come from user context/API
   const daysSinceLastScan = 3;
@@ -23,6 +31,10 @@ export const Scan = () => {
   const milestoneProgress = (scansCompleted / nextMilestone) * 100;
 
   const handleStartScan = () => {
+    if (!hasConsent) {
+      setShowConsentModal(true);
+      return;
+    }
     // Navigate to AI scan page
     navigate('/ai-scan');
   };
@@ -159,6 +171,15 @@ export const Scan = () => {
           )}
         </div>
       </div>
+
+      <PhotoConsentModal
+        isOpen={showConsentModal}
+        onClose={() => setShowConsentModal(false)}
+        onConsent={() => {
+          setHasConsent(true);
+          navigate('/ai-scan');
+        }}
+      />
     </div>
   );
 };

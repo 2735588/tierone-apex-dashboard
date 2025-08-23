@@ -1,6 +1,7 @@
-import { User, Edit, Settings, Trophy, Target, Calendar, Share, Award, Video, Flame } from "lucide-react";
+import { User, Edit, Settings, Trophy, Target, Calendar, Share, Award, Video, Flame, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { toast } from "@/hooks/use-toast";
 
 const Profile = () => {
   const [bio, setBio] = useState("Dedicated athlete pushing limits every day. 💪 Always striving for greatness and inspiring others to reach their peak performance. 🔥");
@@ -17,6 +18,22 @@ const Profile = () => {
     { exercise: "Deadlift", weight: 495, unit: "lbs" },
     { exercise: "Squat", weight: 405, unit: "lbs" },
   ];
+
+  const handleDeletePhotos = () => {
+    // Clear any stored mock image URLs and localStorage consent
+    localStorage.removeItem('t1_consent');
+    // Clear any other photo-related data
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith('t1_scan_') || key.includes('photo') || key.includes('image')) {
+        localStorage.removeItem(key);
+      }
+    });
+    
+    toast({
+      title: "Photos deleted",
+      description: "All your photos and scan data have been permanently deleted.",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-background p-6">
@@ -157,6 +174,15 @@ const Profile = () => {
         <Button variant="outline" className="w-full">
           <Settings className="w-4 h-4 mr-2" />
           Account Settings
+        </Button>
+        
+        <Button 
+          variant="outline" 
+          className="w-full text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
+          onClick={handleDeletePhotos}
+        >
+          <Trash2 className="w-4 h-4 mr-2" />
+          Delete My Photos
         </Button>
       </div>
     </div>
