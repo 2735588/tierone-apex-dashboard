@@ -17,6 +17,7 @@ import Achievements from "./pages/Achievements";
 import AIScan from "./pages/AIScan";
 import { Scan } from "./pages/Scan";
 import Profile from "./pages/Profile";
+import Tour from "./pages/Tour";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => (
               <Route path="/scan" element={<Scan />} />
               <Route path="/ai-scan" element={<AIScan />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/tour" element={<Tour />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
