@@ -58,7 +58,7 @@ export const BadgeModal = ({ badge, children }: BadgeModalProps) => {
 
             {/* Badge Requirement */}
             <p className="text-xl text-gray-300 leading-relaxed">
-              {badge.requirement}
+              {badge.isUnlocked ? badge.requirement : `How to earn: ${badge.requirement}`}
             </p>
 
             {/* Status Badge */}

@@ -86,8 +86,20 @@ export const BadgeHex = ({
             alt={name}
             className="w-full h-full object-contain"
             onError={(e) => {
-              e.currentTarget.style.display = 'none';
-              e.currentTarget.nextElementSibling?.classList.remove('hidden');
+              // Handle 404 by falling back to default icon
+              const img = e.currentTarget;
+              const fallbackDiv = img.nextElementSibling as HTMLElement;
+              
+              // Hide the broken image
+              img.style.display = 'none';
+              
+              // Show the fallback
+              if (fallbackDiv) {
+                fallbackDiv.classList.remove('hidden');
+              }
+              
+              // Optional: Copy to /public/badges/ if this was a real backend
+              console.warn(`Badge image 404: ${imageUrl}. Using fallback icon.`);
             }}
           />
         ) : null}
