@@ -1,5 +1,6 @@
 import { Crown, Trophy, Medal, Users, Globe, Flag, Search, Eye, Star, Award, Target } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { fetchLeaderboard } from "@/services";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +12,11 @@ const Leaderboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [rows, setRows] = useState<any[]>([]);
+
+  useEffect(() => { 
+    fetchLeaderboard().then(setRows); 
+  }, []);
 
   const globalLeaders = [
     { rank: 1, name: "Alex_Beast", score: 774, country: "🇺🇸", tier: "Diamond", records: [
@@ -222,6 +228,18 @@ const Leaderboard = () => {
                 <LeaderboardCard key={user.rank} user={user} />
               ))}
             </div>
+          </div>
+
+          {/* Mock Data Section */}
+          <div className="mt-8">
+            <h4 className="text-md font-semibold mb-4">Mock Data:</h4>
+            <ul className="mt-3 space-y-1">
+              {rows.map(r => (
+                <li key={r.position} className="text-sm p-2 bg-card rounded">
+                  #{r.position} {r.handle} — {r.overall_score}
+                </li>
+              ))}
+            </ul>
           </div>
         </TabsContent>
       </Tabs>

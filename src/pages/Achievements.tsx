@@ -1,11 +1,17 @@
 import { Trophy, Medal, Award, Star, Upload, Play, Calendar, User, Weight, Dumbbell, Users } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { fetchUserBadges } from "@/services";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const Achievements = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [badges, setBadges] = useState<any[]>([]);
+
+  useEffect(() => { 
+    fetchUserBadges().then(setBadges); 
+  }, []);
 
   const achievements = [
     {
@@ -280,6 +286,18 @@ const Achievements = () => {
           </Button>
         </div>
       )}
+
+      {/* Mock Badges Section */}
+      <div className="mt-8">
+        <h4 className="text-md font-semibold mb-4">Mock Badges:</h4>
+        <ul className="mt-3 space-y-1">
+          {badges.map(b => (
+            <li key={b.slug} className="text-sm p-2 bg-card rounded">
+              {b.name} — {b.description}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

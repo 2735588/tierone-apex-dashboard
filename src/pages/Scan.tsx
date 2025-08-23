@@ -4,12 +4,15 @@ import { Camera, Zap, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useGender } from "@/contexts/GenderContext";
+import { startScan, completeScan, fetchScore } from "@/services";
 import bodyImage from "@/assets/body-silhouette.png";
 
 export const Scan = () => {
   const navigate = useNavigate();
   const { gender } = useGender();
   const [isHovered, setIsHovered] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [score, setScore] = useState<any>(null);
 
   // Mock data - in real app this would come from user context/API
   const daysSinceLastScan = 3;
@@ -23,6 +26,20 @@ export const Scan = () => {
     // Navigate to AI scan page
     navigate('/ai-scan');
   };
+
+  async function runTestScan() {
+    const { scanId } = await startScan();
+    setIsProcessing(true);
+    await completeScan(scanId);
+    const timer = setInterval(async () => {
+      const s = await fetchScore(scanId);
+      if (s) {
+        setScore(s);
+        setIsProcessing(false);
+        clearInterval(timer);
+      }
+    }, 400);
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -128,6 +145,18 @@ export const Scan = () => {
           <div className="text-center text-xs text-muted-foreground mt-3">
             Position yourself in good lighting for best results
           </div>
+
+          {/* Test Mock Backend */}
+          <button onClick={runTestScan} className="mt-4 px-4 py-2 rounded-lg border w-full">
+            Test Scan (mock)
+          </button>
+          {isProcessing && <p className="mt-2 text-center">Processing…</p>}
+          {score && (
+            <div className="mt-3 text-center">
+              <div>Score: <b>{score.overall_score}</b></div>
+              <div>Tier: <b>{score.tier}</b></div>
+            </div>
+          )}
         </div>
       </div>
     </div>
