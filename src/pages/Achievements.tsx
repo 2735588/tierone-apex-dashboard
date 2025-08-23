@@ -13,6 +13,9 @@ const Achievements = () => {
   const [earnedBadgeSlugs, setEarnedBadgeSlugs] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
 
+  // Debug: Test if file compiles properly
+  console.log("Achievements component loaded successfully");
+
   useEffect(() => { 
     setIsLoading(true);
     fetchUserBadges().then((userBadges) => {
