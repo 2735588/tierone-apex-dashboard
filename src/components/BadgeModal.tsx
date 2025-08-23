@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TierOneBadge } from "@/data/badges";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { BrandMark } from "@/components/Brand";
 
 interface BadgeModalProps {
   badge: TierOneBadge;
@@ -23,6 +24,9 @@ export const BadgeModal = ({ badge, children }: BadgeModalProps) => {
         </VisuallyHidden>
         
         <div className="w-full h-full flex flex-col items-center justify-center p-6 relative">
+          {/* Watermark */}
+          <BrandMark size={24} className="absolute top-6 left-6 opacity-70" />
+          
           {/* Close Button */}
           <DialogTrigger asChild>
             <Button

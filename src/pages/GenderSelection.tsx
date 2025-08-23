@@ -29,7 +29,7 @@ const GenderSelection = () => {
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
         <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center tier-glow">
-          <BrandMark width={24} height={24} className="filter brightness-0 invert" />
+          <BrandMark size={24} className="filter brightness-0 invert" />
         </div>
         <div>
           <h1 className="text-2xl font-bold text-foreground">TierOne</h1>

@@ -2,6 +2,7 @@ import { User, Edit, Settings, Trophy, Target, Calendar, Share, Award, Video, Fl
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "@/hooks/use-toast";
+import { BrandMark, BrandWatermark } from "@/components/Brand";
 
 const Profile = () => {
   const [bio, setBio] = useState("Dedicated athlete pushing limits every day. 💪 Always striving for greatness and inspiring others to reach their peak performance. 🔥");
@@ -44,14 +45,18 @@ const Profile = () => {
       </div>
 
       {/* Profile Card */}
-      <div className="tier-card rounded-xl p-6 mb-6">
+      <div className="tier-card rounded-xl p-6 mb-6 relative">
+        <BrandWatermark opacity={0.06} />
         <div className="flex items-center gap-4 mb-4">
           <div className="w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center tier-glow">
             <User className="w-10 h-10 text-primary-foreground" />
           </div>
           
           <div className="flex-1">
-            <h2 className="text-xl font-bold text-foreground">Alex Thompson</h2>
+            <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+              <BrandMark size={20} className="mr-2" />
+              Alex Thompson
+            </h2>
             <p className="text-muted-foreground">@alex_athlete</p>
             <div className="flex items-center gap-2 mt-1">
               <Trophy className="w-4 h-4 text-tier-gold" />

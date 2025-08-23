@@ -69,7 +69,7 @@ export const Scan = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center tier-glow">
-              <BrandMark width={16} height={16} className="filter brightness-0 invert" />
+              <BrandMark size={16} className="filter brightness-0 invert" />
             </div>
             <h1 className="text-2xl font-bold text-foreground">Body Scan</h1>
           </div>

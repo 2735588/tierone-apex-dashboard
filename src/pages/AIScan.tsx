@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ShareCard } from "@/components/ShareCard";
 import { ScorePayload } from "@/services";
+import { BrandMark } from "@/components/Brand";
 
 const AIScan = () => {
   const navigate = useNavigate();
@@ -402,7 +403,8 @@ const AIScan = () => {
               <p className="text-muted-foreground">Your new physique analysis is ready</p>
             </div>
 
-            <div className="tier-card rounded-xl p-6 text-center tier-glow">
+            <div className="tier-card rounded-xl p-6 text-center tier-glow relative">
+              <BrandMark size={24} className="absolute top-4 right-4 opacity-70" />
               <div className="text-4xl font-bold text-accent mb-2">2,863</div>
               <div className="text-sm text-muted-foreground mb-4">New TierScore (+16)</div>
               <div className="text-tier-gold font-semibold">🔥 Personal Best!</div>

@@ -1,25 +1,61 @@
 interface BrandMarkProps {
-  width?: number;
-  height?: number;
+  size?: 16 | 20 | 24 | 32 | 48 | 64;
   className?: string;
-  alt?: string;
+  ariaLabel?: string;
 }
 
-export function BrandMark({ width = 24, height = 24, className, alt = "TierOne logo", ...props }: BrandMarkProps) {
+export function BrandMark({ size = 24, className, ariaLabel = "TierOne", ...props }: BrandMarkProps) {
   return (
     <img 
-      src="/lovable-uploads/675bf1fa-5029-4a85-8d18-374a63536abd.png" 
-      alt={alt} 
-      width={width} 
-      height={height} 
+      src="/t1-mark-256.png" 
+      alt="TierOne logo" 
+      width={size} 
+      height={size} 
       className={className}
+      loading="lazy"
+      aria-label={ariaLabel}
       {...props} 
     />
   );
 }
 
+interface BrandWordmarkProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+export function BrandWordmark({ children, className, ...props }: BrandWordmarkProps) {
+  return (
+    <span className={className} {...props}>
+      {children}
+    </span>
+  );
+}
+
+interface BrandWatermarkProps {
+  opacity?: number;
+  className?: string;
+}
+
+export function BrandWatermark({ opacity = 0.06, className, ...props }: BrandWatermarkProps) {
+  return (
+    <div 
+      className={`absolute inset-0 pointer-events-none ${className}`} 
+      style={{ opacity }}
+      {...props}
+    >
+      <img 
+        src="/t1-mark-256.png" 
+        alt="" 
+        className="w-full h-full object-contain"
+        loading="lazy"
+      />
+    </div>
+  );
+}
+
 export const BRAND_ASSETS = {
-  favicon: "/lovable-uploads/3a40bdc6-8f9c-42a3-8d82-f9bb666db820.png",
-  og: "/lovable-uploads/a6746a21-c406-4329-807e-0e3c2d55c8b2.png",
-  mark: "/lovable-uploads/675bf1fa-5029-4a85-8d18-374a63536abd.png"
+  mark: "/t1-mark-256.png",
+  icon: "/t1-appicon-1024.png",
+  og: "/t1-og-1200x630.png"
 };

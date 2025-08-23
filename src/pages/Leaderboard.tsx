@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { BrandMark } from "@/components/Brand";
 
 const Leaderboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -120,7 +121,10 @@ const Leaderboard = () => {
       <CardContent className="p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Skeleton className="w-8 h-8 rounded-full" />
+            <div className="flex items-center gap-2">
+              <BrandMark size={16} className="opacity-60 animate-pulse" />
+              <Skeleton className="w-8 h-8 rounded-full" />
+            </div>
             <div>
               <Skeleton className="h-4 w-24 mb-1" />
               <Skeleton className="h-3 w-16" />
@@ -139,7 +143,7 @@ const Leaderboard = () => {
   const EmptyState = () => (
     <Card className="tier-card">
       <CardContent className="p-8 text-center">
-        <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+        <BrandMark size={32} className="opacity-80 mx-auto mb-4" />
         <h3 className="text-lg font-semibold text-foreground mb-2">No users found</h3>
         <p className="text-muted-foreground">Try adjusting your search terms</p>
       </CardContent>
@@ -163,18 +167,18 @@ const Leaderboard = () => {
     >
       <CardContent className="p-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-              user.rank <= 3 ? 'bg-gradient-primary text-primary-foreground tier-glow' : 'bg-accent/20 text-accent border border-accent/30 tier-glow'
-            }`}>
-              {user.rank <= 3 ? (
-                user.rank === 1 ? <Crown className="w-4 h-4" /> :
-                user.rank === 2 ? <Trophy className="w-4 h-4" /> :
-                <Medal className="w-4 h-4" />
-              ) : (
-                user.rank
-              )}
-            </div>
+            <div className="flex items-center gap-3">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                user.rank <= 3 ? 'bg-gradient-primary text-primary-foreground tier-glow' : 'bg-accent/20 text-accent border border-accent/30 tier-glow'
+              }`}>
+                {user.rank <= 3 ? (
+                  user.rank === 1 ? <Crown className="w-4 h-4" /> :
+                  user.rank === 2 ? <Trophy className="w-4 h-4" /> :
+                  <Medal className="w-4 h-4" />
+                ) : (
+                  <BrandMark size={20} ariaLabel={`${user.name} avatar`} />
+                )}
+              </div>
             
             <div>
               <div className="flex items-center gap-2">
@@ -212,6 +216,7 @@ const Leaderboard = () => {
     <div className="min-h-screen bg-background text-foreground p-4 pb-24 max-w-md mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
+        <BrandMark size={20} className="mr-2" />
         <Crown className="w-8 h-8 text-accent tier-glow energy-pulse" />
         <div>
           <h1 className="text-2xl font-bold text-foreground">Leaderboard</h1>

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { tierOneBadges, TierOneBadge } from "@/data/badges";
 import { BadgeHex } from "@/components/BadgeHex";
 import { BadgeModal } from "@/components/BadgeModal";
+import { BrandMark } from "@/components/Brand";
 
 const Achievements = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -114,6 +115,7 @@ const Achievements = () => {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
+          <BrandMark size={20} className="mr-2" />
           <Trophy className="w-8 h-8 text-accent tier-glow energy-pulse" />
           <div>
             <h1 className="text-2xl font-bold text-foreground">Achievements</h1>
@@ -210,7 +212,7 @@ const Achievements = () => {
           </div>
         ) : (
           <div className="text-center py-8">
-            <Award className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
+            <BrandMark size={32} className="opacity-80 mx-auto mb-4" />
             <p className="text-muted-foreground">No badges in this category</p>
           </div>
         )}
