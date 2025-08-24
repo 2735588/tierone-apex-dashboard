@@ -6,15 +6,16 @@ interface BrandMarkProps {
 
 export function BrandMark({ size = 24, className, ariaLabel = "TierOne", ...props }: BrandMarkProps) {
   return (
-    <div 
-      className={`inline-flex items-center justify-center bg-gradient-primary rounded-sm ${className}`}
-      style={{ width: size, height: size }}
-      role="img"
+    <img 
+      src="/t1-mark-256.png" 
+      alt="TierOne logo" 
+      width={size} 
+      height={size} 
+      className={className}
+      loading="lazy"
       aria-label={ariaLabel}
-      {...props}
-    >
-      <span className="text-primary-foreground font-bold text-xs">T1</span>
-    </div>
+      {...props} 
+    />
   );
 }
 
@@ -39,13 +40,16 @@ interface BrandWatermarkProps {
 export function BrandWatermark({ opacity = 0.06, className, ...props }: BrandWatermarkProps) {
   return (
     <div 
-      className={`absolute inset-0 pointer-events-none flex items-center justify-center ${className}`} 
+      className={`absolute inset-0 pointer-events-none ${className}`} 
       style={{ opacity }}
       {...props}
     >
-      <div className="bg-gradient-primary rounded-full w-32 h-32 flex items-center justify-center">
-        <span className="text-primary-foreground font-bold text-4xl">T1</span>
-      </div>
+      <img 
+        src="/t1-mark-256.png" 
+        alt="" 
+        className="w-full h-full object-contain"
+        loading="lazy"
+      />
     </div>
   );
 }
