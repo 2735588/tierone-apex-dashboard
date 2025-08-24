@@ -55,7 +55,7 @@ export const SignUp = () => {
       <div className="relative z-10 w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <BrandMark size={48} className="brand-glow mb-3 mx-auto" />
+          <BrandMark size={48} className="mb-3 mx-auto" />
           <h1 className="text-4xl font-bold text-foreground mb-2 tracking-tight">
             {t('appName')}
           </h1>

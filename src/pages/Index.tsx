@@ -22,9 +22,7 @@ const Index = () => {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center tier-glow animate-pulse">
-            <BrandMark size={16} className="filter brightness-0 invert" />
-          </div>
+          <BrandMark size={24} className="animate-pulse" />
           <span className="text-foreground">Loading TierOne...</span>
         </div>
       </div>
