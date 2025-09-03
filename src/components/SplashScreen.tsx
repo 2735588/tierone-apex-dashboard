@@ -30,12 +30,9 @@ export function SplashScreen({
 
   return (
     <div 
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black transition-opacity duration-500 ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
-      style={{
-        background: 'radial-gradient(60% 60% at 50% 40%, rgba(16,185,129,0.08) 0%, rgba(0,0,0,1) 70%)'
-      }}
     >
       {/* Logo with pulse animation */}
       <div className="relative">
