@@ -1,4 +1,5 @@
-import { BadgeType, BadgeGlow } from '@/components/BadgeHex';
+export type BadgeType = 'streak' | 'sponsored' | 'global' | 'muscle-group';
+export type BadgeGlow = 'green' | 'bronze' | 'silver' | 'gold' | 'diamond';
 
 export interface TierOneBadge {
   id: string;

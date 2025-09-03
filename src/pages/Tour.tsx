@@ -6,7 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BadgeHex } from "@/components/BadgeHex";
+import HexBadge from "@/components/HexBadge";
 import { BadgeModal } from "@/components/BadgeModal";
 import { TierBadge } from "@/components/TierBadge";
 import { tierOneBadges } from "@/data/badges";
@@ -538,16 +538,17 @@ const Tour = () => {
               {tourBadges.map((badge) => (
                 <BadgeModal key={badge.id} badge={badge}>
                   <div className="cursor-pointer relative">
-                    <BadgeHex
-                      name={badge.name}
-                      description={badge.description}
-                      type={badge.type}
-                      glow={badge.glow}
-                      imageUrl={badge.imageUrl}
-                      isUnlocked={badge.isUnlocked}
-                      progress={badge.progress}
-                      size="sm"
-                    />
+                    <div className="flex flex-col items-center">
+                      <HexBadge
+                        src={badge.imageUrl || '/placeholder-badge.png'}
+                        size={48}
+                        glow={badge.isUnlocked ? (badge.glow === 'bronze' ? 'bronze' : badge.glow === 'silver' ? 'silver' : badge.glow === 'gold' ? 'gold' : 'green') : 'none'}
+                        alt={badge.name}
+                      />
+                      <div className="mt-2 text-xs font-semibold text-zinc-200 truncate max-w-[120px]">
+                        {badge.name}
+                      </div>
+                    </div>
                     {/* Lock overlay for locked badges */}
                     {!badge.isUnlocked && (
                       <div className="absolute top-0 right-0 w-4 h-4 bg-muted-foreground rounded-full flex items-center justify-center">
@@ -566,46 +567,43 @@ const Tour = () => {
                 Recently Earned
               </h3>
               <div className="grid grid-cols-2 gap-4">
-                {tourBadges.filter(badge => badge.isUnlocked).map((badge) => (
-                  <Card key={badge.id} className="tier-card border-accent/30 bg-accent/5">
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-3">
-                        <BadgeHex
-                          name={badge.name}
-                          description=""
-                          type={badge.type}
-                          glow={badge.glow}
-                          imageUrl={badge.imageUrl}
-                          isUnlocked={true}
-                          size="sm"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-foreground text-sm">{badge.name}</h4>
-                          <p className="text-xs text-muted-foreground">{badge.description}</p>
-                          {badge.earnedDate && (
-                            <p className="text-xs text-accent mt-1">
-                              Earned {new Date(badge.earnedDate).toLocaleDateString()}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+                 {tourBadges.filter(badge => badge.isUnlocked).map((badge) => (
+                   <Card key={badge.id} className="tier-card border-accent/30 bg-accent/5">
+                     <CardContent className="p-4">
+                       <div className="flex items-center gap-3">
+                         <HexBadge
+                           src={badge.imageUrl || '/placeholder-badge.png'}
+                           size={48}
+                           glow={badge.isUnlocked ? (badge.glow === 'bronze' ? 'bronze' : badge.glow === 'silver' ? 'silver' : badge.glow === 'gold' ? 'gold' : 'green') : 'none'}
+                           alt={badge.name}
+                         />
+                         <div className="flex-1 min-w-0">
+                           <h4 className="font-semibold text-foreground text-sm">{badge.name}</h4>
+                           <p className="text-xs text-muted-foreground">{badge.description}</p>
+                           {badge.earnedDate && (
+                             <p className="text-xs text-accent mt-1">
+                               Earned {new Date(badge.earnedDate).toLocaleDateString()}
+                             </p>
+                           )}
+                         </div>
+                       </div>
+                     </CardContent>
+                   </Card>
+                 ))}
+               </div>
+             </div>
+           </div>
+         </section>
 
-        {/* Footer */}
-        <div className="text-center py-8">
-          <p className="text-muted-foreground">
-            This is a read-only tour showcasing TierOne's key features.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
+         {/* Footer */}
+         <div className="text-center py-8">
+           <p className="text-muted-foreground">
+             This is a read-only tour showcasing TierOne's key features.
+           </p>
+         </div>
+       </div>
+     </div>
+   );
+ };
 
-export default Tour;
+ export default Tour;

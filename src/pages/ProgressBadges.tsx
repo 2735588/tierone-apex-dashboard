@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { BadgeHex } from "@/components/BadgeHex";
+import HexBadge from "@/components/HexBadge";
 import { BadgeModal } from "@/components/BadgeModal";
 import { tierOneBadges, getBadgesByType } from "@/data/badges";
 import bodySilhouette from "@/assets/body-silhouette.png";
@@ -313,17 +313,17 @@ const ProgressBadges = () => {
                       {subcategory.badges.map((badge) => (
                         <BadgeModal key={badge.id} badge={badge}>
                           <div className="cursor-pointer">
-                            <BadgeHex
-                              name={badge.name}
-                              description={badge.description}
-                              type={badge.type}
-                              glow={badge.glow}
-                              imageUrl={badge.imageUrl}
-                              isUnlocked={badge.isUnlocked}
-                              progress={badge.progress}
-                              showProgress={!badge.isUnlocked}
-                              size="md"
-                            />
+                            <div className="flex flex-col items-center">
+                              <HexBadge
+                                src={badge.imageUrl || '/placeholder-badge.png'}
+                                size={64}
+                                glow={badge.isUnlocked ? (badge.glow === 'bronze' ? 'bronze' : badge.glow === 'silver' ? 'silver' : badge.glow === 'gold' ? 'gold' : 'green') : 'none'}
+                                alt={badge.name}
+                              />
+                              <div className="mt-2 text-xs font-semibold text-zinc-200 truncate max-w-[120px]">
+                                {badge.name}
+                              </div>
+                            </div>
                           </div>
                         </BadgeModal>
                       ))}
@@ -336,17 +336,17 @@ const ProgressBadges = () => {
                   {category.badges.map((badge) => (
                     <BadgeModal key={badge.id} badge={badge}>
                       <div className="cursor-pointer">
-                        <BadgeHex
-                          name={badge.name}
-                          description={badge.description}
-                          type={badge.type}
-                          glow={badge.glow}
-                          imageUrl={badge.imageUrl}
-                          isUnlocked={badge.isUnlocked}
-                          progress={badge.progress}
-                          showProgress={!badge.isUnlocked}
-                          size="md"
-                        />
+                        <div className="flex flex-col items-center">
+                          <HexBadge
+                            src={badge.imageUrl || '/placeholder-badge.png'}
+                            size={64}
+                            glow={badge.isUnlocked ? (badge.glow === 'bronze' ? 'bronze' : badge.glow === 'silver' ? 'silver' : badge.glow === 'gold' ? 'gold' : 'green') : 'none'}
+                            alt={badge.name}
+                          />
+                          <div className="mt-2 text-xs font-semibold text-zinc-200 truncate max-w-[120px]">
+                            {badge.name}
+                          </div>
+                        </div>
                       </div>
                     </BadgeModal>
                   ))}

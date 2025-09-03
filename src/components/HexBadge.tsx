@@ -20,11 +20,19 @@ export default function HexBadge({
     none:   "transparent",
   };
 
-  // Create hex clip-path (flat-top hexagon)
-  const hexClipPath = "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)";
+  const maskId = `hex-mask-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
-    <div className={`relative ${className}`} aria-label={alt}>
+    <div className={`relative ${className}`} aria-label={alt} style={{ width: size, height: size }}>
+      {/* SVG mask definition */}
+      <svg width="0" height="0" style={{ position: 'absolute' }}>
+        <defs>
+          <clipPath id={maskId}>
+            <polygon points="50,0 100,25 100,75 50,100 0,75 0,25" />
+          </clipPath>
+        </defs>
+      </svg>
+      
       {/* Main hex image */}
       <div
         style={{
@@ -34,7 +42,7 @@ export default function HexBadge({
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          clipPath: hexClipPath,
+          clipPath: `url(#${maskId})`,
         }}
       />
       
@@ -43,8 +51,10 @@ export default function HexBadge({
         <div
           className="pointer-events-none absolute inset-0"
           style={{
-            clipPath: hexClipPath,
-            boxShadow: `0 0 20px 8px ${glowMap[glow]}`,
+            width: size,
+            height: size,
+            background: `radial-gradient(circle, ${glowMap[glow]} 0%, transparent 70%)`,
+            clipPath: `url(#${maskId})`,
           }}
         />
       )}
