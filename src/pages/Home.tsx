@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useNavigate } from 'react-router-dom';
+import T1Logo3D from "@/components/T1Logo3D";
 import { HomeHeader } from "@/components/HomeHeader";
 import { PrimaryCTA } from "@/components/PrimaryCTA";
 import { QuickStats } from "@/components/QuickStats";
@@ -23,6 +24,8 @@ const Home = () => {
 
   return (
     <div className="pb-24 bg-black text-white min-h-screen">
+      <T1Logo3D size={156} speed={12} />
+      
       <HomeHeader name="Braedon Williams" />
 
       <PrimaryCTA onScan={() => navigate('/scan')} />
