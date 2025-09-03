@@ -18,8 +18,6 @@ function makeRadialTexture(color = "#22c55e") {
   grd.addColorStop(1, "#00000000");
   g.fillStyle = grd; g.fillRect(0, 0, 512, 512);
   const tex = new THREE.CanvasTexture(c);
-  (tex as any).colorSpace = (THREE as any).SRGBColorSpace ?? undefined;
-  (tex as any).encoding   = (THREE as any).sRGBEncoding ?? undefined;
   tex.magFilter = THREE.LinearFilter;
   tex.minFilter = THREE.LinearMipmapLinearFilter;
   tex.generateMipmaps = true;
@@ -41,8 +39,6 @@ function T1Plane({
   const maxAniso = useMaxAnisotropy();
 
   // Ensure crisp sampling
-  (tex as any).colorSpace = (THREE as any).SRGBColorSpace ?? undefined;
-  (tex as any).encoding   = (THREE as any).sRGBEncoding ?? undefined;
   tex.generateMipmaps = true;
   tex.minFilter = THREE.LinearMipmapLinearFilter;
   tex.magFilter = THREE.LinearFilter;
@@ -152,7 +148,7 @@ export default function T1LogoThreePro({
         <Preload all />
 
         {/* Tasteful bloom + slight vignette (no fuzz) */}
-        {!reduced && (
+        {false && !reduced && (
           <EffectComposer enableNormalPass={false} multisampling={2}>
             <Bloom intensity={0.5} luminanceThreshold={0.2} luminanceSmoothing={0.35} radius={0.85} />
             <Vignette eskil={false} offset={0.2} darkness={0.7} />
