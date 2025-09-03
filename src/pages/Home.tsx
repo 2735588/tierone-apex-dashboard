@@ -42,14 +42,14 @@ const Home = () => {
 
       <StreakCard streak={streak.days} />
 
+      {/* Friends' streaks for motivation */}
+      <FriendsStreaks />
+
       <div className="mt-6">
         <BodyScanGate onStarted={() => navigate('/scan')} />
       </div>
 
       <QuickActions actions={actions} />
-
-      {/* Friends' streaks for motivation */}
-      <FriendsStreaks />
 
       {/* Offscreen share card */}
       <div className="fixed -left-[9999px] top-0">
