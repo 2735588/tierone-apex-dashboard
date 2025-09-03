@@ -188,13 +188,13 @@ const Achievements = () => {
         ) : filteredBadges.length > 0 ? (
           <div className="grid grid-cols-3 md:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-6">
             {filteredBadges.map((badge) => {
-              const getGlowColor = () => {
-                if (!badge.isUnlocked) return undefined;
+              const getGlow = () => {
+                if (!badge.isUnlocked) return "none";
                 switch (badge.glow) {
-                  case 'bronze': return '#b26a29';
-                  case 'silver': return '#c0c6d4';
-                  case 'gold': return '#d8a33f';
-                  default: return undefined;
+                  case 'bronze': return 'bronze';
+                  case 'silver': return 'silver';
+                  case 'gold': return 'gold';
+                  default: return 'none';
                 }
               };
 
@@ -205,7 +205,7 @@ const Achievements = () => {
                       src={badge.imageUrl || '/placeholder-badge.png'}
                       size="md"
                       label={badge.name}
-                      glowColor={getGlowColor()}
+                      glow={getGlow()}
                     />
                     {!badge.isUnlocked && (
                       <div className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center">
