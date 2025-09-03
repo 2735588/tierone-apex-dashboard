@@ -40,16 +40,13 @@ export default function WorkoutHero({
         <div className="pointer-events-none absolute inset-0"
           style={{ background: "radial-gradient(90% 80% at 50% 0%, rgba(16,185,129,.16), transparent 70%)" }} />
         
-        {/* Header row: flame + title + streak */}
-        <div className="relative flex items-center gap-3">
-          <StreakFlame days={streak.days} size={44} />
-          <div className="flex-1">
-            <div className="text-xl font-extrabold text-zinc-100">
-              <span>{loading ? "Loading…" : "Ready to train?"}</span>
-            </div>
-            <div className="text-[12px] text-zinc-400">
-              Keep your streak alive: go to the gym <b>4 of 7 days</b> each week.
-            </div>
+        {/* Centered title and flame */}
+        <div className="relative text-center">
+          <div className="text-xl font-extrabold text-zinc-100 mb-3">
+            <span>{loading ? "Loading…" : "Ready to train?"}</span>
+          </div>
+          <div className="flex justify-center">
+            <StreakFlame days={streak.days} size={44} />
           </div>
         </div>
 
