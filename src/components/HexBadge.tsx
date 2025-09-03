@@ -1,6 +1,3 @@
-// Use URL-encoded SVG directly to avoid btoa issues
-const HEX_MASK_SVG = "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3cpolygon points='50,0 100,25 100,75 50,100 0,75 0,25' fill='black'/%3e%3c/svg%3e";
-
 export default function HexBadge({
   src,
   size = 64,
@@ -23,10 +20,8 @@ export default function HexBadge({
     none:   "transparent",
   };
 
-  const maskStyle = {
-    WebkitMask: `url("${HEX_MASK_SVG}") no-repeat center / contain`,
-    mask: `url("${HEX_MASK_SVG}") no-repeat center / contain`,
-  };
+  // Create hex clip-path (flat-top hexagon)
+  const hexClipPath = "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)";
 
   return (
     <div className={`relative ${className}`} aria-label={alt}>
@@ -39,7 +34,7 @@ export default function HexBadge({
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          ...maskStyle,
+          clipPath: hexClipPath,
         }}
       />
       
@@ -48,7 +43,7 @@ export default function HexBadge({
         <div
           className="pointer-events-none absolute inset-0"
           style={{
-            ...maskStyle,
+            clipPath: hexClipPath,
             boxShadow: `0 0 20px 8px ${glowMap[glow]}`,
           }}
         />
