@@ -1,6 +1,6 @@
 import { Badge } from "./ui/badge";
 import { Trophy, Award, Zap, Medal } from "lucide-react";
-import { cropBadgeToCircle } from "@/utils/badgeImageUtils";
+import { cropBadgeToHex } from "@/utils/badgeImageUtils";
 import { useState, useEffect } from "react";
 
 export type BadgeType = 'streak' | 'sponsored' | 'global' | 'muscle-group';
@@ -34,7 +34,7 @@ export const BadgeHex = ({
 
   useEffect(() => {
     if (imageUrl && !imageError) {
-      cropBadgeToCircle(imageUrl)
+      cropBadgeToHex(imageUrl)
         .then(setCroppedImageUrl)
         .catch(() => setImageError(true));
     }
@@ -96,7 +96,7 @@ export const BadgeHex = ({
           <img 
             src={croppedImageUrl} 
             alt={name}
-            className="w-full h-full object-contain rounded-full"
+            className="w-full h-full object-contain"
             onError={() => setImageError(true)}
           />
         ) : null}

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { TierOneBadge } from "@/data/badges";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { BrandMark } from "@/components/Brand";
-import { cropBadgeToCircle } from "@/utils/badgeImageUtils";
+import { cropBadgeToHex } from "@/utils/badgeImageUtils";
 import { useState, useEffect } from "react";
 
 interface BadgeModalProps {
@@ -19,7 +19,7 @@ export const BadgeModal = ({ badge, children }: BadgeModalProps) => {
 
   useEffect(() => {
     if (badge.imageUrl && !imageError) {
-      cropBadgeToCircle(badge.imageUrl)
+      cropBadgeToHex(badge.imageUrl)
         .then(setCroppedImageUrl)
         .catch(() => setImageError(true));
     }
@@ -57,7 +57,7 @@ export const BadgeModal = ({ badge, children }: BadgeModalProps) => {
               <img
                 src={croppedImageUrl}
                 alt={badge.name}
-                className="w-full h-full object-contain filter drop-shadow-2xl rounded-full"
+                className="w-full h-full object-contain filter drop-shadow-2xl"
                 onError={() => setImageError(true)}
               />
             ) : (
