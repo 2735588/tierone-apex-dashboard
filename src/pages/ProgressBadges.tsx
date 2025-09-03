@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Flame, Trophy, Target, Clock, Diamond, Crown, Star, Zap, TrendingUp, Award, X, BarChart3 } from "lucide-react";
 import { useGender } from "@/contexts/GenderContext";
 import { Button } from "@/components/ui/button";
@@ -11,21 +11,60 @@ import HexBadge from "@/components/HexBadge";
 import { BadgeModal } from "@/components/BadgeModal";
 import { tierOneBadges, getBadgesByType } from "@/data/badges";
 import bodySilhouette from "@/assets/body-silhouette.png";
+import { ProgressHeader } from "@/components/ProgressHeader";
+import { OverallPotential } from "@/components/OverallPotential";
+import { MuscleGroupList } from "@/components/MuscleGroupList";
+import { ShareProgressCard } from "@/components/ShareProgressCard";
+import { shareElementAsImage } from "@/hooks/useShareProgress";
 
 const ProgressBadges = () => {
   const { gender } = useGender();
   const isFemale = gender === 'female';
   const [currentStreak, setCurrentStreak] = useState(36);
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState("scores");
+  const storyRef = useRef<HTMLDivElement>(null);
+
+  // URL persistence
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab');
+    if (tab && ['scores', 'streaks', 'badges'].includes(tab)) {
+      setActiveTab(tab);
+    }
+  }, []);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    const params = new URLSearchParams(window.location.search);
+    const tabMap: Record<string, string> = {
+      'scores': 'muscles',
+      'streaks': 'streaks', 
+      'badges': 'badges'
+    };
+    params.set('tab', tabMap[value] || 'muscles');
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
+  };
 
   const muscleGroups = [
-    { name: "Chest", key: "chest", score: 87, tier: "Gold", history: [82, 85, 87], advice: "Focus on progressive overload with bench press variations and incline movements for upper chest development." },
-    { name: "Back", key: "back", score: 84, tier: "Gold", history: [79, 82, 84], advice: "Strengthen your back with pull-ups, rows, and deadlifts for better posture and overall strength." },
-    { name: "Shoulders", key: "shoulders", score: 92, tier: "Gold", history: [88, 90, 92], advice: "Incorporate more rear delt work and overhead pressing for balanced shoulder development." },
-    { name: "Arms", key: "arms", score: 78, tier: "Silver", history: [74, 76, 78], advice: "Increase training frequency with both compound and isolation exercises for arm growth." },
-    { name: "Legs", key: "legs", score: 89, tier: "Gold", history: [85, 87, 89], advice: "Build powerful legs with squats, deadlifts, and unilateral training for balanced development." },
-    { name: "Core", key: "core", score: 81, tier: "Gold", history: [77, 79, 81], advice: "Develop core stability with planks, anti-rotation exercises, and compound movements." }
+    { name: "Chest", score: 87, delta: +2 },
+    { name: "Back", score: 84, delta: +1 },
+    { name: "Shoulders", score: 92, delta: +3 },
+    { name: "Arms", score: 78, delta: 0 },
+    { name: "Legs", score: 89, delta: +2 },
+    { name: "Core", score: 81, delta: +1 }
   ];
+
+  const handleShare = async () => {
+    if (storyRef.current) {
+      await shareElementAsImage(storyRef.current, "tierone-progress.png");
+    }
+  };
+
+  const handleNewScan = () => {
+    // Navigate to scan page
+    console.log("Navigate to new scan");
+  };
 
   const overallPotentialScore = 98;
 
@@ -97,7 +136,7 @@ const ProgressBadges = () => {
         <p className="text-muted-foreground">Track your journey to elite performance</p>
       </div>
 
-      <Tabs defaultValue="scores" className="w-full">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
         <TabsList className="grid w-full grid-cols-3 mb-6">
           <TabsTrigger value="scores" className="flex items-center gap-2">
             <BarChart3 className="w-4 h-4" />
@@ -113,133 +152,27 @@ const ProgressBadges = () => {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="scores" className="space-y-6">
-          {/* Overall Potential Score */}
-          <Card className={`tier-card ${getGlowClass()}`}>
-            <CardHeader className="text-center">
-              <CardTitle className="text-xl font-semibold text-foreground mb-4">
-                Overall Potential
-              </CardTitle>
-              <div className={`text-6xl font-bold ${getPotentialColor()} ${getGlowClass()} mb-4`}>
-                {overallPotentialScore}
-              </div>
-              <Badge className={`${getPotentialColor()} bg-transparent border-0 text-lg`}>
-                {getTierBadge(overallPotentialScore).tier} Tier
-              </Badge>
-            </CardHeader>
-          </Card>
+        <TabsContent value="scores" className="space-y-4">
+          <ProgressHeader onShare={handleShare} onNewScan={handleNewScan} />
+          <OverallPotential score={98} tier="Diamond Tier" delta={+3} />
+          <MuscleGroupList data={muscleGroups} />
 
-          {/* Body Silhouette - Scan Style */}
-          <Card className="tier-card">
-            <CardContent className="p-6">
-              <div className="flex justify-center">
-                <div className="relative">
-                  <div className="scan-grid-bg absolute inset-0 rounded-full opacity-20" />
-                  <div className="relative w-48 h-64 flex items-center justify-center">
-                    <img 
-                      src={bodySilhouette} 
-                      alt="Body silhouette showing muscle groups"
-                      className="w-full h-full object-contain body-scan-pulse filter brightness-110"
-                    />
-                    {/* Scanning effect overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/10 to-transparent scan-line opacity-60" />
-                  </div>
-                  
-                  {/* Progress ring around body */}
-                  <div className="absolute inset-0 rounded-full border-2 border-accent/30 tier-glow animate-pulse" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Muscle Group Scores */}
-          <Card className="tier-card">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-accent" />
-                Muscle Group Performance
-              </CardTitle>
-              <CardDescription>
-                Track your strength and development across all major muscle groups
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-8">
-              {muscleGroups.map((muscle, index) => {
-                const glowIntensity = muscle.score >= 90 ? 'muscle-glow-high' : muscle.score >= 80 ? 'muscle-glow-medium' : muscle.score >= 70 ? 'muscle-glow-low' : '';
-                return (
-                  <Dialog key={index}>
-                    <DialogTrigger asChild>
-                      <div className="cursor-pointer group hover:scale-[1.02] transition-all duration-300">
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-3">
-                            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                            <span className="font-semibold text-lg text-foreground group-hover:text-green-400 transition-colors">
-                              {muscle.name}
-                            </span>
-                          </div>
-                          <div className="text-right">
-                            <span className="text-3xl font-bold text-green-400 group-hover:text-green-300 transition-colors">
-                              {muscle.score}
-                            </span>
-                            <span className="text-sm text-muted-foreground font-medium">
-                              /100
-                            </span>
-                          </div>
-                        </div>
-                        <div className="relative">
-                          <div className="w-full bg-muted/30 rounded-full h-3 overflow-hidden">
-                            <div 
-                              className={`h-full bg-gradient-to-r from-green-500 to-green-400 rounded-full transition-all duration-700 ease-out ${glowIntensity}`}
-                              style={{ width: `${muscle.score}%` }}
-                            />
-                          </div>
-                          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-full animate-pulse opacity-60" />
-                        </div>
-                      </div>
-                    </DialogTrigger>
-                    <DialogContent className="tier-card">
-                      <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2">
-                          <div className="w-4 h-4 rounded-full bg-green-400 animate-pulse" />
-                          {muscle.name} Analysis
-                        </DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div className="text-center">
-                          <div className="text-6xl font-bold text-green-400 mb-2">
-                            {muscle.score}
-                          </div>
-                          <p className="text-muted-foreground">Current Performance Score</p>
-                        </div>
-                        <div>
-                          <h4 className="font-medium mb-2">Progress Trend</h4>
-                          <div className="flex items-center gap-2">
-                            {muscle.history.map((score: number, i: number) => (
-                              <div key={i} className="flex-1">
-                                <div className="h-2 bg-muted rounded-full overflow-hidden">
-                                  <div 
-                                    className="h-full bg-green-400 transition-all"
-                                    style={{ width: `${(score / 100) * 100}%` }}
-                                  />
-                                </div>
-                                <div className="text-xs text-center mt-1">{score}</div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className="font-medium mb-2">Training Focus</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {muscle.advice}
-                          </p>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                );
-              })}
-            </CardContent>
-          </Card>
+          {/* Offscreen share card */}
+          <div className="fixed -left-[9999px] top-0">
+            <ShareProgressCard
+              ref={storyRef} 
+              variant="story"
+              name="Braedon Williams" 
+              athlete="Hybrid Athlete"
+              score={98} 
+              tier="Diamond Tier"
+              muscles={[
+                {name:"Shoulders",score:92},
+                {name:"Legs",score:89},
+                {name:"Chest",score:87}
+              ]}
+            />
+          </div>
         </TabsContent>
 
         <TabsContent value="streaks" className="space-y-6">
