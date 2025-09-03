@@ -45,7 +45,7 @@ export async function upsertManualPR(lift: string, valueKg: number) {
 // Workout & Streak APIs
 export async function getStreak(): Promise<{ days: number; loggedToday: boolean }> {
   // GET /streaks/me
-  return { days: 7, loggedToday: false }; // mock
+  return { days: 1000, loggedToday: false }; // mock
 }
 
 export async function getFriendsStreaks(): Promise<Array<{ id:string; name:string; days:number }>> {
