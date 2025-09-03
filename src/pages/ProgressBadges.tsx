@@ -11,12 +11,12 @@ import HexBadge from "@/components/HexBadge";
 import { BadgeModal } from "@/components/BadgeModal";
 import { tierOneBadges, getBadgesByType } from "@/data/badges";
 import bodySilhouette from "@/assets/body-silhouette.png";
-import { ProgressHeader } from "@/components/ProgressHeader";
-import { OverallTierScore } from "@/components/OverallTierScore";
-import { OverallPotential } from "@/components/OverallPotential";
+import { ProfileTop } from "@/components/ProfileTop";
+import { PerformanceSummary } from "@/components/PerformanceSummary";
 import { MuscleGroupList } from "@/components/MuscleGroupList";
+import { SharePanel } from "@/components/SharePanel";
 import { ShareProgressCard } from "@/components/ShareProgressCard";
-import { shareElementAsImage } from "@/hooks/useShareProgress";
+import { shareElement } from "@/hooks/useShare";
 
 const ProgressBadges = () => {
   const { gender } = useGender();
@@ -58,7 +58,7 @@ const ProgressBadges = () => {
 
   const handleShare = async () => {
     if (storyRef.current) {
-      await shareElementAsImage(storyRef.current, "tierone-progress.png");
+      await shareElement(storyRef.current, "tierone-progress.png");
     }
   };
 
@@ -131,14 +131,9 @@ const ProgressBadges = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-6 pb-24">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground mb-2">Progress & Badges</h1>
-        <p className="text-muted-foreground">Track your journey to elite performance</p>
-      </div>
-
+    <div className="min-h-screen bg-background text-foreground pb-24">
       <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-6">
+        <TabsList className="grid w-full grid-cols-3 mx-6 mb-6">
           <TabsTrigger value="scores" className="flex items-center gap-2">
             <BarChart3 className="w-4 h-4" />
             Muscle Scores
@@ -154,28 +149,33 @@ const ProgressBadges = () => {
         </TabsList>
 
         <TabsContent value="scores" className="space-y-4">
-          <ProgressHeader onShare={handleShare} onNewScan={handleNewScan} />
+          {/* 1) Top profile header */}
+          <ProfileTop name="Braedon Williams" athlete="Hybrid Athlete" />
           
-          <div className="px-0 md:px-0 space-y-3">
-            {/* TierScore (hero) */}
-            <OverallTierScore
-              score={72}
+          {/* 2) Joined summary: TierScore (hero) + Overall Potential */}
+          <div className="px-6">
+            <PerformanceSummary
+              potentialScore={98}
+              potentialTier="Diamond Tier"
+              potentialDelta={+3}
+              tierScore={72}
               percentileLabel="Top 30%"
               globalRank={4821}
               nationalRank={312}
               updated="3 days ago"
-            />
-            
-            {/* Overall Potential (secondary) */}
-            <OverallPotential
-              score={98}
-              tier="Diamond Tier"
-              delta={+3}
+              onShare={handleShare}
+              onViewLeaderboards={() => console.log("View leaderboards")}
               onHowItWorks={() => console.log("Show how TierScore works")}
             />
           </div>
           
-          <MuscleGroupList data={muscleGroups} />
+          {/* 3) Muscle Group Performance */}
+          <div className="px-6">
+            <MuscleGroupList data={muscleGroups} />
+          </div>
+
+          {/* 4) Share panel after muscle list */}
+          <SharePanel onShare={handleShare} />
 
           {/* Offscreen share card */}
           <div className="fixed -left-[9999px] top-0">
