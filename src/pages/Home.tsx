@@ -4,7 +4,7 @@ import T1LogoHero from "@/components/T1LogoHero";
 import { HomeHeader } from "@/components/HomeHeader";
 import WorkoutHero from "@/components/WorkoutHero";
 import BodyScanGate from "@/components/BodyScanGate";
-import { QuickStats } from "@/components/QuickStats";
+import { StreakCard } from "@/components/StreakCard";
 import { QuickActions } from "@/components/QuickActions";
 import FriendsStreaks from "@/components/FriendsStreaks";
 import { HomeShareCard } from "@/components/HomeShareCard";
@@ -34,9 +34,9 @@ const Home = () => {
         <WorkoutHero />
       </div>
 
-      <BodyScanGate onStarted={() => navigate('/scan')} />
+      <StreakCard streak={1000} />
 
-      <QuickStats score={98} tier="Diamond" streak={7} />
+      <BodyScanGate onStarted={() => navigate('/scan')} />
 
       <QuickActions actions={actions} />
 
