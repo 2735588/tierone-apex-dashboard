@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { tierOneBadges, TierOneBadge } from "@/data/badges";
-import { BadgeIcon } from "@/components/BadgeIcon";
+import HexBadge from "@/components/HexBadge";
 import { BadgeModal } from "@/components/BadgeModal";
 import { BrandMark } from "@/components/Brand";
 
@@ -201,12 +201,17 @@ const Achievements = () => {
               return (
                 <BadgeModal key={badge.id} badge={badge}>
                   <div className="cursor-pointer relative">
-                    <BadgeIcon
-                      src={badge.imageUrl || '/placeholder-badge.png'}
-                      size="md"
-                      label={badge.name}
-                      glow={getGlow()}
-                    />
+                    <div className="flex flex-col items-center">
+                      <HexBadge 
+                        src={badge.imageUrl || '/placeholder-badge.png'}
+                        size={64}
+                        glow={getGlow()}
+                        alt={badge.name}
+                      />
+                      <div className="mt-2 text-xs font-semibold text-zinc-200 truncate max-w-[120px]">
+                        {badge.name}
+                      </div>
+                    </div>
                     {!badge.isUnlocked && (
                       <div className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center">
                         <Lock className="w-4 h-4 text-muted-foreground" />
