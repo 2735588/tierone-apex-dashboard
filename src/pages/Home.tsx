@@ -1,7 +1,6 @@
 import { useRef, Suspense, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import T1LogoHero from "@/components/T1LogoHero";
-import { HomeHeader } from "@/components/HomeHeader";
 import WorkoutHero from "@/components/WorkoutHero";
 import BodyScanGate from "@/components/BodyScanGate";
 import { StreakCard } from "@/components/StreakCard";
@@ -29,14 +28,12 @@ const Home = () => {
       }},
     { label: "Muscle Breakdown", sub: "View by muscle group", onClick: () => navigate('/progress-badges?tab=muscles') },
     { label: "Leaderboards", sub: "Global & National", onClick: () => navigate('/leaderboard') },
-    { label: "Log Workout", sub: "PRs & activity", onClick: () => {/* route to workout logging */} },
+    { label: "Personal Records", sub: "PRs & activity", onClick: () => navigate('/prs-main') },
   ];
 
   return (
     <div className="pb-24 bg-black text-white min-h-screen">
       <T1LogoHero src="/lovable-uploads/dc0ffd36-4e86-4391-a662-5207dbc88ba2.png" size={168} period={8} />
-      
-      <HomeHeader name="Braedon Williams" />
 
       {/* Workout logging hero — the star of the page */}
       <div className="mt-2">
@@ -45,7 +42,9 @@ const Home = () => {
 
       <StreakCard streak={streak.days} />
 
-      <BodyScanGate onStarted={() => navigate('/scan')} />
+      <div className="mt-6">
+        <BodyScanGate onStarted={() => navigate('/scan')} />
+      </div>
 
       <QuickActions actions={actions} />
 
