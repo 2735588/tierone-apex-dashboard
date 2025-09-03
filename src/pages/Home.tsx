@@ -1,4 +1,4 @@
-import { useRef, Suspense } from "react";
+import { useRef, Suspense, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import T1LogoHero from "@/components/T1LogoHero";
 import { HomeHeader } from "@/components/HomeHeader";
@@ -9,10 +9,19 @@ import { QuickActions } from "@/components/QuickActions";
 import FriendsStreaks from "@/components/FriendsStreaks";
 import { HomeShareCard } from "@/components/HomeShareCard";
 import { shareElement } from "@/hooks/useShare";
+import { getStreak } from "@/lib/api";
 
 const Home = () => {
   const navigate = useNavigate();
   const shareRef = useRef<HTMLDivElement>(null);
+  const [streak, setStreak] = useState<{ days: number; loggedToday: boolean }>({ days: 1000, loggedToday: false });
+
+  useEffect(() => {
+    (async () => {
+      const streakData = await getStreak();
+      setStreak(streakData);
+    })();
+  }, []);
 
   const actions = [
     { label: "Scan Share", sub: "Create social image", onClick: async () => {
@@ -31,10 +40,10 @@ const Home = () => {
 
       {/* Workout logging hero — the star of the page */}
       <div className="mt-2">
-        <WorkoutHero />
+        <WorkoutHero streak={streak} onStreakUpdate={setStreak} />
       </div>
 
-      <StreakCard streak={1000} />
+      <StreakCard streak={streak.days} />
 
       <BodyScanGate onStarted={() => navigate('/scan')} />
 

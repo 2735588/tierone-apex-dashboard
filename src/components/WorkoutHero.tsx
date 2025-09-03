@@ -2,17 +2,18 @@ import { useEffect, useState } from "react";
 import StreakFlame from "@/components/StreakFlame";
 import { getStreak, startQuickWorkout, completeQuickWorkout, pingStreak } from "@/lib/api";
 
-export default function WorkoutHero() {
+export default function WorkoutHero({ 
+  streak, 
+  onStreakUpdate 
+}: { 
+  streak: { days: number; loggedToday: boolean };
+  onStreakUpdate: (newStreak: { days: number; loggedToday: boolean }) => void;
+}) {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
-  const [streak, setStreak] = useState<{ days:number; loggedToday:boolean }>({ days:0, loggedToday:false });
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      setStreak(await getStreak());
-      setLoading(false);
-    })();
+    setLoading(false);
   }, []);
 
   async function quickLog() {
@@ -26,10 +27,8 @@ export default function WorkoutHero() {
       await pingStreak();
 
       // optimistic UI: increment once if not already logged
-      setStreak(s => s.loggedToday ? s : { days: s.days + 1, loggedToday: true });
-
-      // (optional) re-fetch to be exact:
-      // setStreak(await getStreak());
+      const newStreak = streak.loggedToday ? streak : { days: streak.days + 1, loggedToday: true };
+      onStreakUpdate(newStreak);
     } finally {
       setBusy(false);
     }
@@ -45,13 +44,8 @@ export default function WorkoutHero() {
         <div className="relative flex items-center gap-3">
           <StreakFlame days={streak.days} size={44} />
           <div className="flex-1">
-            <div className="text-xl font-extrabold text-zinc-100 flex items-baseline gap-2">
+            <div className="text-xl font-extrabold text-zinc-100">
               <span>{loading ? "Loading…" : "Ready to train?"}</span>
-              {!loading && (
-                <span className="text-emerald-400 text-base font-bold">
-                  {streak.days}-day streak
-                </span>
-              )}
             </div>
             <div className="text-[12px] text-zinc-400">
               Keep your streak alive: go to the gym <b>4 of 7 days</b> each week.
@@ -69,7 +63,7 @@ export default function WorkoutHero() {
               : "bg-emerald-500 hover:bg-emerald-400 text-black"
           }`}
         >
-          {streak.loggedToday ? "Logged today ✅" : "+ Quick Log"}
+          {streak.loggedToday ? "Logged today" : "+ Quick Log"}
         </button>
 
         <div className="mt-2 text-[12px] text-zinc-500">
