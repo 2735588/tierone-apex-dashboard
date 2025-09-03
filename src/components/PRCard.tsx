@@ -1,4 +1,4 @@
-import { nextAllowedUpdate } from "@/lib/pr";
+import { nextAllowedUpdate } from "@/lib/cooldown";
 
 export default function PRCard({
   lift, valueKg, updatedAt, onEdit, enforceWeekly = false

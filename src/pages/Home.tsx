@@ -2,7 +2,7 @@ import { useRef, Suspense } from "react";
 import { useNavigate } from 'react-router-dom';
 import T1LogoHero from "@/components/T1LogoHero";
 import { HomeHeader } from "@/components/HomeHeader";
-import { PrimaryCTA } from "@/components/PrimaryCTA";
+import BodyScanGate from "@/components/BodyScanGate";
 import { QuickStats } from "@/components/QuickStats";
 import { QuickActions } from "@/components/QuickActions";
 import { FriendsStreaks } from "@/components/FriendsStreaks";
@@ -28,7 +28,7 @@ const Home = () => {
       
       <HomeHeader name="Braedon Williams" />
 
-      <PrimaryCTA onScan={() => navigate('/scan')} />
+      <BodyScanGate onStarted={() => navigate('/scan')} />
 
       <QuickStats score={98} tier="Diamond" streak={7} />
 
