@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { TierOneBadge } from "@/data/badges";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { BrandMark } from "@/components/Brand";
+import { cropBadgeToCircle } from "@/utils/badgeImageUtils";
+import { useState, useEffect } from "react";
 
 interface BadgeModalProps {
   badge: TierOneBadge;
@@ -12,6 +14,17 @@ interface BadgeModalProps {
 }
 
 export const BadgeModal = ({ badge, children }: BadgeModalProps) => {
+  const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null);
+  const [imageError, setImageError] = useState(false);
+
+  useEffect(() => {
+    if (badge.imageUrl && !imageError) {
+      cropBadgeToCircle(badge.imageUrl)
+        .then(setCroppedImageUrl)
+        .catch(() => setImageError(true));
+    }
+  }, [badge.imageUrl, imageError]);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -40,11 +53,12 @@ export const BadgeModal = ({ badge, children }: BadgeModalProps) => {
 
           {/* Badge Image */}
           <div className="w-full max-w-xs h-[40vh] flex items-center justify-center mb-8">
-            {badge.imageUrl ? (
+            {croppedImageUrl && !imageError ? (
               <img
-                src={badge.imageUrl}
+                src={croppedImageUrl}
                 alt={badge.name}
-                className="w-full h-full object-contain filter drop-shadow-2xl"
+                className="w-full h-full object-contain filter drop-shadow-2xl rounded-full"
+                onError={() => setImageError(true)}
               />
             ) : (
               <div className="w-48 h-48 bg-card border-2 border-accent/30 rounded-full flex items-center justify-center filter drop-shadow-2xl">

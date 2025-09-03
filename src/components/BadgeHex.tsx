@@ -1,5 +1,7 @@
 import { Badge } from "./ui/badge";
 import { Trophy, Award, Zap, Medal } from "lucide-react";
+import { cropBadgeToCircle } from "@/utils/badgeImageUtils";
+import { useState, useEffect } from "react";
 
 export type BadgeType = 'streak' | 'sponsored' | 'global' | 'muscle-group';
 export type BadgeGlow = 'green' | 'bronze' | 'silver' | 'gold' | 'diamond';
@@ -27,6 +29,16 @@ export const BadgeHex = ({
   size = 'md',
   showProgress = false 
 }: BadgeHexProps) => {
+  const [croppedImageUrl, setCroppedImageUrl] = useState<string | null>(null);
+  const [imageError, setImageError] = useState(false);
+
+  useEffect(() => {
+    if (imageUrl && !imageError) {
+      cropBadgeToCircle(imageUrl)
+        .then(setCroppedImageUrl)
+        .catch(() => setImageError(true));
+    }
+  }, [imageUrl, imageError]);
   const getGlowClass = () => {
     if (!isUnlocked) return 'opacity-40 grayscale';
     
@@ -80,33 +92,18 @@ export const BadgeHex = ({
         transition-all duration-300 hover:scale-105
       `}>
         {/* Badge Image or Fallback */}
-        {imageUrl ? (
+        {croppedImageUrl && !imageError ? (
           <img 
-            src={imageUrl} 
+            src={croppedImageUrl} 
             alt={name}
-            className="w-full h-full object-contain"
-            onError={(e) => {
-              // Handle 404 by falling back to default icon
-              const img = e.currentTarget;
-              const fallbackDiv = img.nextElementSibling as HTMLElement;
-              
-              // Hide the broken image
-              img.style.display = 'none';
-              
-              // Show the fallback
-              if (fallbackDiv) {
-                fallbackDiv.classList.remove('hidden');
-              }
-              
-              // Optional: Copy to /public/badges/ if this was a real backend
-              console.warn(`Badge image 404: ${imageUrl}. Using fallback icon.`);
-            }}
+            className="w-full h-full object-contain rounded-full"
+            onError={() => setImageError(true)}
           />
         ) : null}
         
         {/* Fallback Hexagonal Background */}
         <div className={`
-          ${imageUrl ? 'hidden' : 'flex'} w-full h-full 
+          ${croppedImageUrl && !imageError ? 'hidden' : 'flex'} w-full h-full 
           bg-tier-card border-2 border-accent/30 
           clip-hexagon items-center justify-center
           ${getGlowClass()}
