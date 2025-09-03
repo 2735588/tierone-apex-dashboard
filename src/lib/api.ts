@@ -1,3 +1,5 @@
+export type PRRecord = { valueKg: number; updatedAt?: string; proofUrl?: string };
+
 // Body scan
 export async function getLastBodyScan(): Promise<{ lastScanAt?: string }> {
   // GET /scans/last  -> { lastScanAt?: ISO }
@@ -11,14 +13,26 @@ export async function startBodyScan(): Promise<{ started: boolean; reason?: stri
 }
 
 // PRs (as before)
-export async function fetchCurrentPRs(): Promise<Record<string, { valueKg: number; updatedAt?: string }>> {
+export async function fetchCurrentPRs(): Promise<Record<string, PRRecord>> {
   // TODO: call your backend. For now, mock:
   return {
-    "Back Squat":     { valueKg: 160, updatedAt: "2025-08-30T10:00:00Z" },
-    "Bench Press":    { valueKg: 110, updatedAt: "2025-08-28T10:00:00Z" },
-    "Deadlift":       { valueKg: 200, updatedAt: "2025-08-20T10:00:00Z" },
-    "Overhead Press": { valueKg: 70,  updatedAt: "2025-08-22T10:00:00Z" },
+    "Back Squat":     { valueKg: 160, updatedAt: "2025-08-30T10:00:00Z", proofUrl: "" },
+    "Bench Press":    { valueKg: 110, updatedAt: "2025-08-28T10:00:00Z", proofUrl: "" },
+    "Deadlift":       { valueKg: 200, updatedAt: "2025-08-20T10:00:00Z", proofUrl: "" },
+    "Overhead Press": { valueKg: 70,  updatedAt: "2025-08-22T10:00:00Z", proofUrl: "" },
   };
+}
+
+// 1) Ask server for a presigned URL to upload the video
+export async function signVideoUpload(filename: string, mime: string, bytes: number): Promise<{ uploadUrl:string; fileUrl:string; mediaId:string }> {
+  // POST /media/sign-upload { filename, mime, bytes }
+  return { uploadUrl: "", fileUrl: "", mediaId: "" }; // mock
+}
+
+// 2) Submit PR with the uploaded media id (server will enforce 7-day cooldown)
+export async function submitPRWithVideo(lift: string, valueKg: number, mediaId: string): Promise<PRRecord> {
+  // POST /prs/submit-with-video { lift, valueKg, mediaId }
+  return { valueKg, updatedAt: new Date().toISOString(), proofUrl: "" };
 }
 
 // Manual upsert (no media). Returns updated record.
