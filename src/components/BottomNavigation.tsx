@@ -1,4 +1,4 @@
-import { Home, BarChart3, User, Trophy, Crown, Zap } from "lucide-react";
+import { Home, BarChart3, User, Dumbbell, Crown, Zap } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import { useGender } from "@/contexts/GenderContext";
 
@@ -20,7 +20,7 @@ export const BottomNavigation = () => {
     { path: getHomePath(), icon: Home, label: "Home" },
     { path: "/progress-badges", icon: BarChart3, label: "Progress" },
     { path: "/leaderboard", icon: Crown, label: "Leaderboard" },
-    { path: "/achievements", icon: Trophy, label: "Achievements" },
+    { path: "/prs-main", icon: Dumbbell, label: "PRs" },
     { path: "/profile", icon: User, label: "Profile" },
   ];
 

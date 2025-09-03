@@ -15,7 +15,7 @@ import MaleIndex from "./pages/MaleIndex";
 import FemaleIndex from "./pages/FemaleIndex";
 import ProgressBadges from "./pages/ProgressBadges";
 import Leaderboard from "./pages/Leaderboard";
-import Achievements from "./pages/Achievements";
+import PRsMain from "./pages/PRsMain";
 import AIScan from "./pages/AIScan";
 import { Scan } from "./pages/Scan";
 import Profile from "./pages/Profile";
@@ -53,7 +53,7 @@ const App = () => {
               <Route path="/female" element={<FemaleIndex />} />
               <Route path="/progress-badges" element={<ProgressBadges />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
-              <Route path="/achievements" element={<Achievements />} />
+              <Route path="/prs-main" element={<PRsMain />} />
               <Route path="/scan" element={<Scan />} />
               <Route path="/ai-scan" element={<AIScan />} />
               <Route path="/profile" element={<Profile />} />
