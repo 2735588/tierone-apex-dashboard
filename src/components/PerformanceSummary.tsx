@@ -73,21 +73,6 @@ export function PerformanceSummary({
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="relative mt-5 flex items-center justify-end gap-2">
-        <button
-          onClick={onShare}
-          className="rounded-lg px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[12px]"
-        >
-          Share
-        </button>
-        <button
-          onClick={onViewLeaderboards}
-          className="rounded-lg px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-black text-[12px] font-semibold"
-        >
-          View Leaderboards
-        </button>
-      </div>
     </section>
   );
 }
