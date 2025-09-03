@@ -1,6 +1,6 @@
-import { useRef } from "react";
+import { useRef, Suspense } from "react";
 import { useNavigate } from 'react-router-dom';
-import T1LogoHero from "@/components/T1LogoHero";
+import T1LogoThreePro from "@/components/T1LogoThreePro";
 import { HomeHeader } from "@/components/HomeHeader";
 import { PrimaryCTA } from "@/components/PrimaryCTA";
 import { QuickStats } from "@/components/QuickStats";
@@ -24,7 +24,9 @@ const Home = () => {
 
   return (
     <div className="pb-24 bg-black text-white min-h-screen">
-      <T1LogoHero src="/lovable-uploads/dc0ffd36-4e86-4391-a662-5207dbc88ba2.png" size={168} period={8} />
+      <Suspense fallback={<div className="h-60 w-full" />}>
+        <T1LogoThreePro src="/lovable-uploads/dc0ffd36-4e86-4391-a662-5207dbc88ba2.png" height={240} icon={false} />
+      </Suspense>
       
       <HomeHeader name="Braedon Williams" />
 
