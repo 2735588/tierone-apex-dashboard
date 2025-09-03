@@ -13,8 +13,9 @@ export function ProgressHeader({
           <div className="h-10 w-10 rounded-full bg-zinc-800 grid place-items-center text-zinc-200 font-semibold">BW</div>
           <div>
             <div className="text-sm font-semibold text-zinc-100">{name}</div>
-            <div className="mt-0.5 inline-flex items-center gap-1 rounded-full bg-emerald-500/10 text-emerald-400 px-2 py-0.5 text-[11px]">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> {athlete}
+            <div className="mt-1 inline-flex items-center gap-1 rounded-full bg-emerald-500/15 text-emerald-300 px-3 py-1 text-[12px] font-medium">
+              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+              {athlete}
             </div>
           </div>
         </div>

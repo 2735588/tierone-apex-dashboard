@@ -12,7 +12,8 @@ import { BadgeModal } from "@/components/BadgeModal";
 import { tierOneBadges, getBadgesByType } from "@/data/badges";
 import bodySilhouette from "@/assets/body-silhouette.png";
 import { ProgressHeader } from "@/components/ProgressHeader";
-import { PerformanceSummary } from "@/components/PerformanceSummary";
+import { OverallTierScore } from "@/components/OverallTierScore";
+import { OverallPotential } from "@/components/OverallPotential";
 import { MuscleGroupList } from "@/components/MuscleGroupList";
 import { ShareProgressCard } from "@/components/ShareProgressCard";
 import { shareElementAsImage } from "@/hooks/useShareProgress";
@@ -154,19 +155,26 @@ const ProgressBadges = () => {
 
         <TabsContent value="scores" className="space-y-4">
           <ProgressHeader onShare={handleShare} onNewScan={handleNewScan} />
-          <PerformanceSummary
-            potentialScore={98}
-            potentialTier="Diamond Tier"
-            potentialDelta={+3}
-            tierScore={72}
-            percentileLabel="Top 30%"
-            globalRank={4821}
-            nationalRank={312}
-            updated="3 days ago"
-            onShare={handleShare}
-            onViewLeaderboards={() => console.log("Navigate to leaderboards")}
-            onHowItWorks={() => console.log("Show how TierScore works")}
-          />
+          
+          <div className="px-0 md:px-0 space-y-3">
+            {/* TierScore (hero) */}
+            <OverallTierScore
+              score={72}
+              percentileLabel="Top 30%"
+              globalRank={4821}
+              nationalRank={312}
+              updated="3 days ago"
+            />
+            
+            {/* Overall Potential (secondary) */}
+            <OverallPotential
+              score={98}
+              tier="Diamond Tier"
+              delta={+3}
+              onHowItWorks={() => console.log("Show how TierScore works")}
+            />
+          </div>
+          
           <MuscleGroupList data={muscleGroups} />
 
           {/* Offscreen share card */}
