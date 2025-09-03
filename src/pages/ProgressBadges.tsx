@@ -133,20 +133,22 @@ const ProgressBadges = () => {
   return (
     <div className="min-h-screen bg-background text-foreground pb-24">
       <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mx-6 mb-6">
-          <TabsTrigger value="scores" className="flex items-center gap-2">
-            <BarChart3 className="w-4 h-4" />
-            Muscle Scores
-          </TabsTrigger>
-          <TabsTrigger value="streaks" className="flex items-center gap-2">
-            <Flame className="w-4 h-4" />
-            Streaks
-          </TabsTrigger>
-          <TabsTrigger value="badges" className="flex items-center gap-2">
-            <Trophy className="w-4 h-4" />
-            Badges
-          </TabsTrigger>
-        </TabsList>
+        <div className="flex justify-center px-6 mb-6">
+          <TabsList className="grid grid-cols-3">
+            <TabsTrigger value="scores" className="flex items-center gap-2">
+              <BarChart3 className="w-4 h-4" />
+              Muscle Scores
+            </TabsTrigger>
+            <TabsTrigger value="streaks" className="flex items-center gap-2">
+              <Flame className="w-4 h-4" />
+              Streaks
+            </TabsTrigger>
+            <TabsTrigger value="badges" className="flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              Badges
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="scores" className="space-y-4">
           {/* 1) Top profile header */}
