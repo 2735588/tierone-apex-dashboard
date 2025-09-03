@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { tierOneBadges, TierOneBadge } from "@/data/badges";
-import { BadgeHex } from "@/components/BadgeHex";
+import { BadgeIcon } from "@/components/BadgeIcon";
 import { BadgeModal } from "@/components/BadgeModal";
 import { BrandMark } from "@/components/Brand";
 
@@ -186,29 +186,36 @@ const Achievements = () => {
             ))}
           </div>
         ) : filteredBadges.length > 0 ? (
-          <div className="grid grid-cols-3 gap-4">
-            {filteredBadges.map((badge) => (
-              <BadgeModal key={badge.id} badge={badge}>
-                <div className="cursor-pointer">
-                  <BadgeHex
-                    name={badge.name}
-                    description={badge.description}
-                    type={badge.type}
-                    glow={badge.glow}
-                    imageUrl={badge.imageUrl}
-                    isUnlocked={badge.isUnlocked}
-                    progress={badge.progress}
-                    size="md"
-                    showProgress={!badge.isUnlocked && badge.progress > 0}
-                  />
-                  {!badge.isUnlocked && (
-                    <div className="flex justify-center mt-1">
-                      <Lock className="w-3 h-3 text-muted-foreground" />
-                    </div>
-                  )}
-                </div>
-              </BadgeModal>
-            ))}
+          <div className="grid grid-cols-3 md:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-6">
+            {filteredBadges.map((badge) => {
+              const getGlowColor = () => {
+                if (!badge.isUnlocked) return undefined;
+                switch (badge.glow) {
+                  case 'bronze': return '#b26a29';
+                  case 'silver': return '#c0c6d4';
+                  case 'gold': return '#d8a33f';
+                  default: return undefined;
+                }
+              };
+
+              return (
+                <BadgeModal key={badge.id} badge={badge}>
+                  <div className="cursor-pointer relative">
+                    <BadgeIcon
+                      src={badge.imageUrl || '/placeholder-badge.png'}
+                      size="md"
+                      label={badge.name}
+                      glowColor={getGlowColor()}
+                    />
+                    {!badge.isUnlocked && (
+                      <div className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center">
+                        <Lock className="w-4 h-4 text-muted-foreground" />
+                      </div>
+                    )}
+                  </div>
+                </BadgeModal>
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-8">
