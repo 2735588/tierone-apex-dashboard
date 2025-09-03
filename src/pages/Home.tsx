@@ -2,10 +2,11 @@ import { useRef, Suspense } from "react";
 import { useNavigate } from 'react-router-dom';
 import T1LogoHero from "@/components/T1LogoHero";
 import { HomeHeader } from "@/components/HomeHeader";
+import WorkoutHero from "@/components/WorkoutHero";
 import BodyScanGate from "@/components/BodyScanGate";
 import { QuickStats } from "@/components/QuickStats";
 import { QuickActions } from "@/components/QuickActions";
-import { FriendsStreaks } from "@/components/FriendsStreaks";
+import FriendsStreaks from "@/components/FriendsStreaks";
 import { HomeShareCard } from "@/components/HomeShareCard";
 import { shareElement } from "@/hooks/useShare";
 
@@ -28,12 +29,18 @@ const Home = () => {
       
       <HomeHeader name="Braedon Williams" />
 
+      {/* Workout logging hero — the star of the page */}
+      <div className="mt-2">
+        <WorkoutHero onStartFull={() => {/* router.push('/log') */}} />
+      </div>
+
       <BodyScanGate onStarted={() => navigate('/scan')} />
 
       <QuickStats score={98} tier="Diamond" streak={7} />
 
       <QuickActions actions={actions} />
 
+      {/* Friends' streaks for motivation */}
       <FriendsStreaks />
 
       {/* Offscreen share card */}

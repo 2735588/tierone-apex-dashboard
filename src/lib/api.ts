@@ -42,8 +42,33 @@ export async function upsertManualPR(lift: string, valueKg: number) {
   return { valueKg, updatedAt: new Date().toISOString() };
 }
 
+// Workout & Streak APIs
+export async function getStreak(): Promise<{ days: number; loggedToday: boolean }> {
+  // GET /streaks/me
+  return { days: 7, loggedToday: false }; // mock
+}
+
+export async function getFriendsStreaks(): Promise<Array<{ id:string; name:string; days:number }>> {
+  // GET /streaks/friends
+  return [
+    { id:"1", name:"Alex", days:14 },
+    { id:"2", name:"Sam",  days:9  },
+    { id:"3", name:"Jess", days:6  },
+  ];
+}
+
+export async function startQuickWorkout(): Promise<{ sessionId:string }> {
+  // POST /workouts/quick/start
+  return { sessionId:"mock" };
+}
+
+export async function completeQuickWorkout(sessionId?: string): Promise<{ ok:boolean }> {
+  // POST /workouts/quick/complete
+  return { ok:true };
+}
+
 // Call when a PR is updated to keep streaks alive.
 export async function pingStreak() {
-  // POST /streaks/ping
+  // POST /streaks/ping  (mark activity today)
   return { ok: true };
 }

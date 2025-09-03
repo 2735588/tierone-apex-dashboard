@@ -1,20 +1,35 @@
-export function FriendsStreaks({ items = [
-  { name:"Alex", days:14 }, { name:"Sam", days:9 }, { name:"Jess", days:6 }
-]}:{ items?: {name:string; days:number}[] }) {
+import { useEffect, useState } from "react";
+import { getFriendsStreaks } from "@/lib/api";
+
+function FriendCard({ name, days }:{ name:string; days:number }) {
+  const pct = Math.min(days/30, 1); // progress to 30d
   return (
-    <div className="px-4 mt-5">
+    <div className="min-w-[140px] rounded-xl p-3 bg-zinc-900/60 ring-1 ring-white/5 mr-3">
+      <div className="text-sm font-semibold text-zinc-100 truncate">{name}</div>
+      <div className="mt-1 text-emerald-400 font-extrabold text-lg">{days}d</div>
+      <div className="mt-1 h-1.5 w-full rounded-full bg-zinc-800">
+        <div className="h-full rounded-full bg-emerald-500" style={{ width:`${pct*100}%` }} />
+      </div>
+      <div className="mt-1 text-[11px] text-zinc-500">current streak</div>
+    </div>
+  );
+}
+
+export default function FriendsStreaks() {
+  const [friends,setFriends]=useState<Array<{id:string;name:string;days:number}>>([]);
+
+  useEffect(()=>{ (async()=> setFriends(await getFriendsStreaks()))(); },[]);
+
+  return (
+    <div className="mt-3 px-4">
       <div className="flex items-center justify-between mb-2">
-        <div className="text-sm text-zinc-300">Friends' streaks</div>
+        <div className="text-sm font-semibold text-zinc-100">Friends' streaks</div>
         <button className="text-[12px] text-zinc-400 hover:text-zinc-200">View all</button>
       </div>
-      <div className="flex gap-3 overflow-x-auto no-scrollbar">
-        {items.map(f => (
-          <div key={f.name} className="min-w-[140px] rounded-2xl p-3 bg-zinc-900/60 ring-1 ring-white/5">
-            <div className="text-zinc-100 font-medium">{f.name}</div>
-            <div className="text-emerald-400 text-xl font-bold mt-1">{f.days}d</div>
-            <div className="text-[12px] text-zinc-400">current streak</div>
-          </div>
-        ))}
+      <div className="overflow-x-auto no-scrollbar">
+        <div className="flex pr-4">
+          {friends.map(f => <FriendCard key={f.id} name={f.name} days={f.days} />)}
+        </div>
       </div>
     </div>
   );
