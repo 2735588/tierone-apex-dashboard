@@ -20,18 +20,25 @@ export default function HexBadge({
     none:   "transparent",
   };
 
-  const maskId = `hex-mask-${Math.random().toString(36).substr(2, 9)}`;
+  // More conservative hex clip-path that doesn't cut corners too aggressively
+  const hexClipPath = "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)";
 
   return (
     <div className={`relative ${className}`} aria-label={alt} style={{ width: size, height: size }}>
-      {/* SVG mask definition */}
-      <svg width="0" height="0" style={{ position: 'absolute' }}>
-        <defs>
-          <clipPath id={maskId}>
-            <polygon points="50,0 100,25 100,75 50,100 0,75 0,25" />
-          </clipPath>
-        </defs>
-      </svg>
+      {/* Glow effect positioned behind and slightly larger */}
+      {glow !== "none" && (
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            width: size + 8,
+            height: size + 8,
+            left: -4,
+            top: -4,
+            background: `radial-gradient(ellipse, ${glowMap[glow]} 30%, transparent 70%)`,
+            clipPath: hexClipPath,
+          }}
+        />
+      )}
       
       {/* Main hex image */}
       <div
@@ -39,25 +46,12 @@ export default function HexBadge({
           width: size,
           height: size,
           backgroundImage: `url("${src}")`,
-          backgroundSize: "cover",
+          backgroundSize: "contain", // Changed from cover to contain to prevent cropping
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          clipPath: `url(#${maskId})`,
+          clipPath: hexClipPath,
         }}
       />
-      
-      {/* Glow effect */}
-      {glow !== "none" && (
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            width: size,
-            height: size,
-            background: `radial-gradient(circle, ${glowMap[glow]} 0%, transparent 70%)`,
-            clipPath: `url(#${maskId})`,
-          }}
-        />
-      )}
     </div>
   );
 }
