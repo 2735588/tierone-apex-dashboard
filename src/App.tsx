@@ -1,8 +1,10 @@
+import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { SplashScreen } from "@/components/SplashScreen";
 import { BottomNavigation } from "@/components/BottomNavigation";
 import { GenderProvider } from "@/contexts/GenderContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
@@ -24,13 +26,23 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    // Simulate initialization - replace with actual init logic
+    const timer = setTimeout(() => setReady(true), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
       <GenderProvider>
         <TooltipProvider>
         <Toaster />
         <Sonner />
+        <SplashScreen show={!ready} logo="/t1-mark-1024.png" tagline="Preparing your TierScore…" />
         <BrowserRouter>
           <div className="min-h-screen bg-background pb-20">
             <Routes>
@@ -58,6 +70,7 @@ const App = () => (
       </GenderProvider>
     </LanguageProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
