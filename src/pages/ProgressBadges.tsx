@@ -13,6 +13,7 @@ import { tierOneBadges, getBadgesByType } from "@/data/badges";
 import bodySilhouette from "@/assets/body-silhouette.png";
 import { ProgressHeader } from "@/components/ProgressHeader";
 import { OverallPotential } from "@/components/OverallPotential";
+import { OverallTierScore } from "@/components/OverallTierScore";
 import { MuscleGroupList } from "@/components/MuscleGroupList";
 import { ShareProgressCard } from "@/components/ShareProgressCard";
 import { shareElementAsImage } from "@/hooks/useShareProgress";
@@ -155,6 +156,15 @@ const ProgressBadges = () => {
         <TabsContent value="scores" className="space-y-4">
           <ProgressHeader onShare={handleShare} onNewScan={handleNewScan} />
           <OverallPotential score={98} tier="Diamond Tier" delta={+3} />
+          <OverallTierScore
+            score={72}
+            percentileLabel="Top 30%"
+            globalRank={4821}
+            nationalRank={312}
+            updated="3 days ago"
+            onShare={handleShare}
+            onViewLeaderboards={() => console.log("Navigate to leaderboards")}
+          />
           <MuscleGroupList data={muscleGroups} />
 
           {/* Offscreen share card */}
