@@ -202,11 +202,12 @@ const Achievements = () => {
                 <BadgeModal key={badge.id} badge={badge}>
                   <div className="cursor-pointer relative">
                     <div className="flex flex-col items-center">
-                      <HexBadge 
+                      <HexBadge
                         src={badge.imageUrl || '/placeholder-badge.png'}
                         size={64}
-                        glow={getGlow()}
+                        glow={badge.isUnlocked ? (badge.glow === 'bronze' ? 'bronze' : badge.glow === 'silver' ? 'silver' : badge.glow === 'gold' ? 'gold' : 'green') : 'none'}
                         alt={badge.name}
+                        isUnlocked={badge.isUnlocked}
                       />
                       <div className="mt-2 text-xs font-semibold text-zinc-200 truncate max-w-[120px]">
                         {badge.name}

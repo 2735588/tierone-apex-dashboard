@@ -316,9 +316,10 @@ const ProgressBadges = () => {
                             <div className="flex flex-col items-center">
                               <HexBadge
                                 src={badge.imageUrl || '/placeholder-badge.png'}
-                                size={64}
+                                size={80}
                                 glow={badge.isUnlocked ? (badge.glow === 'bronze' ? 'bronze' : badge.glow === 'silver' ? 'silver' : badge.glow === 'gold' ? 'gold' : 'green') : 'none'}
                                 alt={badge.name}
+                                isUnlocked={badge.isUnlocked}
                               />
                               <div className="mt-2 text-xs font-semibold text-zinc-200 truncate max-w-[120px]">
                                 {badge.name}
@@ -339,9 +340,10 @@ const ProgressBadges = () => {
                         <div className="flex flex-col items-center">
                           <HexBadge
                             src={badge.imageUrl || '/placeholder-badge.png'}
-                            size={64}
+                            size={80}
                             glow={badge.isUnlocked ? (badge.glow === 'bronze' ? 'bronze' : badge.glow === 'silver' ? 'silver' : badge.glow === 'gold' ? 'gold' : 'green') : 'none'}
                             alt={badge.name}
+                            isUnlocked={badge.isUnlocked}
                           />
                           <div className="mt-2 text-xs font-semibold text-zinc-200 truncate max-w-[120px]">
                             {badge.name}

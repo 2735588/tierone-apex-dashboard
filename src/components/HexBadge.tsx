@@ -3,20 +3,22 @@ export default function HexBadge({
   size = 64,
   glow = "none", // "bronze" | "silver" | "gold" | "green" | "blue" | "none"
   alt = "badge",
-  className = ""
+  className = "",
+  isUnlocked = true
 }: {
   src: string;
   size?: number;
   glow?: "bronze" | "silver" | "gold" | "green" | "blue" | "none";
   alt?: string;
   className?: string;
+  isUnlocked?: boolean;
 }) {
   const glowMap: Record<string, string> = {
-    bronze: "rgba(178,106,41,.4)",
-    silver: "rgba(192,198,212,.4)",
-    gold:   "rgba(216,163,63,.4)",
-    green:  "rgba(16,185,129,.4)",
-    blue:   "rgba(59,130,246,.4)",
+    bronze: "rgba(178,106,41,.6)",
+    silver: "rgba(192,198,212,.6)",
+    gold:   "rgba(216,163,63,.6)",
+    green:  "rgba(16,185,129,.6)",
+    blue:   "rgba(59,130,246,.6)",
     none:   "transparent",
   };
 
@@ -25,16 +27,16 @@ export default function HexBadge({
 
   return (
     <div className={`relative ${className}`} aria-label={alt} style={{ width: size, height: size }}>
-      {/* Glow effect positioned behind and slightly larger */}
-      {glow !== "none" && (
+      {/* Glow effect positioned outside the hexagon */}
+      {glow !== "none" && isUnlocked && (
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute pointer-events-none"
           style={{
-            width: size + 8,
-            height: size + 8,
-            left: -4,
-            top: -4,
-            background: `radial-gradient(ellipse, ${glowMap[glow]} 30%, transparent 70%)`,
+            width: size + 16,
+            height: size + 16,
+            left: -8,
+            top: -8,
+            boxShadow: `0 0 24px 8px ${glowMap[glow]}`,
             clipPath: hexClipPath,
           }}
         />
@@ -46,10 +48,11 @@ export default function HexBadge({
           width: size,
           height: size,
           backgroundImage: `url("${src}")`,
-          backgroundSize: "contain", // Changed from cover to contain to prevent cropping
+          backgroundSize: "contain",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           clipPath: hexClipPath,
+          filter: isUnlocked ? "none" : "grayscale(100%) opacity(0.4)",
         }}
       />
     </div>
