@@ -31,7 +31,7 @@ const Home = () => {
 
       {/* Workout logging hero — the star of the page */}
       <div className="mt-2">
-        <WorkoutHero onStartFull={() => {/* router.push('/log') */}} />
+        <WorkoutHero />
       </div>
 
       <BodyScanGate onStarted={() => navigate('/scan')} />
