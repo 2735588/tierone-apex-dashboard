@@ -73,13 +73,7 @@ export function ThisWeekCard() {
             </div>
 
             {/* Summary */}
-            <div className="flex justify-between text-sm">
-              <span className="text-zinc-400">
-                Sessions: <span className="text-zinc-100 font-medium">{completedSessions}</span>
-              </span>
-              <span className="text-zinc-400">
-                Minutes: <span className="text-zinc-100 font-medium">{totalMinutes}</span>
-              </span>
+            <div className="flex justify-center text-sm">
                <span className="text-zinc-400">
                  Last: <span className="text-zinc-100 font-medium">{lastLabel || "—"}</span>
                </span>
