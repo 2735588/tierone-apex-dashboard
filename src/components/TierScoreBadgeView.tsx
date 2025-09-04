@@ -14,8 +14,8 @@ export function TierScoreBadgeView({
   const tierName = getTierName(score, percentile);
   const glow = getTierGlow(score, percentile);
   
-  // Make Silver tier slightly bigger
-  const adjustedSize = tierName === 'silver' ? size * 1.125 : size; // 12.5% bigger for silver
+  // Make Silver tier bigger
+  const adjustedSize = tierName === 'silver' ? size * 1.25 : size; // 25% bigger for silver
 
   return (
     <div className="w-full flex items-center justify-center my-4">
