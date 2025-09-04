@@ -4,7 +4,7 @@ type Split = "PPL" | "CLASSIC";
 
 const GROUPS = {
   PPL: ["Push", "Pull", "Legs"],
-  CLASSIC: ["Chest", "Back", "Legs", "Arms", "Core"]
+  CLASSIC: ["Chest/Back", "Legs/Core", "Arms/Shoulders"]
 };
 
 interface QuickLogInlineProps {
@@ -14,9 +14,6 @@ interface QuickLogInlineProps {
 }
 
 function QuickLogInline({ group, onClose, onSaved }: QuickLogInlineProps) {
-  const [duration, setDuration] = useState<string>("");
-  const [rpe, setRpe] = useState<string>("");
-
   const handleSave = () => {
     // TODO: Add analytics tracking and actual save logic
     onSaved();
@@ -26,46 +23,6 @@ function QuickLogInline({ group, onClose, onSaved }: QuickLogInlineProps) {
     <div className="mt-3 rounded-xl bg-zinc-800 p-3 space-y-3">
       <div className="text-sm text-zinc-300">Quick Log — {group}</div>
       
-      {/* Duration */}
-      <div className="space-y-1">
-        <div className="text-xs text-zinc-400">Duration</div>
-        <div className="flex gap-2">
-          {["30m", "45m", "60m"].map(d => (
-            <button
-              key={d}
-              onClick={() => setDuration(d)}
-              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
-                duration === d 
-                  ? "bg-emerald-600 text-black font-medium" 
-                  : "bg-zinc-700 text-zinc-100 hover:bg-zinc-600"
-              }`}
-            >
-              {d}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* RPE */}
-      <div className="space-y-1">
-        <div className="text-xs text-zinc-400">RPE</div>
-        <div className="flex gap-2">
-          {["6", "7", "8", "9"].map(r => (
-            <button
-              key={r}
-              onClick={() => setRpe(r)}
-              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
-                rpe === r 
-                  ? "bg-emerald-600 text-black font-medium" 
-                  : "bg-zinc-700 text-zinc-100 hover:bg-zinc-600"
-              }`}
-            >
-              RPE{r}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Actions */}
       <div className="flex gap-2">
         <button
