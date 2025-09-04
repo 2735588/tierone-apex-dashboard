@@ -5,7 +5,7 @@ import WorkoutHero from "@/components/WorkoutHero";
 import BodyScanGate from "@/components/BodyScanGate";
 import { StreakCard } from "@/components/StreakCard";
 import { QuickActions } from "@/components/QuickActions";
-import FriendsStreaks from "@/components/FriendsStreaks";
+
 import { HomeShareCard } from "@/components/HomeShareCard";
 import { shareElement } from "@/hooks/useShare";
 import { getStreak } from "@/lib/api";
@@ -42,8 +42,6 @@ const Home = () => {
 
       <StreakCard streak={streak.days} />
 
-      {/* Friends' streaks for motivation */}
-      <FriendsStreaks />
 
       <div className="mt-6">
         <BodyScanGate onStarted={() => navigate('/scan')} />
