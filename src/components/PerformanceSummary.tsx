@@ -1,3 +1,5 @@
+import { getTierName } from "@/lib/tierScoreBadge";
+
 export function PerformanceSummary({
   potentialScore = 98,
   potentialTier = "Diamond Tier",
@@ -24,6 +26,9 @@ export function PerformanceSummary({
   onHowItWorks?: () => void;
 }) {
   const pos = potentialDelta >= 0;
+  const tierName = getTierName(tierScore);
+  const capitalizedTier = tierName.charAt(0).toUpperCase() + tierName.slice(1);
+  
   return (
     <section className="relative rounded-2xl p-5 mb-5 bg-zinc-900/60 ring-1 ring-white/5 overflow-hidden">
       <div
@@ -42,7 +47,7 @@ export function PerformanceSummary({
           <div className="mt-2 text-emerald-300 text-sm md:text-base font-medium">{percentileLabel}</div>
           <div className="mt-2 flex justify-center">
             <span className="rounded-full bg-emerald-500/10 text-emerald-300 text-[11px] px-2 py-0.5">
-              National: #{nationalRank.toLocaleString()}
+              {capitalizedTier} Tier
             </span>
           </div>
           <div className="mt-3 text-[11px] text-zinc-400">Updated • {updated}</div>
