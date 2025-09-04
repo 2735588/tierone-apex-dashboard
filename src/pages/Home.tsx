@@ -4,6 +4,7 @@ import T1LogoHero from "@/components/T1LogoHero";
 import { QuickActions } from "@/components/QuickActions";
 import { WorkoutLogCard } from "@/components/WorkoutLogCard";
 import { ThisWeekCard } from "@/components/ThisWeekCard";
+import { StreakCard } from "@/components/StreakCard";
 import { RecentPRStrip } from "@/components/RecentPRStrip";
 import { getLastBodyScan } from "@/lib/api";
 import { fmtDateShort } from "@/lib/cooldown";
@@ -12,6 +13,8 @@ const Home = () => {
   const navigate = useNavigate();
   const [lastScanDate, setLastScanDate] = useState<string>();
   const [dataLoading, setDataLoading] = useState(true);
+  const [streak] = useState(12); // TODO: Connect to actual streak data
+  const [hasLoggedToday] = useState(false); // TODO: Connect to actual logging state
 
   useEffect(() => {
     (async () => {
@@ -30,6 +33,20 @@ const Home = () => {
     navigate('/prs-main');
   };
 
+  const handleStreakLogToday = () => {
+    // TODO: Add analytics tracking
+    // For now, just scroll to workout log card or open quick log
+    const workoutCard = document.querySelector('[data-workout-log-card]');
+    if (workoutCard) {
+      workoutCard.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleStreakBodyScan = () => {
+    // TODO: Add analytics tracking
+    navigate('/scan');
+  };
+
   return (
     <div className="pb-24 bg-black text-white min-h-screen">
       {/* Compact TierOne logo hero */}
@@ -45,10 +62,20 @@ const Home = () => {
       <QuickActions lastScanDate={lastScanDate} />
 
       {/* Workout Log Card */}
-      <WorkoutLogCard />
+      <div data-workout-log-card>
+        <WorkoutLogCard />
+      </div>
 
       {/* This Week Card */}
       <ThisWeekCard />
+
+      {/* Streak Card */}
+      <StreakCard 
+        streak={streak}
+        hasLoggedToday={hasLoggedToday}
+        onLogToday={handleStreakLogToday}
+        onBodyScan={handleStreakBodyScan}
+      />
 
       {/* Recent PRs Strip */}
       <RecentPRStrip onAdd={handlePRsNavigation} />
