@@ -174,7 +174,7 @@ const ProgressBadges = () => {
               return tierscoreBadge ? (
                 <HexBadge
                   src={tierscoreBadge.imageUrl || '/placeholder-badge.png'}
-                  size={128}
+                  size={160}
                   glow={tierscoreBadge.glow === 'emerald' ? 'emerald' : tierscoreBadge.glow === 'diamond' ? 'blue' : tierscoreBadge.glow}
                   alt={`${badgeName} Badge`}
                   isUnlocked={true}
