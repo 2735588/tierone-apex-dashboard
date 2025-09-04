@@ -2,13 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Search, ChevronDown, ChevronRight, X } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Search, ChevronRight, X } from "lucide-react";
 import { BrandMark } from "@/components/Brand";
 import { useDebounce } from "use-debounce";
-import { getTierBadgeSrc } from "@/lib/tierScoreBadge";
-import { bucketByTier, tierConfig, type Tier } from "@/lib/tiering";
+import { filterAndSort, TIER_OPTS, type TierOpt } from "@/lib/leaderboardTier";
 import { fetchLeaderboard } from "@/services";
 
 interface User {
@@ -27,12 +25,9 @@ const Leaderboard = () => {
   const [debouncedSearch] = useDebounce(searchQuery, 300);
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [expandedTiers, setExpandedTiers] = useState<Record<Tier, boolean>>({
-    bronze: true,
-    silver: true,
-    gold: true,
-    diamond: true,
-    emerald: true,
+  const [selectedTier, setSelectedTier] = useState<TierOpt>(() => {
+    const saved = localStorage.getItem('leaderboard-tier');
+    return (saved as TierOpt) || "Gold";
   });
 
   // Mock data for demonstration
@@ -56,8 +51,9 @@ const Leaderboard = () => {
     }, 1000);
   }, []);
 
-  const toggleTier = (tier: Tier) => {
-    setExpandedTiers(prev => ({ ...prev, [tier]: !prev[tier] }));
+  const handleTierChange = (tier: TierOpt) => {
+    setSelectedTier(tier);
+    localStorage.setItem('leaderboard-tier', tier);
   };
 
   const handleUserClick = (userId: string) => {
@@ -79,21 +75,9 @@ const Leaderboard = () => {
     );
   };
 
-  const filteredUsers = debouncedSearch.trim() 
-    ? users.filter(user => 
-        user.username.toLowerCase().includes(debouncedSearch.toLowerCase())
-      )
-    : users;
-
-  const tierBuckets = bucketByTier(filteredUsers);
-  const tierOrder: Tier[] = ["bronze", "silver", "gold", "diamond", "emerald"];
+  const filteredUsers = filterAndSort(users, selectedTier, debouncedSearch);
 
   const UserRow = ({ user }: { user: User }) => {
-    const tierName = tierConfig[user.score >= 90 && user.percentile && user.percentile <= 1 ? "emerald" : 
-      user.score < 60 ? "bronze" :
-      user.score < 70 ? "silver" :
-      user.score < 80 ? "gold" : "diamond"];
-
     return (
       <div
         className="flex items-center justify-between p-4 bg-zinc-900/60 ring-1 ring-white/5 rounded-2xl mb-3 cursor-pointer hover:bg-zinc-800/60 transition-colors"
@@ -114,72 +98,15 @@ const Leaderboard = () => {
               {user.username.slice(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <Badge 
-            className={`w-6 h-6 rounded-full p-0 flex items-center justify-center ${tierName.bgColor} border-0`}
-          >
-            <img 
-              src={getTierBadgeSrc(user.score, user.percentile)} 
-              alt={tierName.name}
-              className="w-4 h-4"
-            />
-          </Badge>
-          <div>
-            <div className="font-bold text-zinc-100">
-              {debouncedSearch.trim() ? highlightMatch(user.username, debouncedSearch) : user.username}
-            </div>
-            <div className={`text-xs ${tierName.color}`}>
-              {tierName.name} Tier
-            </div>
+          <div className="font-bold text-zinc-100">
+            {debouncedSearch.trim() ? highlightMatch(user.username, debouncedSearch) : user.username}
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="text-right">
-            <div className="text-lg font-bold text-zinc-100">{user.score}</div>
-          </div>
-          <ChevronRight className="w-4 h-4 text-zinc-500" />
-        </div>
+        <ChevronRight className="w-4 h-4 text-zinc-500" />
       </div>
     );
   };
 
-  const TierSection = ({ tier, users: tierUsers }: { tier: Tier, users: User[] }) => {
-    const config = tierConfig[tier];
-    const isExpanded = expandedTiers[tier];
-
-    return (
-      <div className="mb-6">
-        <Collapsible open={isExpanded} onOpenChange={() => toggleTier(tier)}>
-          <CollapsibleTrigger className="flex items-center justify-between w-full p-4 bg-zinc-900/40 ring-1 ring-white/5 rounded-2xl hover:bg-zinc-800/40 transition-colors">
-            <div className="flex items-center gap-3">
-              <img 
-                src={getTierBadgeSrc(tier === "bronze" ? 50 : tier === "silver" ? 65 : tier === "gold" ? 75 : tier === "diamond" ? 85 : 95, 
-                  tier === "emerald" ? 0.5 : undefined)} 
-                alt={config.name}
-                className="w-8 h-8"
-              />
-              <div>
-                <span className={`font-bold ${config.color}`}>{config.name}</span>
-                {'glow' in config && config.glow && <span className="ml-2 text-emerald-400/60 text-xs">✨</span>}
-              </div>
-              <Badge variant="secondary" className="ml-2">
-                {tierUsers.length}
-              </Badge>
-            </div>
-            {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-          </CollapsibleTrigger>
-          <CollapsibleContent className="mt-4">
-            {tierUsers.length === 0 ? (
-              <div className="text-center py-8 text-zinc-500">
-                No users in this tier yet.
-              </div>
-            ) : (
-              tierUsers.map(user => <UserRow key={user.id} user={user} />)
-            )}
-          </CollapsibleContent>
-        </Collapsible>
-      </div>
-    );
-  };
 
   const LoadingSkeleton = () => (
     <div className="space-y-3">
@@ -211,7 +138,7 @@ const Leaderboard = () => {
       </div>
 
       {/* Search */}
-      <div className="relative mb-6">
+      <div className="relative mb-4">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-500 w-4 h-4" />
         <Input
           placeholder="Search users…"
@@ -229,35 +156,49 @@ const Leaderboard = () => {
         )}
       </div>
 
+      {/* Tier Selector */}
+      <div className="mb-6">
+        <Select value={selectedTier} onValueChange={handleTierChange}>
+          <SelectTrigger className="w-full bg-zinc-900/60 border-white/10 text-zinc-100">
+            <SelectValue placeholder="Select tier" />
+          </SelectTrigger>
+          <SelectContent className="bg-zinc-900 border-white/10">
+            {TIER_OPTS.map(tier => (
+              <SelectItem key={tier} value={tier} className="text-zinc-100 focus:bg-zinc-800">
+                {tier}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       {/* Content */}
       {isLoading ? (
         <LoadingSkeleton />
-      ) : debouncedSearch.trim() ? (
-        // Search Results
+      ) : (
         <div>
-          <h2 className="text-lg font-semibold mb-4 text-zinc-100">
-            Search Results ({filteredUsers.length})
-          </h2>
+          {debouncedSearch.trim() && (
+            <h2 className="text-lg font-semibold mb-4 text-zinc-100">
+              Search Results ({filteredUsers.length})
+            </h2>
+          )}
           {filteredUsers.length === 0 ? (
             <div className="text-center py-12">
-              <div className="text-zinc-500 mb-4">No users found.</div>
-              <button
-                onClick={clearSearch}
-                className="text-emerald-400 hover:text-emerald-300 font-medium"
-              >
-                Clear search
-              </button>
+              <div className="text-zinc-500 mb-4">
+                {debouncedSearch.trim() ? "No users found." : "No users in this tier yet."}
+              </div>
+              {debouncedSearch.trim() && (
+                <button
+                  onClick={clearSearch}
+                  className="text-emerald-400 hover:text-emerald-300 font-medium"
+                >
+                  Clear search
+                </button>
+              )}
             </div>
           ) : (
             filteredUsers.map(user => <UserRow key={user.id} user={user} />)
           )}
-        </div>
-      ) : (
-        // Tier Sections
-        <div>
-          {tierOrder.map(tier => (
-            <TierSection key={tier} tier={tier} users={tierBuckets[tier]} />
-          ))}
         </div>
       )}
     </div>
