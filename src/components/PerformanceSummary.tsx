@@ -28,7 +28,7 @@ export function PerformanceSummary({
     <section className="relative rounded-2xl p-5 mb-5 bg-zinc-900/60 ring-1 ring-white/5 overflow-hidden">
       <div
         className="pointer-events-none absolute inset-0"
-        style={{ background: "radial-gradient(60% 70% at 50% 35%, rgba(16,185,129,.14), transparent 70%)" }}
+        style={{ background: "radial-gradient(60% 70% at 50% 42%, rgba(16,185,129,.14), transparent 70%)" }}
       />
       <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* TierScore (hero) — now first / left */}
