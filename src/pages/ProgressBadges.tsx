@@ -17,6 +17,7 @@ import { MuscleGroupList } from "@/components/MuscleGroupList";
 import { SharePanel } from "@/components/SharePanel";
 import { ShareProgressCard } from "@/components/ShareProgressCard";
 import { shareElement } from "@/hooks/useShare";
+import { TierScoreBadgeView } from "@/components/TierScoreBadgeView";
 
 const ProgressBadges = () => {
   const { gender } = useGender();
@@ -153,35 +154,7 @@ const ProgressBadges = () => {
           <ProfileTop name="Braedon Williams" athlete="Hybrid Athlete" />
           
           {/* 1.5) TierScore Badge */}
-          <div className="flex justify-center px-6">
-            {(() => {
-              const tierScore = 65; // Current user's TierScore
-              const isTop1Percent = false; // Would be calculated from backend
-              
-              let badgeName = 'TierScore Bronze';
-              if (isTop1Percent) {
-                badgeName = 'TierScore Emerald';
-              } else if (tierScore >= 80) {
-                badgeName = 'TierScore Diamond';
-              } else if (tierScore >= 70) {
-                badgeName = 'TierScore Gold';
-              } else if (tierScore >= 60) {
-                badgeName = 'TierScore Silver';
-              }
-              
-              const tierscoreBadge = tierscoreBadges.find(badge => badge.name === badgeName);
-              
-              return tierscoreBadge ? (
-                <HexBadge
-                  src={tierscoreBadge.imageUrl || '/placeholder-badge.png'}
-                  size={160}
-                  glow={tierscoreBadge.glow === 'emerald' ? 'emerald' : tierscoreBadge.glow === 'diamond' ? 'blue' : tierscoreBadge.glow}
-                  alt={`${badgeName} Badge`}
-                  isUnlocked={true}
-                />
-              ) : null;
-            })()}
-          </div>
+          <TierScoreBadgeView score={65} percentile={30} size={160} />
           
           {/* 2) Joined summary: TierScore (hero) + Overall Potential */}
           <div className="px-6">
