@@ -23,15 +23,11 @@ function getStreakTier(streak: number) {
 interface StreakCardProps {
   streak?: number;
   hasLoggedToday?: boolean;
-  onLogToday?: () => void;
-  onBodyScan?: () => void;
 }
 
 export function StreakCard({ 
   streak = 0, 
-  hasLoggedToday = false,
-  onLogToday,
-  onBodyScan 
+  hasLoggedToday = false
 }: StreakCardProps) {
   const [timeLeft, setTimeLeft] = useState(getTimeLeftToday());
 
@@ -88,24 +84,6 @@ export function StreakCard({
               <div className="text-xs text-zinc-400">
                 Keep it alive: <span className="text-emerald-300 font-medium">{timeLeft} left today</span>
               </div>
-            </div>
-          )}
-
-          {/* CTAs */}
-          {(!hasLoggedToday) && (
-            <div className="flex gap-2 mt-4">
-              <button
-                onClick={onLogToday}
-                className="flex-1 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-black text-sm font-semibold transition-colors"
-              >
-                Log today
-              </button>
-              <button
-                onClick={onBodyScan}
-                className="h-9 px-4 rounded-xl bg-zinc-700 hover:bg-zinc-600 text-zinc-100 text-sm transition-colors"
-              >
-                Body Scan
-              </button>
             </div>
           )}
         </div>

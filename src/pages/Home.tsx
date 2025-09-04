@@ -73,8 +73,6 @@ const Home = () => {
       <StreakCard 
         streak={streak}
         hasLoggedToday={hasLoggedToday}
-        onLogToday={handleStreakLogToday}
-        onBodyScan={handleStreakBodyScan}
       />
 
       {/* Recent PRs Strip */}
