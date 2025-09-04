@@ -25,7 +25,7 @@ export function PerformanceSummary({
 }) {
   const pos = potentialDelta >= 0;
   return (
-    <section className="relative rounded-2xl p-5 mb-5 bg-zinc-900/60 ring-1 ring-white/5 overflow-hidden">
+    <section className="relative rounded-2xl p-5 mb-5 bg-zinc-900/60 ring-1 ring-white/5 overflow-hidden shadow-[0_0_30px_rgba(16,185,129,0.15)]">
       <div
         className="pointer-events-none absolute inset-0"
         style={{ background: "radial-gradient(60% 70% at 25% 42%, rgba(16,185,129,.14), transparent 70%)" }}
