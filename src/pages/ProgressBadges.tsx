@@ -158,15 +158,15 @@ const ProgressBadges = () => {
               const tierScore = 72; // Current user's TierScore
               const isTop1Percent = false; // Would be calculated from backend
               
-              let badgeName = 'Bronze TierScore';
+              let badgeName = 'TierScore Bronze';
               if (isTop1Percent) {
-                badgeName = 'Emerald TierScore';
+                badgeName = 'TierScore Emerald';
               } else if (tierScore >= 80) {
-                badgeName = 'Diamond TierScore';
+                badgeName = 'TierScore Diamond';
               } else if (tierScore >= 70) {
-                badgeName = 'Gold TierScore';
+                badgeName = 'TierScore Gold';
               } else if (tierScore >= 60) {
-                badgeName = 'Silver TierScore';
+                badgeName = 'TierScore Silver';
               }
               
               const tierscoreBadge = tierscoreBadges.find(badge => badge.name === badgeName);
