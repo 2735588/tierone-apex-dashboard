@@ -155,7 +155,7 @@ const ProgressBadges = () => {
           {/* 1.5) TierScore Badge */}
           <div className="flex justify-center px-6">
             {(() => {
-              const tierScore = 72; // Current user's TierScore
+              const tierScore = 65; // Current user's TierScore
               const isTop1Percent = false; // Would be calculated from backend
               
               let badgeName = 'TierScore Bronze';
@@ -174,7 +174,7 @@ const ProgressBadges = () => {
               return tierscoreBadge ? (
                 <HexBadge
                   src={tierscoreBadge.imageUrl || '/placeholder-badge.png'}
-                  size={96}
+                  size={128}
                   glow={tierscoreBadge.glow === 'emerald' ? 'emerald' : tierscoreBadge.glow === 'diamond' ? 'blue' : tierscoreBadge.glow}
                   alt={`${badgeName} Badge`}
                   isUnlocked={true}
