@@ -13,12 +13,15 @@ export function TierScoreBadgeView({
   const src = getTierBadgeSrc(score, percentile);
   const tierName = getTierName(score, percentile);
   const glow = getTierGlow(score, percentile);
+  
+  // Make Silver tier slightly bigger
+  const adjustedSize = tierName === 'silver' ? size * 1.125 : size; // 12.5% bigger for silver
 
   return (
     <div className="w-full flex items-center justify-center my-4">
       <HexBadge
         src={src}
-        size={size}
+        size={adjustedSize}
         glow={glow}
         alt={`TierScore ${tierName} badge`}
         isUnlocked={true}
