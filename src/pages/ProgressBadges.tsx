@@ -72,8 +72,7 @@ const ProgressBadges = () => {
   // Get TierOne badges organized by category
   const allBadges = tierOneBadges;
   const streakBadges = getBadgesByType('streak');
-  const sponsoredBadges = getBadgesByType('sponsored');
-  const globalBadges = getBadgesByType('global');
+  const tierscoreBadges = getBadgesByType('tierscore');
   const muscleGroupBadges = getBadgesByType('muscle-group');
   
   // Group muscle group badges by muscle group
@@ -85,9 +84,8 @@ const ProgressBadges = () => {
   const coreBadges = muscleGroupBadges.filter(badge => badge.category === 'Core Performance');
   
   const badgeCategories = [
+    { name: 'TierScore', badges: tierscoreBadges, icon: Target },
     { name: 'Consistency', badges: streakBadges, icon: Flame },
-    { name: 'Brand Challenges', badges: sponsoredBadges, icon: Award },
-    { name: 'Global Events', badges: globalBadges, icon: Trophy },
     { 
       name: 'Performance', 
       badges: [], // We'll handle performance badges separately with subcategories
@@ -215,26 +213,6 @@ const ProgressBadges = () => {
         </TabsContent>
 
         <TabsContent value="badges" className="space-y-6">
-          {/* Badge Collection Stats */}
-          <Card className="tier-card">
-            <CardContent className="p-6">
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <div className="text-2xl font-bold text-tier-gold">{allBadges.filter(badge => badge.isUnlocked).length}</div>
-                  <div className="text-sm text-muted-foreground">Earned</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-accent">{allBadges.length}</div>
-                  <div className="text-sm text-muted-foreground">Total</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-primary">{Math.round((allBadges.filter(badge => badge.isUnlocked).length / allBadges.length) * 100)}%</div>
-                  <div className="text-sm text-muted-foreground">Complete</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Badge Categories */}
           {badgeCategories.map((category, categoryIndex) => (
             <div key={categoryIndex} className="space-y-4">
@@ -272,7 +250,7 @@ const ProgressBadges = () => {
                               <HexBadge
                                 src={badge.imageUrl || '/placeholder-badge.png'}
                                 size={80}
-                                glow={badge.isUnlocked ? (badge.glow === 'bronze' ? 'bronze' : badge.glow === 'silver' ? 'silver' : badge.glow === 'gold' ? 'gold' : 'green') : 'none'}
+                              glow={badge.isUnlocked ? (badge.glow === 'bronze' ? 'bronze' : badge.glow === 'silver' ? 'silver' : badge.glow === 'gold' ? 'gold' : badge.glow === 'diamond' ? 'blue' : badge.glow === 'emerald' ? 'green' : 'green') : 'none'}
                                 alt={badge.name}
                                 isUnlocked={badge.isUnlocked}
                               />
@@ -296,7 +274,7 @@ const ProgressBadges = () => {
                           <HexBadge
                             src={badge.imageUrl || '/placeholder-badge.png'}
                             size={80}
-                            glow={badge.isUnlocked ? (badge.glow === 'bronze' ? 'bronze' : badge.glow === 'silver' ? 'silver' : badge.glow === 'gold' ? 'gold' : 'green') : 'none'}
+                            glow={badge.isUnlocked ? (badge.glow === 'bronze' ? 'bronze' : badge.glow === 'silver' ? 'silver' : badge.glow === 'gold' ? 'gold' : badge.glow === 'diamond' ? 'blue' : badge.glow === 'emerald' ? 'green' : 'green') : 'none'}
                             alt={badge.name}
                             isUnlocked={badge.isUnlocked}
                           />

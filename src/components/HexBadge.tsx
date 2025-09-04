@@ -1,14 +1,14 @@
 export default function HexBadge({
   src,
   size = 64,
-  glow = "none", // "bronze" | "silver" | "gold" | "green" | "blue" | "none"
+  glow = "none", // "bronze" | "silver" | "gold" | "green" | "blue" | "emerald" | "none"
   alt = "badge",
   className = "",
   isUnlocked = true
 }: {
   src: string;
   size?: number;
-  glow?: "bronze" | "silver" | "gold" | "green" | "blue" | "none";
+  glow?: "bronze" | "silver" | "gold" | "green" | "blue" | "emerald" | "none";
   alt?: string;
   className?: string;
   isUnlocked?: boolean;
@@ -19,6 +19,7 @@ export default function HexBadge({
     gold:   "rgba(216,163,63,.6)",
     green:  "rgba(16,185,129,.6)",
     blue:   "rgba(59,130,246,.6)",
+    emerald: "rgba(16,185,129,.8)",
     none:   "transparent",
   };
 

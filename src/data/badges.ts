@@ -1,5 +1,5 @@
-export type BadgeType = 'streak' | 'sponsored' | 'global' | 'muscle-group';
-export type BadgeGlow = 'green' | 'bronze' | 'silver' | 'gold' | 'diamond';
+export type BadgeType = 'streak' | 'sponsored' | 'global' | 'muscle-group' | 'tierscore';
+export type BadgeGlow = 'green' | 'bronze' | 'silver' | 'gold' | 'diamond' | 'emerald';
 
 export interface TierOneBadge {
   id: string;
@@ -465,6 +465,77 @@ export const coreBadges: TierOneBadge[] = [
   }
 ];
 
+// TierScore Badges
+export const tierscoreBadges: TierOneBadge[] = [
+  {
+    id: 'tierscore-bronze',
+    name: 'TierScore Bronze',
+    description: 'TierScore ≥ 60',
+    type: 'tierscore',
+    glow: 'bronze',
+    imageUrl: '/lovable-uploads/65d9305f-1a94-40d2-b250-2f765da7e4c8.png',
+    category: 'TierScore Achievement',
+    requirement: 'Achieve 60+ TierScore',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'common',
+    earnedDate: '2024-01-20'
+  },
+  {
+    id: 'tierscore-silver',
+    name: 'TierScore Silver', 
+    description: 'TierScore ≥ 70',
+    type: 'tierscore',
+    glow: 'silver',
+    imageUrl: '/lovable-uploads/9033ee23-3f60-416a-87f0-de1d51f7c5d8.png',
+    category: 'TierScore Achievement',
+    requirement: 'Achieve 70+ TierScore',
+    isUnlocked: true,
+    progress: 100,
+    rarity: 'rare',
+    earnedDate: '2024-02-10'
+  },
+  {
+    id: 'tierscore-gold',
+    name: 'TierScore Gold',
+    description: 'TierScore ≥ 80', 
+    type: 'tierscore',
+    glow: 'gold',
+    imageUrl: '/lovable-uploads/7188c940-69c8-4a96-b333-27323f631ad2.png',
+    category: 'TierScore Achievement',
+    requirement: 'Achieve 80+ TierScore',
+    isUnlocked: false,
+    progress: 72,
+    rarity: 'epic'
+  },
+  {
+    id: 'tierscore-diamond',
+    name: 'TierScore Diamond',
+    description: 'TierScore ≥ 90',
+    type: 'tierscore',
+    glow: 'diamond',
+    imageUrl: '/lovable-uploads/d832c910-8a35-4ebd-9604-136fa047bf7e.png',
+    category: 'TierScore Achievement',
+    requirement: 'Achieve 90+ TierScore',
+    isUnlocked: false,
+    progress: 0,
+    rarity: 'legendary'
+  },
+  {
+    id: 'tierscore-emerald',
+    name: 'TierScore Emerald',
+    description: 'Top 1% Global TierScore',
+    type: 'tierscore',
+    glow: 'emerald',
+    imageUrl: '/lovable-uploads/0a7c5346-a421-499f-90e7-385107439d7c.png',
+    category: 'TierScore Achievement',
+    requirement: 'Achieve top 1% global TierScore ranking',
+    isUnlocked: false,
+    progress: 0,
+    rarity: 'legendary'
+  }
+];
+
 // Combined muscle group badges
 export const muscleGroupBadges: TierOneBadge[] = [
   ...chestBadges,
@@ -480,7 +551,8 @@ export const tierOneBadges: TierOneBadge[] = [
   ...streakBadges,
   ...sponsoredBadges,
   ...globalBadges,
-  ...muscleGroupBadges
+  ...muscleGroupBadges,
+  ...tierscoreBadges
 ];
 
 // Helper functions
