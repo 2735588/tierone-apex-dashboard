@@ -185,8 +185,8 @@ export function WorkoutLogCard() {
   return (
     <div className="px-4 mt-4">
       <div className="rounded-2xl bg-zinc-900/60 ring-1 ring-white/5 p-4">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-zinc-100">Log a workout</h3>
+        <div className="flex items-center justify-center mb-3">
+          <h3 className="text-base font-bold text-white bg-gradient-to-r from-emerald-400 to-emerald-300 bg-clip-text text-transparent">Log a workout</h3>
           {loggedToday && (
             <span className="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded-full">
               Logged today (edit)

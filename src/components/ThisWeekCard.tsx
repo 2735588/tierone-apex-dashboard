@@ -52,7 +52,6 @@ export function ThisWeekCard() {
   return (
     <div className="px-4 mt-4">
       <div className="rounded-2xl bg-zinc-900/60 ring-1 ring-white/5 p-4">
-        <h3 className="text-sm font-semibold text-zinc-100 mb-3">This Week</h3>
         
         {hasAnyActivity ? (
           <>
