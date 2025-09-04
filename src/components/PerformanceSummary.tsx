@@ -46,7 +46,7 @@ export function PerformanceSummary({
           </div>
           <div className="mt-2 text-emerald-300 text-sm md:text-base font-medium">{percentileLabel}</div>
           <div className="mt-2 flex justify-center">
-            <span className="rounded-full bg-emerald-500/10 text-emerald-300 text-[11px] px-2 py-0.5">
+            <span className="rounded-full bg-emerald-500/10 text-emerald-300 text-[13px] px-2 py-0.5">
               Silver Tier
             </span>
           </div>
