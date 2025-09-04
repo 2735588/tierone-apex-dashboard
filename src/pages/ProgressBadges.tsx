@@ -152,6 +152,37 @@ const ProgressBadges = () => {
           {/* 1) Top profile header */}
           <ProfileTop name="Braedon Williams" athlete="Hybrid Athlete" />
           
+          {/* 1.5) TierScore Badge */}
+          <div className="flex justify-center px-6">
+            {(() => {
+              const tierScore = 72; // Current user's TierScore
+              const isTop1Percent = false; // Would be calculated from backend
+              
+              let badgeName = 'Bronze TierScore';
+              if (isTop1Percent) {
+                badgeName = 'Emerald TierScore';
+              } else if (tierScore >= 80) {
+                badgeName = 'Diamond TierScore';
+              } else if (tierScore >= 70) {
+                badgeName = 'Gold TierScore';
+              } else if (tierScore >= 60) {
+                badgeName = 'Silver TierScore';
+              }
+              
+              const tierscoreBadge = tierscoreBadges.find(badge => badge.name === badgeName);
+              
+              return tierscoreBadge ? (
+                <HexBadge
+                  src={tierscoreBadge.imageUrl || '/placeholder-badge.png'}
+                  size={96}
+                  glow={tierscoreBadge.glow === 'emerald' ? 'emerald' : tierscoreBadge.glow === 'diamond' ? 'blue' : tierscoreBadge.glow}
+                  alt={`${badgeName} Badge`}
+                  isUnlocked={true}
+                />
+              ) : null;
+            })()}
+          </div>
+          
           {/* 2) Joined summary: TierScore (hero) + Overall Potential */}
           <div className="px-6">
             <PerformanceSummary
