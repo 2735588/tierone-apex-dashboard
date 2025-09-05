@@ -2,9 +2,9 @@ import { nextAllowedUpdate, fmtDateShort } from "@/lib/cooldown";
 import { Play } from "lucide-react";
 
 export default function PRCard({
-  lift, valueKg, updatedAt, proofUrl, onEdit, onViewProof
+  lift, valueKg, updatedAt, proofUrl, onEdit, onViewProof, canEdit = true
 }: {
-  lift: string; valueKg: number; updatedAt?: string; proofUrl?: string; onEdit: ()=>void; onViewProof?: ()=>void;
+  lift: string; valueKg: number; updatedAt?: string; proofUrl?: string; onEdit: ()=>void; onViewProof?: ()=>void; canEdit?: boolean;
 }) {
   const cd = nextAllowedUpdate(updatedAt, 7); // enforce weekly
   const locked = !cd.allowed;
@@ -27,13 +27,15 @@ export default function PRCard({
           {locked && <div className="mt-1 text-[11px] text-amber-400/90">Next allowed update in {cd.waitDays} day(s)</div>}
         </div>
         <div className="flex flex-col gap-2">
-          <button
-            onClick={onEdit}
-            disabled={locked}
-            className={`rounded-lg px-3 py-2 text-sm ${locked ? "bg-zinc-800 text-zinc-500 cursor-not-allowed" : "bg-emerald-500 text-black font-semibold"}`}
-          >
-            Update PR
-          </button>
+          {canEdit && (
+            <button
+              onClick={onEdit}
+              disabled={locked}
+              className={`rounded-lg px-3 py-2 text-sm ${locked ? "bg-zinc-800 text-zinc-500 cursor-not-allowed" : "bg-emerald-500 text-black font-semibold"}`}
+            >
+              Update PR
+            </button>
+          )}
           {hasProof && onViewProof && (
             <button
               onClick={onViewProof}

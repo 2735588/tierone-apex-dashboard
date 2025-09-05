@@ -1,28 +1,39 @@
-import { Edit, Plus, Play, Share, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
-import { toast } from "@/hooks/use-toast";
-import { TierScoreBadgeView } from "@/components/TierScoreBadgeView";
-import StreakFlame from "@/components/StreakFlame";
-import VideoModal from "@/components/VideoModal";
-import { fetchCurrentPRs, getStreak, type PRRecord } from "@/lib/api";
-import { kgToLb } from "@/lib/pr";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Edit, Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { TierScoreBadgeView } from '@/components/TierScoreBadgeView';
+import { StreakCard } from '@/components/StreakCard';
+import PRCard from '@/components/PRCard';
+import { fetchCurrentPRs, getStreak } from '@/lib/api';
+import { PRRecord } from '@/lib/api';
+import VideoModal from '@/components/VideoModal';
+import { MAIN_LIFTS } from '@/lib/pr';
+import { useToast } from '@/hooks/use-toast';
 
-const Profile = () => {
-  const [bio, setBio] = useState("Dedicated athlete pushing limits every day. 💪 Always striving for greatness and inspiring others to reach their peak performance. 🔥");
-  const [isEditingBio, setIsEditingBio] = useState(false);
-  const [isLbs, setIsLbs] = useState(true);
+export default function Profile() {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [bio, setBio] = useState("Conquering strength goals every day 💪 | 3x national medalist | Always hungry for more 🔥");
+  const [isEditing, setIsEditing] = useState(false);
   const [prs, setPrs] = useState<Record<string, PRRecord>>({});
-  const [streak, setStreak] = useState({ days: 0, loggedToday: false });
-  const [selectedVideo, setSelectedVideo] = useState<{ url: string; title: string } | null>(null);
+  const [streak, setStreak] = useState(12);
+  const [hasLoggedToday] = useState(false);
+  const [videoModal, setVideoModal] = useState<{ open: boolean; title: string; url: string }>({
+    open: false,
+    title: "",
+    url: ""
+  });
 
-  // Mock user data
-  const user = {
-    name: "Alex Thompson",
-    username: "alex_athlete", 
-    avatar: "/lovable-uploads/0a7c5346-a421-499f-90e7-385107439d7c.png",
-    tierScore: 67, // Silver tier (60-69)
-    percentile: 15 // Not top 1%, so Silver
+  // Mock data - replace with actual user data
+  const isOwner = true; // This should come from auth context
+  const userData = {
+    name: "Alex Morgan",
+    age: 28,
+    handle: "alexmorgan",
+    avatar: "/lovable-uploads/47d449ba-b74f-4254-adcc-6ce8d0c865a5.png",
+    athleteType: "Hybrid Athlete"
   };
 
   useEffect(() => {
@@ -33,215 +44,164 @@ const Profile = () => {
           getStreak()
         ]);
         setPrs(prsData);
-        setStreak(streakData);
+        setStreak(streakData.days);
       } catch (error) {
-        console.error('Failed to load profile data:', error);
+        console.error("Error loading profile data:", error);
       }
     };
+
     loadData();
   }, []);
 
-  const formatValue = (valueKg: number) => {
-    if (isLbs) {
-      return `${kgToLb(valueKg)} lbs`;
-    }
-    return `${valueKg} kg`;
-  };
-
-  const getTimeLeft = () => {
-    const now = new Date();
-    const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 59, 999);
-    const diff = endOfDay.getTime() - now.getTime();
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    return `${hours}:${minutes.toString().padStart(2, '0')}`;
-  };
-
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header with Bio */}
-      <div className="p-4 space-y-3">
-        <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center overflow-hidden">
-            {user.avatar ? (
-              <img src={user.avatar} alt="Profile" className="w-full h-full object-cover" />
-            ) : (
-              <span className="text-lg font-semibold text-muted-foreground">
-                {user.name.split(' ').map(n => n[0]).join('')}
-              </span>
-            )}
-          </div>
+    <div className="min-h-screen bg-black text-white pb-24">
+      {/* Header: Bio/Identity (no badges here) */}
+      <div className="p-4">
+        <div className="flex items-start gap-3">
+          {/* Avatar */}
+          <img 
+            src={userData.avatar}
+            alt="Profile"
+            className="w-12 h-12 rounded-full object-cover"
+          />
           
+          {/* Name and info */}
           <div className="flex-1">
-            <h1 className="text-lg font-semibold text-foreground">{user.name}</h1>
-            <p className="text-sm text-muted-foreground">@{user.username}</p>
-          </div>
-          
-          <Button variant="ghost" size="sm">
-            <Edit className="w-4 h-4" />
-          </Button>
-        </div>
-        
-        {/* Bio */}
-        <div className="w-full">
-          {isEditingBio ? (
-            <div className="space-y-2">
-              <textarea
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                maxLength={150}
-                placeholder="Add emojis to make your bio shine! ✨"
-                className="w-full p-3 bg-muted rounded-xl text-sm text-foreground resize-none border-0 focus:ring-2 focus:ring-primary"
-                rows={3}
-              />
-              <div className="text-xs text-muted-foreground text-right">
-                {bio.length}/150 characters
-              </div>
-              <div className="flex gap-2">
-                <Button size="sm" onClick={() => setIsEditingBio(false)}>
-                  Save
-                </Button>
-                <Button size="sm" variant="ghost" onClick={() => setIsEditingBio(false)}>
-                  Cancel
-                </Button>
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-semibold text-white">{userData.name}</h1>
+              <span className="text-zinc-400">• {userData.age}</span>
+              <div className="px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-300 text-xs font-medium">
+                {userData.athleteType}
               </div>
             </div>
-          ) : (
-            <p 
-              className="text-sm text-foreground cursor-pointer hover:text-muted-foreground transition-colors leading-relaxed"
-              onClick={() => setIsEditingBio(true)}
+            <div className="text-sm text-zinc-400 mt-1">@{userData.handle}</div>
+            
+            {/* Bio section */}
+            <div className="mt-3">
+              {isEditing ? (
+                <div className="space-y-2">
+                  <Textarea
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    className="bg-zinc-900/50 border-zinc-700 text-white resize-none"
+                    rows={3}
+                    placeholder="Tell us about yourself..."
+                  />
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => setIsEditing(false)}
+                      className="bg-emerald-500 text-black hover:bg-emerald-400"
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setIsEditing(false)}
+                      className="border-zinc-600 text-zinc-300"
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-zinc-300 leading-relaxed">
+                  {bio}
+                </p>
+              )}
+            </div>
+          </div>
+          
+          {/* Edit button (only for owner) */}
+          {isOwner && (
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setIsEditing(!isEditing)}
+              className="text-zinc-400 hover:text-white p-1"
             >
-              {bio}
-            </p>
+              <Edit className="w-4 h-4" />
+            </Button>
           )}
         </div>
       </div>
 
-      {/* Centered TierScore Badge */}
-      <div className="px-4 py-6">
+      {/* TierScore Badge - Centered, image only */}
+      <div className="flex justify-center py-6">
         <TierScoreBadgeView 
-          score={user.tierScore} 
-          percentile={user.percentile}
+          score={67} 
+          percentile={25.5} 
           size={96}
         />
       </div>
 
-      {/* Streak */}
-      <div className="px-4 pb-6">
-        <div className="text-center space-y-2">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider">Current Streak</p>
-          <div className="flex items-center justify-center gap-3">
-            <StreakFlame days={streak.days} size={32} />
-            <div>
-              <div className="text-4xl font-bold text-emerald-400">{streak.days}</div>
-              <div className="text-xs text-muted-foreground">days strong</div>
-            </div>
-          </div>
-          {!streak.loggedToday && (
-            <p className="text-xs text-muted-foreground">
-              Keep it alive: {getTimeLeft()} left today
-            </p>
-          )}
-        </div>
-      </div>
+      {/* Streak (identical to Home) */}
+      <StreakCard 
+        streak={streak}
+        hasLoggedToday={hasLoggedToday}
+      />
 
-      {/* PR Records */}
-      <div className="px-4 pb-6">
+      {/* Personal Records (cards identical to PR page) */}
+      <div className="px-4 mt-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-foreground">Personal Records</h2>
-          <Button variant="ghost" size="sm">
-            <Plus className="w-4 h-4 mr-1" />
+          <h2 className="text-lg font-semibold text-white">Personal Records</h2>
+          <Button
+            size="sm"
+            className="bg-emerald-500 text-black hover:bg-emerald-400 text-xs flex items-center gap-1"
+            onClick={() => navigate('/prs-main')}
+          >
+            <Plus className="w-3 h-3" />
             Add PR
           </Button>
         </div>
 
+        {/* PR Cards using the same component as PRs page */}
         <div className="space-y-3">
-          {Object.entries(prs).map(([lift, record]) => (
-            <div key={lift} className="bg-card rounded-2xl p-4 border border-border shadow-md hover:shadow-lg transition-shadow">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <h3 className="font-medium text-foreground">{lift}</h3>
-                  <p className="text-xs text-muted-foreground">Personal Record</p>
-                  {record.updatedAt && (
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {new Date(record.updatedAt).toLocaleDateString()}
-                    </p>
-                  )}
-                </div>
-                
-                <div className="text-right">
-                  <div className="text-xl font-bold text-accent">
-                    {formatValue(record.valueKg)}
-                  </div>
-                  <button
-                    onClick={() => setIsLbs(!isLbs)}
-                    className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {isLbs ? 'kg' : 'lbs'}
-                  </button>
-                </div>
-                
-                <Button variant="ghost" size="sm" className="ml-2">
-                  <Share className="w-4 h-4" />
-                </Button>
-              </div>
-              
-              {/* Video Thumbnails */}
-              {record.proofUrl && (
-                <div className="mt-3 flex gap-2">
-                  <button
-                    onClick={() => setSelectedVideo({ url: record.proofUrl!, title: lift })}
-                    className="w-16 h-12 bg-muted rounded-lg flex items-center justify-center hover:bg-muted/80 transition-colors"
-                  >
-                    <Play className="w-4 h-4 text-muted-foreground" />
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
+          {MAIN_LIFTS.map((lift) => {
+            const pr = prs[lift];
+            if (!pr || pr.valueKg === 0) return null;
+
+            return (
+              <PRCard
+                key={lift}
+                lift={lift}
+                valueKg={pr.valueKg}
+                updatedAt={pr.updatedAt}
+                proofUrl={pr.proofUrl}
+                canEdit={isOwner}
+                onEdit={() => navigate('/prs-main')}
+                onViewProof={pr.proofUrl ? () => setVideoModal({
+                  open: true,
+                  title: lift,
+                  url: pr.proofUrl!
+                }) : undefined}
+              />
+            );
+          })}
         </div>
 
-        {Object.keys(prs).length === 0 && (
+        {/* Empty state */}
+        {MAIN_LIFTS.every(lift => !prs[lift] || prs[lift].valueKg === 0) && (
           <div className="text-center py-8">
-            <p className="text-muted-foreground mb-4">No PRs yet. Upload your first PR.</p>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
+            <div className="text-zinc-400 mb-4">No PRs yet. Upload your first PR.</div>
+            <Button
+              className="bg-emerald-500 text-black hover:bg-emerald-400"
+              onClick={() => navigate('/prs-main')}
+            >
               Upload PR
             </Button>
           </div>
         )}
       </div>
 
-      {/* Delete Photos Button */}
-      <div className="px-4 pb-6">
-        <Button 
-          variant="outline" 
-          className="w-full text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
-          onClick={() => {
-            localStorage.clear();
-            toast({
-              title: "Photos deleted",
-              description: "All your photos and scan data have been permanently deleted.",
-            });
-          }}
-        >
-          <Trash2 className="w-4 h-4 mr-2" />
-          Delete My Photos
-        </Button>
-      </div>
-
       {/* Video Modal */}
-      {selectedVideo && (
-        <VideoModal 
-          open={!!selectedVideo}
-          onClose={() => setSelectedVideo(null)}
-          videoUrl={selectedVideo.url}
-          title={selectedVideo.title}
-        />
-      )}
+      <VideoModal
+        open={videoModal.open}
+        title={videoModal.title}
+        videoUrl={videoModal.url}
+        onClose={() => setVideoModal({ open: false, title: "", url: "" })}
+      />
     </div>
   );
-};
-
-export default Profile;
+}
