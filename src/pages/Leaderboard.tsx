@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, ChevronRight, X } from "lucide-react";
 import { BrandMark } from "@/components/Brand";
 import { useDebounce } from "use-debounce";
-import { filterAndSort, TIER_OPTS, type TierOpt } from "@/lib/leaderboardTier";
+import { filterAndSort, ALL_FILTER_OPTS, TIER_OPTS, PR_OPTS, type FilterOpt } from "@/lib/leaderboardTier";
 import { fetchLeaderboard } from "@/services";
 
 interface User {
@@ -17,6 +17,7 @@ interface User {
   lastWorkoutAt?: string;
   prCount?: number;
   avatar?: string;
+  prs?: Record<string, number>;
 }
 
 const Leaderboard = () => {
@@ -25,21 +26,21 @@ const Leaderboard = () => {
   const [debouncedSearch] = useDebounce(searchQuery, 300);
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedTier, setSelectedTier] = useState<TierOpt>(() => {
-    const saved = localStorage.getItem('leaderboard-tier');
-    return (saved as TierOpt) || "Gold";
+  const [selectedFilter, setSelectedFilter] = useState<FilterOpt>(() => {
+    const saved = localStorage.getItem('leaderboard-filter');
+    return (saved as FilterOpt) || "Gold";
   });
 
   // Mock data for demonstration
   const mockUsers: User[] = [
-    { id: "1", username: "Alex_Beast", score: 95, percentile: 0.5, prCount: 15, lastWorkoutAt: "2024-01-03" },
-    { id: "2", username: "Nordic_Thor", score: 88, percentile: 2.1, prCount: 12, lastWorkoutAt: "2024-01-02" },
-    { id: "3", username: "Aussie_Tank", score: 75, percentile: 15.3, prCount: 8, lastWorkoutAt: "2024-01-01" },
-    { id: "4", username: "UK_Warrior", score: 65, percentile: 32.1, prCount: 6, lastWorkoutAt: "2023-12-30" },
-    { id: "5", username: "Tokyo_Titan", score: 55, percentile: 55.8, prCount: 4, lastWorkoutAt: "2023-12-28" },
-    { id: "6", username: "Berlin_Beast", score: 72, percentile: 25.4, prCount: 9, lastWorkoutAt: "2023-12-29" },
-    { id: "7", username: "Brazil_Bull", score: 81, percentile: 8.7, prCount: 11, lastWorkoutAt: "2024-01-01" },
-    { id: "8", username: "Maple_Muscle", score: 68, percentile: 28.9, prCount: 7, lastWorkoutAt: "2023-12-31" },
+    { id: "1", username: "Alex_Beast", score: 95, percentile: 0.5, prCount: 15, lastWorkoutAt: "2024-01-03", prs: { "Back Squat": 500, "Bench Press": 315, "Deadlift": 625, "Overhead Press": 225 } },
+    { id: "2", username: "Nordic_Thor", score: 88, percentile: 2.1, prCount: 12, lastWorkoutAt: "2024-01-02", prs: { "Back Squat": 455, "Bench Press": 285, "Deadlift": 565, "Overhead Press": 195 } },
+    { id: "3", username: "Aussie_Tank", score: 75, percentile: 15.3, prCount: 8, lastWorkoutAt: "2024-01-01", prs: { "Back Squat": 405, "Bench Press": 255, "Deadlift": 495, "Overhead Press": 165 } },
+    { id: "4", username: "UK_Warrior", score: 65, percentile: 32.1, prCount: 6, lastWorkoutAt: "2023-12-30", prs: { "Back Squat": 365, "Bench Press": 225, "Deadlift": 455, "Overhead Press": 145 } },
+    { id: "5", username: "Tokyo_Titan", score: 55, percentile: 55.8, prCount: 4, lastWorkoutAt: "2023-12-28", prs: { "Back Squat": 325, "Bench Press": 195, "Deadlift": 405, "Overhead Press": 125 } },
+    { id: "6", username: "Berlin_Beast", score: 72, percentile: 25.4, prCount: 9, lastWorkoutAt: "2023-12-29", prs: { "Back Squat": 385, "Bench Press": 245, "Deadlift": 475, "Overhead Press": 155 } },
+    { id: "7", username: "Brazil_Bull", score: 81, percentile: 8.7, prCount: 11, lastWorkoutAt: "2024-01-01", prs: { "Back Squat": 435, "Bench Press": 275, "Deadlift": 535, "Overhead Press": 185 } },
+    { id: "8", username: "Maple_Muscle", score: 68, percentile: 28.9, prCount: 7, lastWorkoutAt: "2023-12-31", prs: { "Back Squat": 355, "Bench Press": 215, "Deadlift": 435, "Overhead Press": 135 } },
   ];
 
   useEffect(() => {
@@ -51,9 +52,9 @@ const Leaderboard = () => {
     }, 1000);
   }, []);
 
-  const handleTierChange = (tier: TierOpt) => {
-    setSelectedTier(tier);
-    localStorage.setItem('leaderboard-tier', tier);
+  const handleFilterChange = (filter: FilterOpt) => {
+    setSelectedFilter(filter);
+    localStorage.setItem('leaderboard-filter', filter);
   };
 
   const handleUserClick = (userId: string) => {
@@ -75,7 +76,7 @@ const Leaderboard = () => {
     );
   };
 
-  const filteredUsers = filterAndSort(users, selectedTier, debouncedSearch);
+  const filteredUsers = filterAndSort(users, selectedFilter, debouncedSearch);
 
   const UserRow = ({ user }: { user: User }) => {
     return (
@@ -156,16 +157,23 @@ const Leaderboard = () => {
         )}
       </div>
 
-      {/* Tier Selector */}
+      {/* Filter Selector */}
       <div className="mb-6">
-        <Select value={selectedTier} onValueChange={handleTierChange}>
+        <Select value={selectedFilter} onValueChange={handleFilterChange}>
           <SelectTrigger className="w-full bg-zinc-900/60 border-white/10 text-zinc-100">
-            <SelectValue placeholder="Select tier" />
+            <SelectValue placeholder="Select filter" />
           </SelectTrigger>
           <SelectContent className="bg-zinc-900 border-white/10">
+            {/* Tier Options */}
             {TIER_OPTS.map(tier => (
               <SelectItem key={tier} value={tier} className="text-zinc-100 focus:bg-zinc-800">
-                {tier}
+                🏆 {tier}
+              </SelectItem>
+            ))}
+            {/* PR Options */}
+            {PR_OPTS.map(pr => (
+              <SelectItem key={pr} value={pr} className="text-zinc-100 focus:bg-zinc-800">
+                💪 {pr} Leaderboard
               </SelectItem>
             ))}
           </SelectContent>
@@ -185,7 +193,10 @@ const Leaderboard = () => {
           {filteredUsers.length === 0 ? (
             <div className="text-center py-12">
               <div className="text-zinc-500 mb-4">
-                {debouncedSearch.trim() ? "No users found." : "No users in this tier yet."}
+                {debouncedSearch.trim() ? "No users found." : 
+                 PR_OPTS.includes(selectedFilter as any) ? 
+                   `No users with ${selectedFilter} records yet.` : 
+                   "No users in this tier yet."}
               </div>
               {debouncedSearch.trim() && (
                 <button
