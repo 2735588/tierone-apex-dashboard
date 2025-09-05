@@ -167,13 +167,13 @@ const Leaderboard = () => {
             {/* Tier Options */}
             {TIER_OPTS.map(tier => (
               <SelectItem key={tier} value={tier} className="text-zinc-100 focus:bg-zinc-800">
-                🏆 {tier}
+                {tier === "Tier One (Emerald)" ? tier : `${tier} Tier`}
               </SelectItem>
             ))}
             {/* PR Options */}
             {PR_OPTS.map(pr => (
               <SelectItem key={pr} value={pr} className="text-zinc-100 focus:bg-zinc-800">
-                💪 {pr} Leaderboard
+                {pr} Leaderboard
               </SelectItem>
             ))}
           </SelectContent>
