@@ -32,7 +32,7 @@ export default function Profile() {
     name: "Alex Morgan",
     age: 28,
     handle: "alexmorgan",
-    avatar: "/lovable-uploads/47d449ba-b74f-4254-adcc-6ce8d0c865a5.png",
+    avatar: "/lovable-uploads/d832c910-8a35-4ebd-9604-136fa047bf7e.png",
     athleteType: "Hybrid Athlete"
   };
 
