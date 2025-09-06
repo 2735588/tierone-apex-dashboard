@@ -10,11 +10,9 @@ import { fetchCurrentPRs, getStreak } from '@/lib/api';
 import { PRRecord } from '@/lib/api';
 import VideoModal from '@/components/VideoModal';
 import { MAIN_LIFTS } from '@/lib/pr';
-import { useToast } from '@/hooks/use-toast';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { toast } = useToast();
   const [bio, setBio] = useState("Conquering strength goals every day 💪 | 3x national medalist | Always hungry for more 🔥");
   const [isEditing, setIsEditing] = useState(false);
   const [prs, setPrs] = useState<Record<string, PRRecord>>({});
