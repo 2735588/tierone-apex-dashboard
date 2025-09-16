@@ -29,23 +29,18 @@ function getWeekToken(log: DayData): string {
 }
 
 export function ThisWeekCard() {
-  // Mock data with combined workouts - TODO: Connect to actual workout data
+  // Mock data - TODO: Connect to actual workout data
   const weekData: DayData[] = [
-    { day: "Mon", completed: true, group: "Chest/Back", pairToken: "CB", mode: "combined" },
-    { day: "Tue", completed: true, group: "Pull", mode: "single" },
+    { day: "Mon", completed: true },
+    { day: "Tue", completed: true },
     { day: "Wed", completed: false },
-    { day: "Thu", completed: true, group: "Legs/Core", pairToken: "LC", mode: "combined" },
+    { day: "Thu", completed: true },
     { day: "Fri", completed: false },
     { day: "Sat", completed: false },
     { day: "Sun", completed: false },
   ];
 
   const completedSessions = weekData.filter(d => d.completed).length;
-  const totalMinutes = completedSessions * 45; // Mock calculation
-  const lastWorkout = weekData.filter(d => d.completed).pop();
-  const lastLabel = lastWorkout?.mode === "combined" 
-    ? lastWorkout.group 
-    : lastWorkout?.group;
 
   const hasAnyActivity = completedSessions > 0;
 
@@ -60,12 +55,11 @@ export function ThisWeekCard() {
               {weekData.map((day, i) => (
                 <div key={i} className="text-center">
                   <div className="text-xs text-zinc-400 mb-1">{day.day}</div>
-                   <div className={`w-8 h-8 rounded-lg mx-auto flex items-center justify-center text-xs font-medium ${
+                   <div className={`w-8 h-8 rounded-lg mx-auto ${
                      day.completed 
-                       ? "bg-emerald-500 text-black" 
-                       : "bg-zinc-800 text-zinc-500"
+                       ? "bg-emerald-500" 
+                       : "bg-zinc-800"
                    }`}>
-                     {day.completed ? getWeekToken(day) : "—"}
                    </div>
                 </div>
               ))}
@@ -74,7 +68,7 @@ export function ThisWeekCard() {
             {/* Summary */}
             <div className="flex justify-center text-sm">
                <span className="text-zinc-400">
-                 Last: <span className="text-zinc-100 font-medium">{lastLabel || "—"}</span>
+                 {completedSessions} workout{completedSessions !== 1 ? 's' : ''} this week
                </span>
             </div>
           </>

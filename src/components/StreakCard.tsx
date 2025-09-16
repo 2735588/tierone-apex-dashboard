@@ -86,6 +86,13 @@ export function StreakCard({
               </div>
             </div>
           )}
+
+          {/* Log workout button */}
+          <div className="text-center mt-4">
+            <button className="rounded-xl px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-black font-semibold transition-colors">
+              Log Workout
+            </button>
+          </div>
         </div>
       </div>
     </div>
